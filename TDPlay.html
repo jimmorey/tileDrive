@@ -1,0 +1,184 @@
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Playing with Variants in TileDrive</title>
+    <link rel="stylesheet" href="tdcode.css">
+
+    <style>
+       .piece {
+           display: inline-block;
+           overflow:hidden;
+           width:50px;
+           height:50px;  
+           background-image:url(goalMM.svg);
+           background-size: 50px;
+           transition: all 1s ease-in-out;
+       }
+       div.goal {
+           width:500px;
+           height:500px;  
+           background-size: 500px;
+           margin: 0 auto;
+       }
+       .show {
+           background-position: 0 300px;
+       }
+       .bridge {
+           background-position: 0 250px;
+       }
+       .endure {
+           background-position: 0 200px;
+       }
+       .explore {
+           background-position: 0 150px;
+       }
+       .focus {
+           background-position: 0 100px;
+       }
+       .speed {
+           background-position: 0 50px;
+       }
+       table {
+           margin-bottom:1em;
+           border:1px solid #eee;
+           border-radius:0.5em;
+           background:#f8f8f8;
+           transition: all 1s ease-in-out;
+       }
+       table:hover .piece,table:active .piece{
+           transform:scale(1.1);
+           opacity:0.5;
+       }
+       table:hover, table:active {
+           background:#f4f4f4;
+       }
+       tr:nth-child(2n) td,tr:nth-child(2n) th{
+           background:white;
+           border-radius:1em;
+           margin-right:0.5em;
+           margin-left:0.5em;
+       }
+       th {
+           width:150px;
+       }
+       h1 {
+           margin-top:0;
+       }
+       div.big {
+        display:inline;
+        height:50px;
+        vertical-align: bottom;
+        font-size:2.5em;
+       }
+       .myhead {
+       display:inline;height:50px;vertical-align: top;font-size:1.5em;
+       }
+       .box {
+              display:inline-block;
+              width:50px;
+              height:50px;
+              border:1px solid black;
+              background-color: rgb(224, 224, 224);
+              /*margin:0.5em;*/
+              text-align: center;
+       }
+       .x {
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='black' stroke-width='5'/><path d='M0 0 L100 100 ' stroke='black' stroke-width='5'/></svg>");
+            background-repeat:no-repeat;
+            background-position:center center;
+            background-size: 100% 100%, auto;
+            opacity: 50%;
+        }
+    </style>  
+    
+    <script src="rpoly.js"> </script>
+    <script src="rtree.js"> </script>
+    <script src="TD.js"> </script>
+    <script src="tlCodeEl.js"> </script>
+    <script src="TDcode.js"> </script>
+</head>
+<body>
+
+<h1>TileDrive Play
+</h1>
+
+<!--
+<div class="test" data-text="3a<:34i:4:4<5p:5<:5:4>:3" data-w = "100" data-h="100"></div>
+
+<div class="test" data-text="5i:5i<:4i3l:3l:3l3r<:3r<3l5i:5i<:4i3l:3l:3l3r<:3r<3l5i:5i<:4i3l:3l:3l3r<:3r<3l" data-w = "100" data-h="100"></div>
+-->
+<p>These are examples of auto-produced lists. These patterns necessarily form complete loops because the variations will have 2- or 3-way rotational symmetry by design. It is a bit surprising how may variations do not self intersect. These types of lists may be useful in constructing activities finding similarites between patterns or describing differences between patterns. Perhaps an activity where the code of the original is given using the mixing operator and it is the objective is to find the altered code that generates the variant (see below the first list).  The following lists demonstrate that there are a great many options and variety when using variations.</p>
+
+<!-- ****************************************************  --> 
+<div><div class="myhead" ><span style="font-weight: bold;">57 variations of: </span><div class="inline title" data-text ="+4[5o5o,4o,]" data-w = "70" data-h="70" data-cur="false"></div>
+<div class="inline title" data-text ="+6[3l]" data-w = "35" data-h="35" data-cur="false"></div>
+<div class="inline title" data-text ="m[+4[5o5o,4o,]][3l]" data-w = "100" data-h="100" data-cur="false"></div></div>
+
+<br>
+<div id="list" class="start float"></div>
+
+<div><div class="myhead" ><span style="font: monospace;">m[+4[5o5o,4o,]][3l] </span>
+    <div class="inline title" data-text ="m[+4[5o5o,4o,]][3l]" data-w = "100" data-h="100" data-cur="false"></div> can be altered to: 
+    <span style="font: monospace;">m[+4[5o5o,:4o,]][3l3l:3l] </span>
+    <div class="inline title" data-text ="m[+4[5o5o,:4o,]][3l3l:3l]" data-w = "100" data-h="100" data-cur="false"></div><br> or
+    <span style="font: monospace;">m[+2[5o5o,:4o,5o:5o,4o,]][3l3l:3l] </span>
+    <div class="inline title" data-text ="m[+2[5o5o,:4o,5o:5o,4o,]][3l3l:3l]" data-w = "100" data-h="100" data-cur="false"></div>
+    </div>
+
+<div><div class="myhead" ><span style="font-weight: bold;">55 variations of: </span><div class="inline title" data-text ="+3[5i5i<4i3<3<]" data-w = "95" data-h="95" data-cur="false"></div>
+<div class="inline title" data-text ="+6[3l]" data-w = "35" data-h="35" data-cur="false"></div>
+<div class="inline title" data-text ="m[+3[5i5i<4i3i<:3<]][3l]" data-w = "100" data-h="100" data-cur="false"></div> </div>
+
+<br>
+<div id="list2" class="start float"></div>
+
+<div><div class="myhead" ><span style="font-weight: bold;">121 variations of: </span><div class="inline title" data-text ="+f[5p5p<<]" data-w = "95" data-h="95" data-cur="false"></div>
+<div class="inline title" data-text ="+6[3i]" data-w = "35" data-h="35" data-cur="false"></div>
+<div class="inline title" data-text ="m[f[+f[5p5p<<]][2:22:22:22:2:2:2]][3i]" data-w = "100" data-h="100" data-cur="false"></div> 
+<!--<div class="inline test" data-text ="5p:5p,,:5p:5p,,:5p:5p,,:5p5p,,5p5p,,5p:5p,,:5p:5p,,:5p:5p,,:5p5p,,5p5p,,5p:5p,,:5p:5p,,:5p:5p,,:5p5p,,5p5p,," data-w = "100" data-h="100" data-cur="false"></div> -->
+
+</div>
+
+<br>
+<div id="list3" class="start float"></div>
+</body>
+<script>
+ 
+    let list = []
+    console.log("uhhh",partition(4, 4))
+    for (let x=1;x<6;x++) {
+        addExamples(list,2, "+2[5o5o,4o,]","+6[3l]",3,1,partition(6, x),partition(6, x)) // 24
+        //addExamples(list,2, "+6[3p]","+6[4l<]",1,1,partition(6, x),partition(6, x))  //   24
+        //addExamples(list,2, "7y7y>7y7y7y","+2[4l<6l4l<]",5,3,partition(5, x),partition(6, x+1)) // 22
+        //addExamples(list,2, "7y7y>7y7y7y","+2[4l<4l4l<]",5,3,partition(5, x),partition(6, x+1)) // 22
+        //addExamples(list,2, "5y5y5y>5y<5y","+2[4l<4l4l<]",5,3,partition(5, x),partition(6, x+1)) // 22
+        //addExamples(list,2, "5y5y5y>5y<5y","+4l<4l<3l<3l<3l<",5,3,partition(5, x),partition(5, x)) // 20
+        //addExamples(list,2, "5y5y5y>5y<5y","4l<3l<3l<4l<3l<",5,3,partition(5, x),partition(5, x)) // 20
+
+        //addExamples(list,2, "5y5y>5y","4l<4l<3l4l<4l<3l<",3,3,partition(3, x),partition(6, x+3)) // 18  error FIX !!!
+        console.log("hmm",partition(3, x).map(x=>getFormP(x)),partition(6, x+3).map(x=>getFormP(x)))
+    }
+    list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 24)
+    console.log("no duplicates",list.length)
+    appendList(list.map(x=>x.textChunk),"list")
+
+
+    list = []
+    for (let x=2;x<6;x++) {
+        addExamples(list, 3,"+1[5i5i<4i3i<3i<]","+4[3l]",5,1,partition(5, x),partition(4, x-1),x==5)
+    }
+    list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 27)
+    console.log("no duplicates",list.length)
+    appendList(list.map(x=>x.textChunk),"list2")
+    list = []
+    for (let x=7;x<10;x++) {
+        addExamples(list, 3,"+5[5p5p,,]","+4[3l]",2,1,partition(10, x),partition(4, x-6))
+    }
+    list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 42)
+    console.log("no duplicates",list.length)
+
+    appendList(list.map(x=>x.textChunk),"list3")
+
+ </script>
+</html>

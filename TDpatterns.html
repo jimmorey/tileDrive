@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="tdcode.css">
+  <script src="rpoly.js"> </script>
+  <script src="rtree.js"> </script>
+  <script src="TD.js"> </script>
+  <script src="tlCodeEl.js"> </script>
+  <script src="TDcode.js"> </script>
+
+  <meta charset="UTF-8">
+  <title>TileDrive Patterns</title>
+</head>
+
+<body>
+  <header>
+    <h1>TileDrive Patterns</h1>
+  </header>
+  <main>
+    <p>These can be sent to TileDrive by clicking on the code. Click on the <em>adv</em> to add this code to the adv area (to have prepocessor code ready to use)</p>
+    <ol id="simpleEx">
+    </ol>
+
+    </ol>
+ 
+  </main>
+</body>
+<script>
+  //{name:"",code:"",h:200,w:200,alt:"",adv:true},
+  //{name:"",code:"",h:200,w:200,alt:"",adv:true},
+  //{name:"",code:``,h:200,w:200,alt:"",adv:true},
+  
+  codes =[
+  {name:"weave",code:`3o3o< xE
+4a xA
+4a{>+4A} xB
+>{+4B} xC
+4a+4C xD 3t mDE`,h:200,w:200,alt:"",adv:true},
+  {name:"cracks",code:`7l7l< xE
+4a{>:7l} xA
+4a{>+2A} xB
+>{+2B} xC
+4a+4C xD mDE`,h:200,w:200,alt:"",adv:true},
+  {name:"Zzz",code:`3b<:5b<:3b xG
+3b<:5b:3b xH
+vGvH xE
+4a{.:vG}4a{.:vH} xA
+4a{.:vH}4a{.:vG} xF
+4a{.+1A}4a{.+1F}xB
+>{+1B} xC
+4a+4C xD
+3t mDE`,h:200,w:200,alt:"",adv:true},
+  {name:"twists",code:`5i< xG
+5i xH
+vGvH xE
+6a{..:vG}6a{..:vH} xA
+6a{..:vH}6a{..:vG} xF
+6a{.+1F}6a{.+1A}xB
+>{+1B} xC
+6a+6C xD mDE`,h:200,w:200,alt:"",adv:true},
+  {name:"fidgits",code:`5o<:3l< xG
+3l:5o xH
+vGvH xE
+3g3g{<.:vH}< xA
+3g{+2A}<3g xB
+3t<{+3B}3t< xC
++3C xD mDE`,h:200,w:200,alt:"",adv:true},
+
+  {name:"birds",code:`xA 6a>>xB +3[vB+3[vA 6a> ] xB vA 6a xA] m[{vB}>{vB}][4a:5:5<] xDxA 6a>>xB +3[vB+3[vA 6a>{>2} ] xB vA 6a{>2}{>>2} xA] {m[{vB}>{vB}][4a:5:5<]}vD`,h:200,w:200,alt:"",adv:true},
+  {name:"birds2",code:`xA xB
++7[vB 6o>> vA xB
+vA 6o{.2}{..2} xA]
+mB[4i:5:5<]`,h:200,w:200,alt:"",adv:true},
+{name:"snowFlakes",code:`xA xB+4[vB +3[ vA 3{<2}] xB vA 3{<2}3< xA] m[a{vB}>ivB][4:5{<:3<:3}>:5{:3<:3}<<:3:3<]`,h:200,w:200,alt:"",adv:true},
+
+  {name:"crosses",code:`4r<:3y:3y< xG
+  3y:3y<:4r. xH
+  vGvH xE
+  4a{.:vG}4a{.:vH} xA
+  4a{.:vH}4a{.:vG} xF
+  4p{>+1A} 4p{>+1F} xB
+  >{+1B} xC
+  4r+4C xD  mDE`,h:200,w:200,alt:"",adv:true},
+  {name:"star",code:"5i<5xA 5a5<xB 5{< +3B}5{+3A}< xC < {+3C} xD 5b +5D",h:200,w:200,alt:"",adv:true},
+  {name:"star+",code:`3o3o< xI
+5b{.:3o}<5b xA
+5b5b{:3o}< xB
+5b{< +3B}5b{+3A}< xC
+< {+3C} xD
+5b +5D xJ mJI`,h:200,w:200,alt:"",adv:true},
+  {name:"asterix",code:`4o xE 4l xF
+{vE} 3t3{vE}33 vE3t. xA
+{vF} 3t3{vF}33 vF3t. xD
+4t,34. xB
++5A +2B xC
+8>3+6C +2B +6D`,h:200,w:200,alt:"",adv:true},
+  {name:"bull",code:`3t33>5,,3> xG
+3t,3,3>5>3> xH
+5i{,vG5a}vH5i,vG xB
+5o,vG5o{,vG5a}vH xC
+5p,{,vG+2B}vH5p{>vH+2C}vG xA
+{+2A} 3t3 {+2A} 3t3{+2A}`,h:200,w:200,alt:"",adv:true},
+{name:"Ss",code:`5l<6r{<5l<<6r>>5l<}xE 5l6r{<<5l6r<<5l} vE xF 5l6r{<<5l>6r<<5l} xG 5l<6r{<5l<6r>>5l} vG xC 6r {>+2F}{<<vG +2C}5l<<6r>>5l< xB 6r{>>+2C}{< vE +2F}5l>6r<<5l vB xA 4 xD > 4t+aD >+8D> 5{ +3A}`,h:200,w:200,alt:"",adv:true},
+{name:"swirl",code:`3g{,5p}8y{.3p},3g,8y{,3g,5p}.. xa
+3g{5p},8l{,3o}.3g8l,, xb
+3g{,5p}8l..3g,8l{..3g{,5p}8l{,3,8,+8a}..3g},3g{,5p}8l. xc
++2b{...3g{5p},8l, vc +8b} xd
+4t44443,+4d`,h:200,w:200,alt:"",adv:true},
+  {name:"kaleidoscope",code:"m[5o5i<5g5o<5i5g<][3p]xA 5t<<5>2>3535<3 xB 5t35<5<<5<35<3 xC +5[{+5[vB vA]}vC] ",h:200,w:200,alt:"",adv:true},
+  {name:"hexGrid",code:"6p xA 6g{<2}{2} xB vB xC +2[6y{>vB}{<2} vA xA vB vC xB] m[6p+6[{vA}>]][4]",h:275,w:275,alt:"",adv:true},
+  {name:"pentGrid",code:"5p xA 5g5{2}< xB vB xC 5i{.2}<5 xD vD xE +2[5y{,vB}5{vd}< vA xA vB vC xB vd ve xd] m[5p+5[{vA}.]][4]",h:275,w:275,alt:"",adv:true},
+  {name:"octpat",code:`3p<8i{<3p}>3p{5r}<8i{<<3p}>3p xJ 8i vJ< 8i>>>> vJ<8i>>>>vJ <8i {>>>>vJ} 4t xA  8i vJ< 8i>>>> vJ<8i{>>>>vJ <8i >>>>vJ}4t xB xC xDvB> xD +3[ vD +3[ vC vA]  vC vB> xD   vC vB xC ] vD`,h:200,w:200,alt:"",adv:true},
+    {name:"hex2Grid",code:`6p xA
+6{<2}{>2} xD
+6{>2}<6y{vD}> xC
+6{>2}{<2}xB
++3[6p{>2}<6>{>vB}{<ivD} vA xA
+vC vB xB
+] m[6p+6[{vA}>]][4]`,h:275,w:275,alt:"",adv:true},
+
+  {name:"heptGrid",code:`7 xA 7i7{2}< xB vB xC 7i{>>2}<7 xD vD xE +2[7p{<vB}7{vD}< vA xA vB vC xB vD vE xD] m[7p+7[{vA}>]][4]`,h:275,w:275,alt:"",adv:true},
+    {name:"heptGrid2",code:`7 xA 7i7{2}< xB vB xC 7i{>>2}<7 xD vD xE +3[7p{<vB}7{vD}< vA xA vB vC xB vD vE xD] m[7p+4[{vA}>]][4]  xF{vF}2p>474747<4747>>2>vF`,h:275,w:275,alt:"",adv:true}  ]
+
+  fix = (str) => {
+    return str.replace(/</g, ",").replace(/>/g, ".")
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    let simpleEx = document.getElementById('simpleEx')
+    codes.forEach((el) => {
+      let li = document.createElement('li')
+      let adv = el.adv ? ` <a href="TDUpload.html?advcode=${encodeURIComponent(fix(el.code))}"><div class="codeDiv">adv</div></a>` : ""
+      li.innerHTML = `<a href="TDUpload.html?currentcode=${encodeURIComponent(fix(el.code))}"><div class="codeDiv">${fix(el.code)}</div></a>${adv}`
+      let div = document.createElement("div")
+      div.classList.add("inline")
+
+      div.append(new tlCodeEl().createSVG(el.w,el.h ,ppfilter(el.code+""),true,false,false))  
+      li.prepend(div)
+      li.innerHTML = `<b>${el.name}</b>:${li.innerHTML}`
+
+      simpleEx.append(li)
+    })
+
+
+  })
+
+</script>
+
+</html>
+

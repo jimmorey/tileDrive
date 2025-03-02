@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="tdcode.css">
+  <script src="rpoly.js"> </script>
+  <script src="rtree.js"> </script>
+  <script src="TD.js"> </script>
+  <script src="tlCodeEl.js"> </script>
+  <script src="TDcode.js"> </script>
+  <meta charset="UTF-8">
+  <title>TileDrive Slim</title>
+<style>
+  nav textarea {
+    border : 1px solid #aaa;
+    border-radius: 5%;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    margin: 0;
+  }
+  body.small {
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+  body.medium {
+    background-color: rgba(0, 0, 255, 0.1);
+  }  
+  body.large {
+    background-color: rgba(255, 255, 0, 0.1);
+  }
+  body.small #screen {
+    min-height: 20vh;  
+  }
+  body.medium #screen {
+    min-height: 50vh;  
+  }
+  body.large #screen {
+    min-height: 80vh;  
+  }
+  main {
+    display: flex;
+    flex: 1;
+  }
+  main > nav {
+    order: 3;
+}
+  main > div {
+    flex: 1;
+    padding: 1em;
+    overflow-y: auto;
+  }
+  #screen {
+    display: flex;
+    width: 100vw;
+    background: #f8f8f8;
+  }
+  #code {
+    width: 100%;
+    height: 100%;
+    font-family: monospace;
+    font-size: 2.5em;
+  }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+} 
+li {
+  font-size:.8em;
+  padding:2px;
+}
+</style>
+</head>
+
+<body class="medium">
+  <header>
+  </header>
+
+  <div id="screen">
+
+  </div>
+
+<main>
+  <nav>
+    <ul>
+      <li><button id = "run">run</button></li>
+
+      <li><textarea id="index" rows="1" cols="4">1</textarea></li>
+      <li><button id ="prev">pv</button> <button id ="next">nx</button></li>
+      <li><button id ="new">+</button> <button  id ="del">-</button></li>
+      <li>
+      <select id="sizes">
+        <option>small</option>
+        <option selected>medium</option>
+        <option>large</option>
+      </select></li>
+      <li><button id ="send">In TD</button></li>  
+    </ul>
+  </nav>
+
+    <div><textarea id="code"></textarea>
+    </div>
+  </main>
+</body>
+<script>
+  let start = "3b33<33{33<33<33}<33<33g{<3433443}33<33<33"
+  let index = 0
+  let codes = null
+
+  let fix = (str) => {
+    return str.replace(/</g, ",").replace(/>/g, ".")
+  }
+  let updateSlim = () => {
+    window.localStorage.setItem("TDSlim", JSON.stringify(codes))
+  } 
+  let getIndex = () => {
+    return document.getElementById("index").value * 1
+  }
+  let setIndex = (x) => {
+    document.getElementById("index").value = x+"" 
+  }
+
+  let show = (code) => {
+    let screen = document.getElementById('screen')
+    console.log("size",screen.clientWidth,screen.clientHeight)
+    screen.innerHTML = ""
+    screen.append(new tlCodeEl().createSVG(screen.clientWidth,screen.clientHeight,ppfilter(code+""),true,false,false))  
+  }
+  let updateCodes = () => {
+    document.getElementById("code").value = codes[getIndex()] 
+    show(codes[getIndex()])
+    updateSlim()
+    //console.log("codes",codes)
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+
+    document.getElementById("sizes").addEventListener("change", function() {
+      document.querySelector("body").classList.remove("small","medium","large")
+      document.querySelector("body").classList.add(this.value)
+      show(codes[getIndex()])
+    })
+
+    //load slim array code
+
+    let code = window.localStorage.getItem("TDSlim")
+    //console.log("code",code)
+    if (!code) codes = ["+5[5b5y]","7p"]
+    else codes = JSON.parse(code)
+    console.log("codes",codes)
+
+    show(start)
+
+    // button response
+
+    document.getElementById("run").addEventListener("click", function() {
+      codes[getIndex()] = document.getElementById("code").value
+      updateSlim()
+      show(codes[getIndex()])
+    })
+    document.getElementById("prev").addEventListener("click", function() {
+      let x = getIndex()
+      setIndex((x+ codes.length -1)%codes.length)
+      updateCodes()
+    })
+    document.getElementById("next").addEventListener("click", function() {
+      let x = getIndex()
+      setIndex((x+ 1)%codes.length)
+      updateCodes()
+    })
+    document.getElementById("new").addEventListener("click", function() {
+      codes.splice(getIndex(),0,"")
+      setIndex(getIndex())
+      updateCodes()
+    })
+    document.getElementById("del").addEventListener("click", function() {
+      codes.splice(getIndex(), 1)
+      setIndex(getIndex())
+      updateCodes()
+    })
+    document.getElementById("index").addEventListener("onchange", function() {
+      setIndex(getIndex())
+      updateCodes()
+    })
+    document.getElementById("send").addEventListener("click", function() {
+      updateCodes()
+      let send = codes[getIndex()] 
+      window.location.replace(`TDUpload.html?advcode=${encodeURIComponent(fix(send))}&currentcode=${encodeURIComponent(fix(send))}`)
+    })
+
+    document.getElementById("code").addEventListener("keyup", (event) => {
+        console.log("keyup",event.key,event.keycode)
+        if ((event.isComposing || event.altKey)&& event.key === "Enter") { 
+             document.getElementById("run").click()
+        } else if ((event.isComposing|| event.altKey )&& event.key === "p") { 
+             document.getElementById("prev").click()
+        } else if ((event.isComposing|| event.altKey )&& event.key === "n") { 
+             document.getElementById("next").click()
+        }
+    })
+
+
+  })
+
+</script>
+
+</html>

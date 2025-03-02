@@ -1,0 +1,379 @@
+header {
+    /*text-align: center; */
+}
+.flexfill {
+    flex: 2 auto;
+}
+button,canvas { touch-action: manipulation; }  /* stop double tap zoom ??*/
+#nav {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    flex: 0.1 auto;
+    order: 0;
+    min-height: 100%;
+    position: relative;
+}
+section li {
+    padding-bottom: 0.25em;
+}
+article {
+    flex: 0 auto;
+    order: 1;
+}
+
+#second {
+    font-size: 1.7em ;
+    overflow-y: scroll;
+    max-height: 93vh;
+    max-height: 93vh;
+    height: 93vh;
+    padding:4px;
+}
+
+#second code {
+    background-color: white;
+}
+
+body.activeKeys {
+    /* idicate the keys are active */
+    background-color: rgba(233,200,200,0.3);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    /*min-height: 98vh; */
+    width:100%;
+    height:100vh;
+    margin: 0px;
+    padding:0px;
+}
+
+body, #thecanvas {
+    background-color: white;
+}
+
+header,article {
+    background-color: #ffffdd;
+}
+
+
+#footer, #nav,#top {
+    background-color: #ffffee;
+}
+
+.choice {
+    font-size: 2em;
+}
+
+.choice.selected {
+    font-weight: bold;
+    background-color: #eeeecc;
+}
+
+#third {
+    display:flex;
+    flex-grow: 9;
+    background-color: white;
+    width: 100%;
+    height:100%;
+}
+#second {
+    background-color: #ffffee;
+}
+
+#second ul {
+    border: 1px solid #eeeecc;
+    border-radius: 15px;
+}
+
+#middle,#top {
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+}
+#middle {
+    /*min-height: 68vh; */
+}
+.down {
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+}
+
+button.selected {
+    color:gray;
+    background-color:lightgray;
+}
+.down button {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: auto;
+    padding: auto;
+    text-align: center;
+}
+
+.border {
+    margin: 2px;
+    border: 1px solid #EEDC7D;
+    border-radius: 3px;
+    padding: 4px;
+}
+
+.borderSmall {
+    margin: 2px;
+    border: 1px solid #EEDC7D;
+    border-radius: 3px;
+    padding: 0px;
+}
+
+button.tlButT, button.tlButN,button.tlButP {
+    border: 1px solid #EEDC7D;
+    border-radius: 5px;
+    background-color: #ffffaa;
+}
+
+canvas.tlButT, canvas.tlButN, canvas.tlButP {
+    margin: 1px;
+    /*padding:1px;*/
+}
+
+canvas.tlButP:hover,canvas.tlButT:hover,canvas.tlButN:hover {
+    transform: scale(1.1);
+}
+
+/* ---- Central part ---- */
+#main {
+    flex-grow: 10;
+    background: white;
+}
+
+.codeview {
+    /* part of thecavas*/
+ /*   background: white; */
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+}
+.codeview {
+    /* part of thecavas*/
+    background: white;
+}
+#thecanvas {
+    /* #dcode, ... */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 1;
+    background-color: rgba(255,255,255,0.2);
+}
+#canvasControl{
+    position: absolute;
+    display:flex;
+    width: 98%;   
+    bottom: 4px;
+    left:4px;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid rgba(205,205,205,0.4);
+    border-radius: 15px;
+    width:200px;  /*  not a fan...fix eventually*/
+}
+#range:focus,#rangeAni:focus{
+    outline:none;
+}
+
+/* ---- nav  ---- */
+.buttons {
+    text-align: center;
+    background: #ffffdd;
+}
+
+.tlButM.big {
+    font-size: 1.25em;
+}
+#buttons {
+    min-width:150px;
+}
+#dcode {
+    flex-grow: 3;
+    margin: 5px;
+    color: grey;
+    display: inline-block;
+    /* width:auto;  */
+    overflow-x: auto;
+    overflow-y: auto;
+    max-width:20vw;
+    min-width: 10vw;
+    max-height: 35vh; 
+    letter-spacing: -0.05em;
+    line-height: 90%;
+    font-size: 1.0em;
+    vertical-align: top;
+}
+.codeHL {
+    background-color:white;
+    color:black;
+    font-weight:bold;
+    border:solid 2px white;
+    transition: color 0.4s ease-in-out ;
+}
+span{
+    transition: color 0.6s ease-in-out ;
+ 
+}
+.codeHLtest {
+    background-color:red;
+}
+#cursorbut {
+    width:100%;
+    justify-content: center;
+}
+
+#galleryDiv {
+    position:absolute;
+    right :2px;
+    top:2px;
+    text-align: center;
+    background: white;
+    font-size:0.7em;
+}
+
+#galleryDiv button {
+    margin: 5px;
+}
+
+/* ---- header ---- */
+#banks {
+    display: inline-grid;
+    grid-column-gap: 3px;
+    grid-template-columns: repeat(11, 65px);
+    margin-top:4px;
+}
+
+#banks div {
+    text-align: center;
+}
+
+#banks div canvas {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#banks .tlButP {
+    border: 1px solid #EEDC7D;
+    background-color: white;
+}
+
+span.cursor {
+    /*
+    background: radial-gradient(circle, rgba(54,188,54, 0) 0%, rgba(247,37,7,1) 5%, rgb(255 255 255) 50%,rgba(54,188,54, 0.1) 60%); */
+    color:red;
+    font-weight:bold;
+    /*padding-left: 0.5em;
+    margin-left: 1px;
+    margin-right: 1px; */
+}
+
+/* ---- footer ---- */
+#bottom{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+/*footer:not([style*="visibility:hidden"]) { */
+#footer{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    max-height: 11vh;
+}
+/*footer[style="visibility:hidden"]{ */
+#footer.hidden{
+    display: none;
+}
+
+#code {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-grow: 2;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 11;
+}
+#first{
+    display:flex; /* why is this needed? */
+
+    flex-grow: 1;
+}
+#second{
+    display:flex; /* why is this needed? */
+    flex-direction: column;
+    flex-grow: 1;
+}
+/*#first.hidden{
+    display:none; 
+} */
+#first.down #middle{
+    flex-grow: 1;
+}
+#first.down #footer:not(hidden) #ppcode{
+    flex-grow: 1;
+
+    max-width:40vw;
+    min-height:10vh;
+    /*max-height:10vh;*/
+}
+#first.down #footer.hidden #ppcode{
+    flex-grow: 9;
+
+    max-width:40vw;
+    min-height:0;
+    max-height:0;
+}
+#ppcode, #scratch{
+  background-color:white;
+  border:1px solid black;
+  overflow-y:scroll; 
+   
+  height:100%;
+  padding:2px;
+
+  spellcheck:false;
+}
+
+#scratchDiv {
+    display: flex;
+    flex-direction: column;    
+    flex-grow: 2;
+    align-items: stretch;
+    max-width:40vw;
+
+}
+#scratch {
+    flex-grow: 2;
+}
+header {
+    display: flex;
+    flex-direction: row;   
+}
+#dcodeLen {
+    float: right;
+color:gray;
+}

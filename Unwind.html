@@ -1,0 +1,286 @@
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Unwind</title>
+    <link rel="stylesheet" href="tdcode.css">
+
+    <style>
+       .piece {
+           display: inline-block;
+           overflow:hidden;
+           width:50px;
+           height:50px;  
+           background-image:url(goalMM.svg);
+           background-size: 50px;
+           transition: all 1s ease-in-out;
+       }
+       div.goal {
+           width:500px;
+           height:500px;  
+           background-size: 500px;
+           margin: 0 auto;
+       }
+       .show {
+           background-position: 0 300px;
+       }
+       .bridge {
+           background-position: 0 250px;
+       }
+       .endure {
+           background-position: 0 200px;
+       }
+       .explore {
+           background-position: 0 150px;
+       }
+       .focus {
+           background-position: 0 100px;
+       }
+       .speed {
+           background-position: 0 50px;
+       }
+       table {
+           margin-bottom:1em;
+           border:1px solid #eee;
+           border-radius:0.5em;
+           background:#f8f8f8;
+           transition: all 1s ease-in-out;
+       }
+       table:hover .piece,table:active .piece{
+           transform:scale(1.1);
+           opacity:0.5;
+       }
+       table:hover, table:active {
+           background:#f4f4f4;
+       }
+       tr:nth-child(2n) td,tr:nth-child(2n) th{
+           background:white;
+           border-radius:1em;
+           margin-right:0.5em;
+           margin-left:0.5em;
+       }
+       th {
+           width:150px;
+       }
+       h1 {
+           margin-top:0;
+       }
+       div.big {
+        display:inline;
+        height:50px;
+        vertical-align: bottom;
+        font-size:2.5em;
+       }
+       .myhead {
+       display:inline;height:50px;vertical-align: top;font-size:1.5em;
+       }
+       .box {
+              display:inline-block;
+              width:50px;
+              height:50px;
+              border:1px solid black;
+              background-color: rgb(224, 224, 224);
+              /*margin:0.5em;*/
+              text-align: center;
+       }
+       .x {
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='black' stroke-width='5'/><path d='M0 0 L100 100 ' stroke='black' stroke-width='5'/></svg>");
+            background-repeat:no-repeat;
+            background-position:center center;
+            background-size: 100% 100%, auto;
+            opacity: 50%;
+        }
+    </style>  
+    
+    <script src="rpoly.js"> </script>
+    <script src="rtree.js"> </script>
+    <script src="TD.js"> </script>
+    <script src="tlCodeEl.js"> </script>
+    <script src="TDcode.js"> </script>
+</head>
+<body>
+
+<h1>Unwind <select name="examples" id="examples">
+    <option value="easy">easy</option>
+    <option value="medium">medium</option>
+    <option value="hard">hard</option>
+    <option value="yikes">yikes</option>
+  </select>
+</h1>
+
+
+
+<!-- ****************************************************  --> 
+<div><div class="myhead" ><span style="font-weight: bold;">click on one recipe and one result and the check<br> </span> <button onclick="check();">check</button><button onclick="makeCase();">new</button></div>
+</div>
+
+<br>
+<div class="pair"><div id="list" class="start float"></div>
+<div id="listAns" class="answers"></div>
+</div>
+<p>Select one of the three recipes on the left with one of the patterns on the right. Each recipe has a primary polygon path (on the left) path and a secondary polygon path (after the &#8744;) that are divided into chunks denoted by thicker black lines starting at the white line. The chunks are alternately combined starting with a primary  into a single path to create a new path that is repeated a number of times to create a loop. Only one pair of recipe and result is correct. New puzzles can be created by clicking new or changing the level of difficulty (easy, medium, hard, yikes). This is a prototype and will soon have more examples and may change in the number of results and perhaps represent the repetition differently...stay tuned.  </p>
+</body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("examples").addEventListener("change", makeCase)
+
+    makeCase()  //start the game
+})
+var available = true
+function check(){
+    available = false
+    console.log("checking")
+
+    document.querySelector("#listAns .answer[data-index='true']").classList.add("correct")
+    document.querySelector("#list .recipe[data-index='true']").classList.add("correct")
+}
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+}
+function getSelection(n, m) {
+    let selections = Array.from(Array.from({length:m},(_,i)=> i))
+
+    for (let i = 0; i < n; i++) {
+        let selection = Math.floor(Math.random()*(m-i))+i
+        let temp = selections[i]
+        selections[i] = selections[selection]
+        selections[selection] = temp
+    }
+    return selections.slice(0,n)
+}
+ function appendRecipe(ex, id,w=100,h=100,index){
+    let html = document.getElementById(id)
+    let span = null
+    let div = document.createElement("div")
+    div.setAttribute("data-index",index+"")
+
+    div.classList.add("inline")
+    div.classList.add("recipe")
+    if (ex.rep !=1){
+        span = document.createElement("div")
+        span.classList.add("inline")
+
+        span.style='font-size:40px;'
+        span.innerHTML = `${ex.rep}(`  
+        div.append(span)
+    }
+    div.append(new tlCodeEl().createSVG(w, h ,ppfilter(ex.textA),true,false,true,true,true))  
+    span = document.createElement("div")
+    span.classList.add("inline")
+
+    span.style='font-size:40px;'
+    span.innerHTML ="&#8744;" // fence? "&#10712;"// weird astrix "&#10043;" //V  "&#8744;"  
+    div.append(span)
+    div.append(new tlCodeEl().createSVG(w, h ,ex.textB,true,false,true,true,true))  
+    if (ex.rep !=1){
+        span = document.createElement("div")
+        span.classList.add("inline")
+
+        span.style='font-size:40px;'
+        span.innerHTML = `)`  
+        div.append(span)
+    }
+    html.append(div) 
+ }
+ function appendResult(ex, id,w=100,h=100,index){
+    let html = document.getElementById(id)
+
+    let div = document.createElement("div")
+    div.setAttribute("data-index",index+"")
+    div.classList.add("inline")
+    div.classList.add("answer")
+
+    div.append(new tlCodeEl().createSVG(w*2, h*2 ,ex.text,true,false,false))  
+    html.append(div)
+  }
+
+function makeCase(){
+    let list = []
+    document.getElementById("list").innerHTML = ""
+    document.getElementById("listAns").innerHTML = ""
+
+    switch(document.getElementById("examples").value){
+        case "easy":
+            for (let x=8;x<10;x++) {
+                addExamples(list, 2,"+a[5o<]","+3[3l]",1,1,partition(10, x),partition(3, x-7))
+            }
+            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 26)
+            break
+        case "hard":
+            for (let x=2;x<6;x++) {
+                addExamples(list, 3,"+1[5i5i<4i3i<3i<]","+4[3l]",5,1,partition(5, x),partition(4, x-1),x==5)
+            }
+            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 27)
+            break
+        case "yikes":
+            for (let x=7;x<10;x++) {
+                addExamples(list, 3,"+5[5p5p,,]","+4[3l]",2,1,partition(10, x),partition(4, x-6))
+            }
+            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 42)
+            break
+        case "medium":
+            for (let x=1;x<6;x++) {
+                addExamples(list,2, "+2[5o5o,4o,]","+6[3l]",3,1,partition(6, x),partition(6, x))
+            }
+            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 24)
+            break
+    }
+    // for (let x=8;x<10;x++) {
+    //     addExamples(list, 2,"+a[5o<]","+3[3l]",1,1,partition(10, x),partition(3, x-7))
+    // }
+    //list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 26)
+
+
+    // for (let x=1;x<6;x++) {
+    //     addExamples(list,2, "+2[5o5o,4o,]","+6[3l]",3,1,partition(6, x),partition(6, x))
+    // }
+    // list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 24)
+
+    // for (let x=2;x<6;x++) {
+    //     addExamples(list, 3,"+1[5i5i<4i3i<3i<]","+4[3l]",5,1,partition(5, x),partition(4, x-1),x==5)
+    // }
+    // list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 27)
+
+    let sel = getSelection(6,list.length)
+    let qn = sel.slice(0,3)
+    shuffle(qn)
+    console.log (qn,"sel",sel)
+
+    for(let i=0;i<qn.length;i++) appendRecipe(list[qn[i]],"list",100,100,qn[i]==sel[0])
+    let exSel = sel.slice(3)
+    console.log (exSel,"sel",sel)
+    exSel.push(sel[0])
+    shuffle(exSel)
+    for(let i=0;i<exSel.length;i++) appendResult(list[exSel[i]],"listAns",100,100,exSel[i]==sel[0])
+
+    available = true
+    document.querySelectorAll("#list >.recipe").forEach(el => {
+      el.addEventListener('click', (e) => {
+          let index = e.currentTarget.dataset.index
+          console.log("recipe index ",index)    
+          if (available){
+            let clicked = e.currentTarget.classList.contains("slected") 
+            document.querySelectorAll("#list .recipe").forEach(x => x.classList.remove("slected")) 
+            if (!clicked) e.currentTarget.classList.add("slected")      
+          }
+      })
+    })
+    document.querySelectorAll("#listAns >div.answer").forEach(el => {
+      el.addEventListener('click', (e) => { 
+          let index = e.currentTarget.dataset.index
+          console.log("answer index ",index)
+          if (available){
+            let clicked = e.currentTarget.classList.contains("slected")
+
+            document.querySelectorAll(".answers .slected").forEach(x => x.classList.remove("slected")) 
+            if (!clicked) e.currentTarget.classList.add("slected")    
+          }
+      })
+    })
+}
+ </script>
+</html>

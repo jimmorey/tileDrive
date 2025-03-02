@@ -1,0 +1,214 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>TileDrive Lengths</title>
+    <link rel="stylesheet" href="tdcode.css">
+    <link rel="stylesheet" href="goal.css">
+
+    <script src="rpoly.js"> </script>
+    <script src="rtree.js"> </script>
+    <script src="TD.js"> </script>
+    <script src="tlCodeEl.js"> </script>
+    <script src="TDcode.js"> </script>
+</head>
+<body>
+
+<h1>Estimating interesting numbers using regular polygons with TileDrive
+</h1>
+
+<p>Regular polygons are easy to introduce but some of their properties are subtle and difficult to discuss in elementary school. One discussion that can be fruitful is about estimations of length of diagonals or heights. An easy-to-learn tool for creating polygonal art, TileDrive, can be used to quickly produce estimations. TileDrive's precise creation of polygons and its feature of removing overlapping polygons enable a visual way to compare and relate lengths associated with regular polygons.</p>
+
+<h2>Introduction</h2>
+<p>
+   <div style="float:right;width:50%;margin:5px;" >
+    <img src="screenTD.png" style="width:100%;"/>
+</div>
+
+    <a href="https://jimmorey.com/td/TileDrive.html">TileDrive</a> (jimmorey.com/td/TileDrive.html) is a prototype designed to aid in creating polygons patterns with few prerequisites. Initially, patterns are intended to be created interactively adding edge connected polygons with the hope of eventually learning a simple language that essentially describes the same interactions. To the right, shows the main screen of the prototype: the left panel contains choices of simple actions, and a sequence of the actions below that were used so far in the pattern; the central panel holds an interactive canvas of the resulting pattern; the top panel contains a means of cutting and pasting; and finally, the optional bottom panel, <em>adv</em>anced, contains a text-based means to automate the cutting and pasting (which is originally closed so as not to distract new users). The choices of simple actions can also be selected directly using keyboard input: 3-8 for polygons with that number of sides (in fact, 9012 will produce a 9gon, a 10gon, an 11gon, and a 12gon); rybogplit for colors red, yellow, blue, orange, green, purple, olive, pink, and transparent (in fact, k and a are used for black and gray); {} for branching. Without branching, a sequence of action produces a single path of polygons. With branching, a collection of paths of polyons can more easily make intricate patterns. For more details, check out <a href="https://jimmorey.com/td/TileDriveCoding.html">TileDriveCoding</a>  </p>
+
+
+</p>
+<!--div class="fig"><img src="screenTD.png" style="width:50%;"/></div-->
+
+
+<h2>length exploration</h2>
+
+TileDrive has no explicit coordinates or measuring interface. But tile paths can be used to estimate length and the removal of intersecting tiles can be exploited as a discrete means of indicating when lengths are too long. In particular, a row of squares can be used as a ruler and a tile path can be placed
+over top of the ruler to see how many squares are removed.
+
+<h3>height of a hexagon</h3>
+
+<p>What is the shortest height of a hexagon with unit side length? For those with a little bit of trigonometry, root three (sqrt(3)=1.73205080757...) is a knee-jerk reaction. For early greeks as well as many elementary students, this is a difficult question. To help answer the question, a grid of squares can be used to compare with a line of interactively added hexagons until a there is a near miss which indicates near equality. The table below shows this approach.</p>
+
+<p>A banded grid can be constructed with this code: <b>4p{>44}4a{>44}4a{>44} xa +3a</b>.  Three copies make a 9x3 grid and it can be positioned with a single hexagon and a yellow starting line using the follow code <b>4y.{+3a}.44,6r</b> which is shown in the first diagram in the table.</p>
+
+<div class="start">
+    <!-- table of under estimates-->
+<table >
+    <tr>
+        <td><div class="inline title" data-text ="4p{>44}4a{>44}4a{>44}xa 6r xb 4y.{+3a}.44,+1b" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&lt;2</div></td>
+        <td>Since the hexagon knocked out the first two squares but leaves a bit of a gap, the length of the hexagon is under 2 squares. In fact, a better estimate could be made by looking at the gap...somewhere between a third and a fifth? So, the length between 1.666...<!--span style="text-decoration:overline;">6<span--> and 1.8?
+        </td>
+    </tr>
+    <tr>
+        <td><div class="inline title" data-text ="4p{>44}4a{>44}4a{>44}xa 6r xb 4y.{+3a}.44,+2b" data-w = "300" data-h="100"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&lt;4/2 =2</div></td>
+        <td>
+        Twice the length of a hexagon is less than 4 squares. Perhaps the gap is half a square which would be 1.75?
+        </td>
+    </tr>
+    <tr>
+        <td><div class="inline title" data-text ="4p{>44}4a{>44}4a{>44}xa 6r xb 4y.{+3a}.44,+3b" data-w = "300" data-h="100"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&lt;6/3=</p>2</div></td>
+        <td>Three times the length of a hexagon is less than 6. Perhaps the gap is four fifths of a square which would make 6-4/5 =5.2 so 5.2/3 =1.7<span style="text-decoration:overline;">3</span>?</td>
+    </tr>
+    <tr>
+        <td><div class="inline title" data-text ="4p{>44}4a{>44}4a{>44}xa 6r xb 4y.{+3a}.44,+4b" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&lt;7/4&nbsp;=1.75</div></td>
+        <td>Four times the length of a a hexagon is close to seven. It's very close but perhaps it is a tenth less than than 7 so 6.9/4= 1.725? Note: the gap estimates are much squishier than the stated facts like the length &lt;7/4</td>
+    </tr>
+    <tr>
+        <td><div class="inline title" data-text ="4p{>44}4a{>44}4a{>44}xa 6r6i66 xb 4y.{+9a}.44,+3b6r6i6i" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&lt;26/15&nbsp;=1.7<span style="text-decoration:overline;">3</span></div></td>
+        <td>A much better overestimate for the sqrt(3) is 26/15 coming  1.7<span style="text-decoration:overline;">3</span> is not too bad for 1.7320508...</td>
+    </tr>
+    </table>
+</div>  
+
+<div class="start">
+    <p>In a similar construction, you can <b>underestimate</b> root three by knocking out hexagons with squares.</p>
+    <!-- table  over estimates -->
+<table>
+    <tr>
+        <td><div class="inline title" data-text ="6r{,3,6,,3}6i {,3,6,,3} 6 {,3,6,,3} xa
+            4p4a44 xb
+            4y{44}.{+3a}4p" data-w = "300" data-h="100" ></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&gt;1</div></td>
+        <td>
+        </td>
+        <td><div class="inline title" data-text ="6r{,3,6,,3}6i {,3,6,,3} 6 {,3,6,,3} xa
+            4p4a44 xb
+            4y{44}.{+3a}4p4a4" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&gt;3/2=1.5</div></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><div class="inline title" data-text ="6r{,3,6,,3}6i {,3,6,,3} 6 {,3,6,,3} xa
+            4p4a44 xb
+            4y{44}.{+3a}4p4a444p" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&gt;5/3=1.666..</div></td>
+        <td>
+        </td>
+  
+        <!--td><div class="inline title" data-text ="6r{,3,6,,3}6i {,3,6,,3} 6 {,3,6,,3} xa
+            4p4a44 xb
+            4y{44}.{+3a}+3b" data-w = "300" data-h="100" data-cur="false"></div></td>
+            <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&gt;12/7=1.<span style="text-decoration:overline;">714285</span> 
+            </div></td>
+        <td>
+        </td-->
+ 
+        <td><div class="inline title" data-text ="6r{,3,6,,3}6i {,3,6,,3} 6 {,3,6,,3} xa
+            4p4a44 xb
+            4y{44}.{+4a}+4b4p4a4" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.6r" data-w = "30" data-h="100" data-cur="false"></div>&gt;19/11=1.<span style="text-decoration:overline;">72</span> </div>
+        </td>
+        <td>
+        </td>
+    </tr>
+    </table>
+
+    <p>So, with relatively unsophisticated mathematical apparatus, root three can be known to be between 1.7<span style="text-decoration:overline;">3</span>  and 1.<span style="text-decoration:overline;">72</span>.</p>
+
+    <h3>Other interesting constants: &radic;<span style="text-decoration:overline;">2</span>, &phi;, &pi;</h3>
+
+    The same strategy can be used to get visually good estimates for the diagonal of a square (root two) as illustrated below.
+    <!-- table for 3 different lengths-->
+    <table >
+    <tr>
+        <td><div class="inline title" data-text ="4p{.44}4a{.44}4{.44} xa 
+            y4r.4t, xb
+            4y.{+5a}.48,,,+7b" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help">10/7&gt;  &radic;<span style="text-decoration:overline;">2</span> (<div class="inline title" data-text ="8t...4r" data-w = "30" data-h="30" data-cur="false"></div>)&gt;24/17</div><br>1.<span style="text-decoration:overline;">428571</span>&gt; 1.414213562...&gt;1.4117647...
+        </td>
+        <!--td rowspan="2">sqrt(2) = 1.414213562..,
+        </td-->
+   
+        <td><div class="inline title" data-text ="4r{4y.4r},4y. xa
+            4i{4y.4i},4y. xc
+            va+3c xd
+            4p4a44 xb
+            4y{48...+4dvavc}.+6b" data-w = "300" data-h="100" data-cur="false"></div></td>
+    </tr>
+    
+    <tr>
+        <td><div class="inline title" data-text ="4p{.44}4a{.44}4{.44} xa 
+            y5r.5t,, xb
+            4y.{+5a}.40,,,,+8b" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> 13/8&gt;&phi; (<div class="inline title" data-text ="0t.5r" data-w = "30" data-h="100" data-cur="false"></div>) &gt;21/13</div><br> 1.625&gt;1.618033989...&gt;1.6153846153...
+        </td>
+        <!--td>the golden ratio (1+sqrt(5))/2 = 1.618033989... 
+        </td-->
+ 
+        <td><div class="inline title" data-text ="5r{5},,5y. xa
+4p4a44 xb
+4y{40....+ga}.+5b4p" data-w = "300" data-h="100" data-cur="false"></div></td>
+  
+        <!--td>the golden ratio (1+sqrt(5))/2 = 1.618033989... 
+        </td-->
+    </tr>
+    <!--tr>
+        <td><div class="inline title" data-text ="5y{.5r}{5i,5y},,5i5y.5r,xa
+            4p4a44 xb
+            4y.{5r+8a5y.5r}.44,+5b" data-w = "300" data-h="100" data-cur="false"></div></td>
+        <td><div  class="help"> <div class="inline title" data-text ="4t.5r" data-w = "30" data-h="100" data-cur="false"></div>&gt;20/13=1.<span style="text-decoration:overline;">538451</span> </div>
+        </td>
+        <td>
+            sqrt(5+2*sqrt(5))/5= 1.538841769...
+        </td>
+    </tr-->
+    </table>   
+<p>
+    Things get a bit more difficult when looking into estimates for &pi; since it does not involve a simple constructible length that comes from a single polygon. One way to estimate &pi;, is to think about the circumference over the diameter which can be estimated with regular polygons.  For overestimating, the polygon must be circumscribed (bigger than the circle) and the diameter underestimated.  Similarly, for underestimating, the polygon must be inscribed (smaller than the circle) and the diameter overestimated.  Below are a few examples with their numerical estimates.
+</p>
+
+<table >
+    <tr>
+        <td><div class="inline title" data-text ="4p4a,4p5a. xa +4ak xb 4y,4r. xc 8.+5b 4t4r. +bc" data-w = "300" data-h="300" data-cur="false"></div></td>
+        <td><div  class="help">40/12&gt;&pi; &gt;20/7</div><br>3.<span style="text-decoration:overline;">3</span>&gt;  3.14159...&gt;2.<span style="text-decoration:overline;">856142</span>
+        </td>
+
+        <td><div class="inline title" data-text ="5a.4p, xa  4y,4r. xb{4t.5.5.5.4, +aa +aa}8t...4r+6b
+            " data-w = "300" data-h="300" data-cur="false"></div></td>
+    </tr>
+    <tr>
+        <td><div class="inline title" data-text ="7o.3b, xa vava 7o.3k, xb 4a444p xc 4p{.+3c},3+7b" data-w = "300" data-h="300" data-cur="false"></div></td>
+        <td><div  class="help">42/13&gt;&pi; &gt;42/14</div><br>3.<span style="text-decoration:overline;">230769</span>&gt; 3.14159...&gt;3
+        </td>
+
+        <td><div class="inline title" data-text ="7o.{.3}3b{3}, xa  vava 7o.{.3}3k{3}, xb 4a444p xc 7t..3 xd
+            4p{.+3c},3+7b.4t.4.4. +ad 4p +3c4a" data-w = "300" data-h="300" data-cur="false"></div></td>
+    </tr>
+    <tr>
+        <td><div class="inline title" data-text ="5g3l< xa 5t3< xc vcvc 5t3k< xd 4p4a44 xb 4y.{.444444 ,+4b4p4a4}3+7a {5t.3+7a {5.4y.444444} +8a} +8a +5d" data-w = "300" data-h="150" data-cur="false"></div></td>
+        <td><div  class="help">60/19&gt; &pi; &gt;150/48</div><br>3.15789...&gt;3.14159... &gt;3.125
+        </td>
+
+        <td><div class="inline title" data-text ="5g,3l xa
+            0.... xb
+            34. xc
+            4p4a4 xd
+            4k4a4 +3d xg
+            4 xf
+            t+4b+1c3, +7a {l5g,3l +7a},t+4b+1c xe
+            4t,+cf+cf4..{+5e},
+            y{..+6f,+cf+cf+cf+cf}+5f. +4g4y.+6f" data-w = "300" data-h="100" data-cur="false"></div></td>
+    </tr>
+    </table>
+   
+<div>  
+
+
+</body>
+</html>

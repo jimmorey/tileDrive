@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="td.css">
+    <link rel="stylesheet" href="tdcode.css">
+<style> 
+    details {
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  padding: 0.5em 0.5em 0;
+  max-width: 80% ;
+}
+
+summary {
+  font-weight: bold;
+  margin: -0.5em -0.5em 0;
+  padding: 0.5em;
+}
+
+details[open] {
+  padding: 0.5em;
+}
+
+details[open] summary {
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 0.5em;
+}
+main {
+    padding:2em;
+}
+details div {   
+    overflow-wrap: break-word;
+    max-width: 90%;
+    min-width: 2em;
+}
+</style>
+    <meta charset="UTF-8">
+    <title>TileDrive Upload</title>
+</head>
+
+<body class="activeKeys">
+    <header class="border">
+        <h1>TileDrive Upload</h1>
+    </header>
+    <main id="vars"><button onclick="update()">Update</button>
+        <p>These are the variables that are stored in local storage. They are used to save your work.</p>
+     </main>
+</body>
+<script>
+    let locals = {'bankcode':null,'currentcode':null,'advcode':null,'notescode':null ,'gallerycode':null}
+
+    let interactive = (new URLSearchParams(document.location.search).get("interactive") !== null)
+    let setLocals = {}
+    Object.keys(locals).forEach(key => {
+        setLocals[key] = new URLSearchParams(document.location.search).get(key) 
+    })
+    document.addEventListener("DOMContentLoaded", () => {
+        Object.keys(locals).forEach(key => {
+            let code = window.localStorage.getItem(key)
+            if (!code) code = ""
+            locals[key] = code.replace(/</g, ",").replace(/>/g, ".")
+            const li = document.createElement('p')
+            //console.log("before",key, setLocals[key])
+
+            let update = setLocals[key]?setLocals[key].replace(/</g, ",").replace(/>/g, "."):""
+
+            setLocals[key] = update
+            li.innerHTML = `<details ><summary>${key}</summary><div class="code inline">${locals[key]}</div>&rightarrow;<div class="code inline" id="${key}" contenteditable>${setLocals[key]}</div></details>`
+            document.getElementById('vars').appendChild(li)
+            //console.log(key, setLocals[key])
+        })
+
+        //Object.entries(locals).forEach(([key, value]) => window.localStorage.setItem(key, value))
+        if (!interactive) update()
+    })
+    function update() {
+        Object.entries(locals).forEach(([key, value]) => {
+            let el = document.getElementById(key)
+            setLocals[key] = el?.textContent
+            console.log(key, setLocals[key],el?.textContent)
+            if (setLocals[key] !== null && setLocals[key] !== "" && setLocals[key] !== undefined) {
+                window.localStorage.setItem(key, setLocals[key])
+            }
+        })
+        window.location.replace("TileDrive.html")
+    }
+
+</script>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="td.css">
+    <script src="rpoly.js"></script>
+    <script src="rtree.js"></script>
+    <script src="TD.js"></script>
+    <script src="tlCodeEl.js"></script>
+    <script src="driveInterface.js"></script>
+    <meta charset="UTF-8">
+    <title>TileDrive!</title>
+</head>
+
+<body class="activeKeys">
+    <header class="border">
+        <div>
+            <span class="choice  selected" name="second">Tile</span><span class="choice" name="first">Drive</span><span class="choice" name="third" id="exclaim">!</span>  
+        </div>
+    </header>
+    <main >
+        <div id="first"  class="down">
+            <!--  first    ------------------------------------>
+ 
+            <div id ="top">
+                <div>
+                    <div id="banks">
+                        <div class="down border">
+                            <button class="tlButM" id="reset" title="reset">q</button>
+                            <button class="tlButM" id="clear" title="clear">c</button>
+                            <button class="tlButM" id="undo" title="undo">z</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flexfill"></div>
+                <div id="galleryDiv" class="borderSmall">
+                    <span>Gallery</span>&nbsp;<span id="gname"></span>
+                    <br />
+                    <div id="gallery"></div>
+                    <button id="prev"  title="previous">-</button>
+                    <button id="next" title="next">n</button>
+                    <button id="show" title="show">s</button>
+                </div>
+            </div>    
+            <div id="middle">
+                <div id="nav" class="borderSmall">
+                    <div id="buttons"></div>
+                    <div id="dcode"></div>
+                    <div id="cursorbuts" class="flexfill">
+                        <div class="border">
+                            <button class="tlButM" title="cursor left">w</button>
+                            <button class="tlButM" title="cursor right">e</button>
+            
+                            <button class="tlButM" title="delete">d</button>
+                            <div id="dcodeLen"></div>
+
+                        </div>
+
+                    </div>                    
+
+                </div>
+                <div id="main" class ="codeview">
+                    <canvas id="thecanvas"></canvas>
+                    <div id="canvasControl">
+                        <input id="range" type="range" min="0" max="100" value="100" step="1"
+                            onchange="scaleScreen(this.value)" />
+                        <div class="flexfill"></div>
+                        <div id="animateControl">                 
+                            <input id="rangeAni" type="range" min="0" max="100" value="100" step="1"
+                            onchange="scaleAni(this.value,true)" ondrag="scaleAni(this.value,true)" onclick="scaleAni(this.value,true)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="bottom">
+                <div><button id="advanced" onclick="toggleFooter()" title="advanced coding">adv</button></div>
+        
+                <div id="footer" class="border hidden" style="visibility: hidden">
+                    <div id="code">
+                        <div class="down border">
+                            <button id="prepro">process</button>
+                            <button id="examine">examine raw</button>
+                            <button id="sendOver">append to notes</button>
+                        </div>
+                        <div id="ppcode" contenteditable spellcheck="false" autocapitalize="off"></div>
+                    </div>
+                    <div id="scratchDiv" class="border">
+                        <div>notes</div>
+                        <div id="scratch" contenteditable spellcheck="false" autocapitalize="off"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="second" >
+            <!--  second    ------------------------------------>
+            <section>
+
+            <div class="title" data-text ="{3g33<4<3<34>33<3}>4t{<84{<8t4y}<4y4}{<064<{>44<3o33<4<3<34>33<3}4p{<333<3343}>3}<444<<664{>4b4<8}44664>4r444>55>5<<5>5" data-w = "300" data-h="100"></div>
+                <p>Click on <b>Drive</b> above to create!</p>
+
+                <p>TileDrive is a drawing tool that uses tiles to make patterns. These tiles are regular polygons which means that all their side lengths are the same and all their angles are the same. In particular, this means that a regular four-sided polygon is not just a rhombus having all sides with equal side length but it is square since all the angles are also the same. In general, these regular polygons have a symmetric or balanced appearance like bumpy wheels. </p>
+                <div class="inline float"><image src="controlsHL.png" alt="controls" style="float:left;width:100px;" /></div>
+                <p>
+                Connecting tiles is more like driving along a path of stepping stones. A sequence of tiles can placed by selecting each type of tile you want to add. The direction can be changed at each tile by turning right (clockwise by one side) or left (counter-clockwise by one side). For instance, a wiggly snake of squares can be created by clicking on the square button and with a few right and left clicks (circled in red on the picture of the controls to the left).</p>
+                <p>
+                To help with the creation and communication of patterns a shorthand language is described below.
+                </p>
+                <ol>
+                    <li>
+                        Tile <b>shorthand</b> (instructions)
+                        <ul>
+                            <li>tiles:<b> 3 4 5 6 7 8</b> for triangle, square, pentagon, heptagon (7gon), and
+                                octagon </li>
+                            <li>colors:<b> r y b o g p l i t</b> for red, yellow, blue, orange, green, purple, olive, pink, and transparent</li>
+                            <li>turning:<b> &lt; &gt;</b> for left-turn and right-turn </li>
+                        </ul>
+                        <p>By using shorthand code, a snake made with squares can be described like  <b>44&gt;444 &gt;444 &lt;4</b>.
+                            The turning can also be done with "." and "," for  "&gt;" and "&lt;" saving you from using the SHIFT key.</p>
+                    
+                        <p>To see this in action, click on <em>send</em> below to send it over to the Drive screen.</p>
+                        <ul>
+                            <li>
+                                A square snake <br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>44.444.444,4</code>
+                                </span>
+                            </li>
+                            <li>
+                                A pentagon snake<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>55.5,55,,55</code>
+                                </span>
+                            </li>
+                            <li>
+                                An elaborate green snake with a red tongue
+                                <br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>5g.45,5,5,,5.47.3r,3</code>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li> <b>Branching out</b> from a path can make cool patterns. To do this, you can click on any existing tile and start another path.  In the shorthand, you will see curly brackets, { }, but  all you really need to remember is to <b>click on the pattern</b>.
+                        <ul>
+                            <li>
+                                branching square paths
+                                <br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>4y4{4b4}{,4r4.44}.44,44</code>
+                                </span>
+                            </li>                               
+                            <li>a pointy star
+                            <br />
+                            <span>
+                                <button class="sendable">send</button>
+                                <code contenteditable>5o{,4y3r}{.4y3r}{..4y3r}{,,4y3r}4y3r</code>
+                            </span>
+                        </li>
+                        </ul>
+                    </li>
+                    <li> <b>Saving</b> your patterns can be done in two ways:
+                        <ul>
+                            <li>
+                               Clicking on the <b>"!"</b> takes you to a printing / sharing friendly version of your pattern (if you click on it again, it toggles between a coloured version and an outlined version)
+                            </li>
+                            <li>
+                                Clicking on any of the ten "x"-banks saves your pattern. To retrieve your saves click on mini images above the "x"-bank buttons. Be careful when you do this since it will add your pattern to what is currently on the screen (* this will be useful later!).  <b>To erase</b> the screen you can click on "c" to clear before you add your saved version. 
+                            </li>
+                        </ul>
+                    </li>  
+                    <li> <b>The Gallery</b> of patterns has some examples
+                        <ul>
+                            <li>
+                            <b>"-" and "n" buttons</b> allow you to browse through the patterns
+                            </li>
+                            <li>
+                            <b>"s" button</b> shows the current pattern in the gallery on top of your pattern. This will help with making your own copy of the pattern.
+                            </li>
+                        </ul>
+                    </li> 
+                    <li> <b>Viewing options</b> 
+                        <ul>
+                            <li>
+                                <b>"~" button</b> toggles softer colours
+                            </li>
+                            <li>
+                                <b>"^" button</b> toggles tile arrows, which show the initial direction when it was drawn.
+                            </li>
+                            <li>
+                                <b>left slider</b> is used to scale the pattern. This allows for bigger patterns to be made.
+                            </li>
+                        </ul>
+                    </li> 
+                    <li> <b>Animation</b> 
+                        <ul>
+                            <li>
+                                <b>"@" button</b> animates the pattern by walking through the tiles on the screen
+                            </li>
+                            <li>
+                                <b>"#" and "$" buttons</b> allow you to step through the animation
+                            </li>
+                            <li>
+                                <b>right slider</b> allows you to jump to any point in the animation
+                            </li>
+                        </ul>
+                    </li> 
+                    <li>  <b>Stuck? Bored?</b> click send below and click on the miniture patterns above  xA-xG
+                        <br />
+                        <span>
+                            <button class="sendable">send</button>
+                            <code contenteditable>q5y5b,xa 4o6b,xb 4o6b.xc 3g3,5lxd 5,5.xe {4o446b},xf 4o6b.4o6b.4o6b.4o6b.4o6b.4o6b..xg </code>
+                        </span>
+                    </li>
+                    <!--
+                    <li>           
+                        Extra instructions (not in the simple interface): <b>ak9012</b> (grAy,blacK,nonagon/enneagon,decagon,hendecagon/undecagon,dodecagon)
+                        <p>Nothing conceptually new just a wee extension (nonagons and dodecagons are geometrically interesting)</p>
+                        <ul>
+                            <li>
+                                simple <br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>9..k0a1,,2a
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                some interesting angles <br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>9a.3pk9a.3k9a.3k9a42p4.i33,3433,3433,3433,3433,3433,3
+                                        </code>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Tree instruction <b>{}</b> and cursor movement <b>we</b> (west? east? within the implicit sequence of instructions?)
+                        <p>The {} allows for adding new branches without disrupting the current sequences / polygon paths. This instruction helps embellish existing patterns with having to start from scratch.
+                        </p>
+                        <p>Mouse clicks on an existing pattern automatically adds a new branch at the clicked on polygon. This seems the most natural desire when interacting 
+                            with the patterns.  If however the intention was to insert into the sequence the either <b>w</b> or <b>e</b> will delete the branch and insert the next instruction 
+                            into the current polygon-path / sequence of intructions--but <b>beware</b>>: inserting can be disorienting.
+                        </p>
+                        <ul>
+                            <li>
+                                simple branching<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>4g4{,6}{.6}8
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                complex tree<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>4i5y{,44p34p35i{3p}{.3p}{,,3p4}{,3p43}}{44p35i{3p}{.3p}{,,3p4}{,3p43}}
+                                        </code>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        Cutting and pasting <b>x#</b>,<b>v#</b> &rightarrow; 2 character instructions
+                        <p>This adds a lot of power to this polygon language. There are 10 slots (0-9 are the labels) to store and retrieve chunks of code. </p>
+                        <p>When using the immediate mode, there are the 10 clickable images at the top of the interface correspond to 10 pastes, va-v9. 
+                            To define or store what is pasted 10 cuts, xa-x9, are associated with the images.</p>
+                        <ul>
+                            <li>
+                                a loop of loops
+                                <br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code id="startPat"
+                                        contenteditable>4o5bxa vavavavavavavavavava.xb vbvbvbvbvb</code>
+                                </span>
+                            </li>
+                            <li>
+                                a diferent loop of loops</br>
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>3o3g,7o3g3o,7ppxa vavavavavavava.xb vbvbvbvbvbvbvb</code>
+                                </span>
+                            </li>
+                            <li>
+                                a patch using of two different pastes<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code
+                                        contenteditable>6o4,6p,,,4o,xa 6o4,xb 4ovbvbvavbvavbvavavbvavavbvavavavbvavavavbvavavava</code>
+                                </span>
+                            </li>
+                            <li>
+                                A zig-zag patch pattern<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>5b3oxa 5p,3oxb vavbvavbvavb.xc vcvcvc
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                Another zig-zag patch pattern <br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>4o34o4.bxa 4o3,4o4.pxb vavbvavb.xc vcvcvcvc
+                                    </code>
+                                </span>
+                            </li>
+
+                        </ul>
+                        </li>
+                    <li> Misc.</li>
+                        <ul>
+                            <li>
+                                Test<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>5{4{.44>}{8}{,5}}{.3}{..6}
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                Test2<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>qy4444444.44{,333}444.44444xa 
+                                        y5{4{>44>}{8}{<5}}{>3}{>>6}xb
+                                        
+                                    </code>
+                                    <code contenteditable>4o.4l4b4i.4g4k4a.4y4r4p50y3o</code>
+                                </span>
+                            </li>
+                            <li>
+                                pentTri play<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>5r{3o,5b{.}3o{5i{3,5{.3,53}}},5b3o,5b3o,5b3o,5b3o,5b},3,5p{.3l,53,5{,,3535,3}{.}{.3}}3,5r{3o,5b3p{5i{3,5{.3,53}}},5b3o,5b3o,5b3o,5b3o,5b},3,5p{.3l,53,5{,,3535,3}{.}{.3}}3,5r{3oi,5b3p{5i{3,5{.3,53}}},5b3o,5b3o,5b3o,5b3o,5b},3,5p{.3l,53,5{,,3535,3}{.}{.3}}3,
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                patch with pentagons (gray) and triangles<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>3l5a,5,5,,3l5a{,,3l},5,5,,3l5a{,,3l},5,5,,3t5{,,3l}3g5a{,3l5a,5,5{,}{.3g,5a.5,5.3g},,3l5a{,,3l}{3g5a,3l5a3g5a,3l},5,5,,3l5a,5,5,,},3l5a{,,3l}3g5a,3l5a3g.5a,3,5,,,3l5a{,,3l},5,5,,3l5a{,,3l}{3g5a,3l5a3g5a,3l5a{,,3l}{,5,5,a{,3l5a{,,3l}{3g5a,3l5a{,,3l}{,5,5{.3,g5a{.5,5{,,3l5a3g5a,3l5a3g,,5a{3l}.5,5{,,3l5a{,,3l},5,5,,3l5a{,,3l},5,5,,}.3g,5a{3l}.5}.3g}.},,3l5a{,,3l},5,5,,3l5a{...3l},5,5,,}3g},5,5{.3g,5a.5,5.3g},,3l5a{,,3l},5,5,,}..3g,,}3g,},5,5,,3l5a{,,3l},5,5,,
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                pentagon and hexagon patch<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable> <5i<<6b>>5i<5{6>>b5i<56b>>5i}<5i<<6b>>5i<5{6>>b5i<56b>>5i}<5i<<6b>>5i<5{6>>b5i<56b>>5i}<5i<<6b>>5i<5{6>>b5i<56b>>5i}<5i<<6b>>5i<5{6>>b5i<56b>>5i}<5i<<6b>>5i<5{6>>b5i<56b>>5i}6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<6b>>5i<5<5<<                                          </code>
+                                </span>
+                            </li>                               
+                            <li>
+                                debug<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>7r{>3i}<7{>>43i}>7r{>3i}<7{>>43i}>7r{>3i}<7{>>43i}>7r{>3i}<7{>>43i}>7r{>3i}<7{>>43>i}>7r{>3i}<7{>>43i}>7r{>3i}<7{>>43i}>
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                debug<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>5p<3i4{3}{,3}>3<5p>3i<4{3}{.3}<3xbvbvbvbvbvb
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                debug<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>8g{>433}<8>>xavavavavavavavava
+                                        </code>
+                                </span>
+                            </li>
+                            <li>
+                                debug<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>4oxb 4r.xa vaxc vbxd vcvavdxc vdvbxd  vcvavdxc vdvbxd  vcvavdxc vdvbxd  vcvavdxc vdvbxd  vcvavdxc vdvbxd  vcvavdxc vdvbxd  vcvavdxc vdvbxd  vcvavdxc vc
+                                        </code>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Resets
+                        <p> reset and clear <b>qc</b>
+                        (reset -- remove all previous cuts)</p>
+                        <ul>
+                            <li>
+                                Good starter codes<br />
+                                <span>
+                                    <button class="sendable">send</button>
+                                    <code contenteditable>q5y5bxa4o6b,xb4o6b.xc3g3,5lxd5,5.xe,{4o446b}xf4o6b.4o6b.4o6b.4o6b.4o6b.4o6b..xg 
+                                        </code>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Future work
+                        <p>formatting in trees...</p>
+                    </li>
+                -->
+                </ol>
+
+ 
+                <div class="title" data-text = "4g446>>33<33<6{>4t<64>>4}{>4t<4<4t>3r{<3{<333}3}3<3}{>4t<4444444<4t>3y{<3<33<3{<4}3<3}3<4>8t4<<444444y}{>4t44<444<8t>4p4{>4}{<4}4}<<444" data-w = "250" data-h="150"></div>
+                <p>Use a keyboard to speed up your <b>Driv</b>ing and learn the shorthand.</p>
+            </section>           
+
+        </div>
+
+        
+        <div id="third"  style="display:none;">
+            <!--  third    ------------------------------------>
+        </div>
+    </main>
+</body>
+
+</html>

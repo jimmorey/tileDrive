@@ -1,0 +1,218 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>GOAL</title>
+    <style>
+       .piece {
+           display: inline-block
+           overflow:hidden;
+           width:150px;
+           height:150px;  
+           background-image:url(goalMM.svg);
+           background-size: 150px;
+           transition: all 1s ease-in-out;
+       }
+       div.goal {
+           width:500px;
+           height:500px;  
+           background-size: 500px;
+           margin: 0 auto;
+       }
+       .show {
+           background-position: 0 900px;
+       }
+       .bridge {
+           background-position: 0 750px;
+       }
+       .endure {
+           background-position: 0 600px;
+       }
+       .explore {
+           background-position: 0 450px;
+       }
+       .focus {
+           background-position: 0 300px;
+       }
+       .speed {
+           background-position: 0 150px;
+       }
+       table {
+           margin-bottom:1em;
+           border:1px solid #eee;
+           border-radius:0.5em;
+           background:#f8f8f8;
+           transition: all 1s ease-in-out;
+       }
+       table:hover .piece,table:active .piece{
+           transform:scale(1.1);
+           opacity:0.5;
+       }
+       table:hover, table:active {
+           background:#f4f4f4;
+       }
+       tr:nth-child(2n) td,tr:nth-child(2n) th{
+           background:white;
+           border-radius:1em;
+           margin-right:0.5em;
+           margin-left:0.5em;
+       }
+       th {
+           width:150px;
+       }
+       h1 {
+           margin-top:0;
+       }
+    </style>    
+</head>
+<body>
+<div class="piece goal"></div>
+<h1>Goal: Goal Oriented Activity Learning
+</h1>
+
+<blockquote>hear and forget (a talk), see and remember (a visual), do and understand (an activity)
+</blockquote>
+
+<p>Goal is a categorization of activities from the perspective of the learners designed to make explicit 
+the requirements for success. I'm focusing on activities since I am a proponent of doing (being in the driver's seat) for understanding. 
+Goal's foundation is to label an activity's aim to better help direct learners' energy to get the most out of a range of activities.  
+By explicitly stating a perspective to view an activity, different success criterions can better be isolated and promoted. 
+Goal's perspectives are: <strong>endure</strong>, <strong>speed</strong>, <strong>explore</strong>, <strong>focus</strong>, <strong>bridge</strong>, and <strong>show</strong>. 
+Each perspective focuses on developing foundation skills of learning as well as providing learners clarity for 
+successful completion.</p>
+
+<!-- table -->
+<table>
+<tr>
+<th><div class="piece endure"></div></th><td>Endure deals with building up stamina for extended 
+engagement with material. Endure activities should be <em>transparently easy to understand with no 
+ambiguity</em> but require time and energy to complete. Although learners may want to complete them 
+with haste, the goal is simply to finish the activity. These would work for homework since 
+there would be no issues of getting stuck with no help. (<strong>done?</strong>)
+</td>
+</tr>
+<tr>
+<th>Output</th><td>completed activity</td>
+</tr>
+<tr>
+<th>Learning Outcome</th><td>stamina for keeping to an activity, extending concentration time, 
+</td>
+</tr>
+<tr>
+<th>Examples</th><td>reading long passages, pages of math computational exercises, 
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<th><div class="piece speed"></div></th><td>Speed deals with streamlining cognitive and physical 
+work so that the activities in the activity are completed in a minimal amount of time. 
+Similar to Endure, Speed activities should be transparently easy to understand with no ambiguity. Perhaps if computerised, 
+these activities may be good for honing skills at home since times will
+would give a clear feedback on improvement.
+(<strong>fast?</strong>)
+</td>
+</tr>
+<tr>
+<th>Output</th><td> Time for completed activity (or %compete for a fixed time)</td>
+</tr>
+<tr>
+<th>Learning Outcome</th><td>Automaticity-- a change in the perception of the learner.
+ potentially a transformation in the understanding of the material.  <em>Depending on the activity, a time constraint may
+ also promote reflection and analysis on elements in the activity.</em>  
+</td>
+</tr>
+<tr>
+<th>Examples</th><td>Flash cards, timed quizzes,  hunt for an item in a passage...
+</td>
+</tr>
+</table>
+
+
+<table>
+<tr>
+<th><div class="piece explore"></div></th><td>Explore deals with ambiguity allowing for creative 
+and flexible pursuits. Explore activities can relate to personal experience or combinations of not 
+normally combined things. Novelty and whimsy trump pragmatism in explore activities (<strong>cool?</strong>)
+</td>
+</tr>
+<tr>
+<th>Output</th><td>Interesting and novel ideas and/or products, 
+</td>
+</tr>
+<tr>
+<th>Learning Outcome</th><td>Flexibility, actively trying to innovate  
+</td>
+</tr>
+<tr>
+<th>Examples</th><td>Open-ended questions, find uses for X, what-ifs, brainstorms, sketches, play with a new medium (computer, clay, ...)  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<th><div class="piece focus"></div></th><td>Focus deals with critical thinking and often reductionist ideas. 
+As a counterpoint to Explore, Focus eliminates differences and reduces the space of thought. 
+Focus activities often revolve around finding similarities, differences, or simplified perspectives. (<strong>fit?</strong>)
+</td>
+</tr>
+<tr>
+<th>Output</th><td>summary,  model, classification, property, metric/perspective 
+</td>
+</tr>
+<tr>
+<th>Learning Outcome</th><td> critical thinking, practice in eliminating superfluous details to focus on the important content
+</td>
+</tr>
+<tr>
+<th>Examples</th><td>classify/grouping items, creating typical cases, 
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<th><div class="piece bridge"></div></th><td>Bridge deals with finding connections and parallels 
+between material.  A Bridge activity would involve finding similarities between separate things
+and exposing correspondences.(<strong>link?</strong>)
+</td>
+</tr>
+<tr>
+<th>Output</th><td> well thought out link between two concepts or artifacts, metaphor
+</td>
+</tr>
+<tr>
+<th>Learning Outcome</th><td>link knowledge, creating conceptual connections, abstract thinking, seeking conceptual parallels ,  
+</td>
+</tr>
+<tr>
+<th>Examples</th><td>creating/examining metaphors, illustrating parallels between connections like adding is to multiplying as multiplying is to exponentiating, 
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<th><div class="piece show"></div></th><td>Show deals with creating explanations or instances
+of some idea or pattern. The show activities require the construction of some artifact using representations 
+to aid in comunication. In some sense, this activity is related to "show and tell."
+  (<strong>clear?</strong>)
+</td>
+</tr>
+<tr>
+<th>Output</th><td>Some product or artifact (embodying a story) </td>
+</tr>
+<tr>
+<th>Learning Outcome</th><td> externalizing knowledge, creating objects of reflection, 
+creating landmarks in learning, deepening more experience with content
+</td>
+</tr>
+<tr> 
+<th>Examples</th><td> creating tables, graphs, physical math pattern, ...
+</td>
+</tr>
+</table>
+
+</body>
+</html>

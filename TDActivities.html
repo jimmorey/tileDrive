@@ -1,0 +1,747 @@
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>TileDrive activities</title>
+    <link rel="stylesheet" href="tdcode.css">
+
+    <style>
+       .piece {
+           display: inline-block;
+           overflow:hidden;
+           width:50px;
+           height:50px;  
+           background-image:url(goalMM.svg);
+           background-size: 50px;
+           transition: all 1s ease-in-out;
+       }
+       .icon {
+           display: inline-block;
+           overflow:hidden;
+           width:20px;
+           height:17px;  
+           background-image:url(goalMM.svg);
+           background-size: 20px;
+           transition: all 1s ease-in-out;
+       }
+       div.goal {
+           width:500px;
+           height:500px;  
+           background-size: 500px;
+           margin: 0 auto;
+       }
+       div.goal.icon {
+           width:200px;
+           height:200px;  
+           background-size: 200px;
+           margin: 0 auto;
+       }
+       .show.icon {
+           background-position: 0 120px;
+       }
+       .bridge.icon {
+           background-position: 0 100px;
+       }
+       .endure.icon {
+           background-position: 0 80px;
+       }
+       .explore.icon{
+           background-position: 0 60px;
+       }
+       .focus.icon {
+           background-position: 0 40px;
+       }
+       .speed.icon {
+           background-position: 0 20px;
+       }
+       .show {
+           background-position: 0 300px;
+       }
+       .bridge {
+           background-position: 0 250px;
+       }
+       .endure {
+           background-position: 0 200px;
+       }
+       .explore {
+           background-position: 0 150px;
+       }
+       .focus {
+           background-position: 0 100px;
+       }
+       .speed {
+           background-position: 0 50px;
+       }
+       table {
+           margin-bottom:1em;
+           border:1px solid #eee;
+           border-radius:0.5em;
+           background:#f8f8f8;
+           transition: all 1s ease-in-out;
+       }
+       table:hover .piece,table:active .piece{
+           transform:scale(1.1);
+           opacity:0.5;
+       }
+       table:hover, table:active {
+           background:#f4f4f4;
+       }
+       tr:nth-child(2n) td,tr:nth-child(2n) th{
+           background:white;
+           border-radius:1em;
+           margin-right:0.5em;
+           margin-left:0.5em;
+       }
+       th {
+           width:150px;
+       }
+       h1 {
+           margin-top:0;
+       }
+       div.big {
+        display:inline;
+        height:50px;
+        vertical-align: bottom;
+        font-size:2.5em;
+       }
+       .myhead {
+       display:inline;height:50px;vertical-align: top;font-size:1.5em;
+       }
+       .box {
+              display:inline-block;
+              width:50px;
+              height:50px;
+              border:1px solid black;
+              background-color: rgb(224, 224, 224);
+              /*margin:0.5em;*/
+              text-align: center;
+       }
+       .x {
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='black' stroke-width='5'/><path d='M0 0 L100 100 ' stroke='black' stroke-width='5'/></svg>");
+            background-repeat:no-repeat;
+            background-position:center center;
+            background-size: 100% 100%, auto;
+            opacity: 50%;
+        }
+        div.activity, .side{
+            padding:2px;
+            margin: 2px;
+            border:1px double #eee;
+            border-radius: 5px;
+        }
+        .side{
+        background-color: #ffffff;
+    }
+        div.activity:nth-child(odd) {
+            background-color: #fffff8;
+        }
+        .bord{
+            border:2px solid gray;
+            border-radius: 5px;  
+            margin:2px;
+        }
+    </style>  
+    
+    <script src="rpoly.js"> </script>
+    <script src="rtree.js"> </script>
+    <script src="TD.js"> </script>
+    <script src="tlCodeEl.js"> </script>
+    <script src="TDcode.js"> </script>
+</head>
+<body>
+
+    <div class="floatr side">
+        <ol><b>Quick links</b><li><div class="inline icon endure"></div><div class="inline icon speed"></div><a href="#recreate">recreate patterns</a></li>
+            <li><div class="inline icon focus"></div><a href="#specified">find specified polygons</a></li>
+            <li><div class="inline icon explore"></div><a href="#symmetry">explore symmetry</a></li>
+            <li><div class="inline icon endure"></div><div class="inline icon speed"></div><a href="#replacements">make replacements</a></li>
+            <li><div class="inline icon endure"></div><div class="inline icon speed"></div><a href="#loops">following loop recipes</a></li>
+            <li><div class="inline icon explore"></div><a href="#exploreLoops">explore loops</a></li>
+            <li><div class="inline icon focus"></div><a href="#neighbourhoods">analyse neighbourhoods</a></li>
+            <li><div class="inline icon focus"></div><a href="#analyseLoops">analyse loops</a></li>
+            <li><div class="inline icon bridge"></div><a href="#link">find a link</a></li>
+            <li><div class="inline icon show"></div><a href="#showLengths">length ratios</a></li>
+            <li><div class="inline icon explore"></div><a href="#exploreAngles">angle exploration</a></li>
+        </ol>
+        </div>
+<h1>TileDrive Activities with GOAL
+</h1>
+
+<blockquote>hear and forget (a talk), see and remember (a visual), do and understand (an activity)
+</blockquote>
+
+<!-- ****************************************************  --> 
+<p>The <a href="goal2.html">GOAL</a> categorization is used to help design some activities for <a href="TileDrive.html">TileDrive</a>. Since TileDrive is still developing, it's possible some of the activities might be designed for a slightly earlier version. Also, there may be future tools that may aid with automation of instances of some of the activities (like  <a href="Unwind.html">Unwind</a>). A basic familiarity with TileDrive would be helpful. Check out <a href="TDIntro.html">this introduction</a>  (or <a href="TileDriveCoding.html">TileDriveCoding</a>) to see details about coding and  <a href="TDExamples.html">TDExamples </a>to see a list of examples.</p>
+
+<!-- ****************************************************  --> 
+<!-- quick jump -->
+
+<div  class="activity" ><div id="recreate"><div class="inline piece endure"></div>  <div class="inline piece speed"></div><div class="myhead" ><span style="font-weight: bold;">recreate patterns: </span>use tile language to duplicate patterns</div></div>
+
+<div class="start float">
+    <div class="inline title" data-text ="4444>34343" data-w = "60" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="8p{>>>>6b {<4344} >43<44} {<<6>45y} {>>6>45y} 8iy" data-w = "100" data-h="100"></div>
+<div class="inline title" data-text ="xA xB+8[vB 4r< vA xB vA 4o xA] vB" data-w = "100" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="4b{<3g33<34y4}4{3r3{3}{<3}}>4>4" data-w = "100" data-h="100"></div>
+
+<div class="inline title" data-text =">7<<<p{43443444}{>4344}{>>44}{>>>44}{<<<43<44}<<43<443<444" data-w = "160" data-h="80"></div>
+
+<!--div class="inline title" data-text ="4444>34343" data-w = "100" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="4r>4r>4o4r>4o4o4r>4o4o4o4r>4o4o4o4o4r>4o4o4o4o4o4r>4o4o4o4o4o4o4r>4o4o4o4o4o4o4o4r>" data-w = "100" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="4b{<3g33<34y4}4{3r3{3}{<3}}>4>4" data-w = "100" data-h="100"></div>
+<div class="inline title" data-text ="8p{>>>>6b {<4344} >43<44} {<<6>45y} {>>6>45y} 8iy" data-w = "100" data-h="100"></div>
+<div class="inline title" data-text =">7<<<p{43443444}{>4344}{>>44}{>>>44}{<<<43<44}<<43<443<444" data-w = "100" data-h="100"></div>
+<!--div class="big">...</div-->
+</div>
+<p>
+This activity is aimed to promote competency in the tile language. The first pattern, the D, can be produced with "4444&gt;34343". TileDrive's Gallery can be loaded with a number of patterns that can be compared to the current pattern by pressing "s" (either the key or the interface button) for show. This feature can be useful for complicated patterns or while still learning the basics of the language.</p>
+<div class="start float">
+
+<div class="inline title" data-text ="4444>34343" data-w = "100" data-h="100" data-cur="false"></div><img src="DOverlay.png" width="64px"/>
+</div>
+<p>
+Specifically, if the current pattern was produced by "4444&gt;3" for the D-pattern, the comparison would be
+shown as this overlayed D with arrows indicating the orientations of tiles on top of the 4 squares and one triangle. The <em>endure</em> version of the activity requires that the pattern has to be exactly reproduced as seen. Currently, a speed version of this activity would have to be supported with an external timer. Perhaps, I will modify the speed goal to include efficiency or have a speed variant that focuses on # steps/instruction &dash; the speed for computing?
+</p>
+<div class="start">
+</div>
+</div>
+
+<!-- ****************************************************    -->
+
+
+<div  class="activity start" ><div  id="specified"><div class="inline piece focus"></div>  <div class="myhead" ><span style="font-weight: bold;">find specified polygons: </span>examining outlines</div></div>
+
+<div class="start float">
+<div class="inline title" data-text ="6.4 xa +6a" data-w = "120" data-h="120" data-cur="false" data-no-colour="true"></div>
+<div class="inline title" data-text ="5a 5a>5a xa +2a xa
+4. va 3t. va " data-w = "125" data-h="125" data-cur="false" data-no-colour="true"></div> 
+</div>
+<ul>
+    <li>How many regular polygons are in each pattern.<br><span class="light">
+        13 (6 squares, 6 hexagons and the inner dodecagon/12gon) and 10 (10 pentagons)</span></li>
+    <li>Find all the non-regular octagons in these patterns. <br><span class="light">In the first example, any joined hexagon-square combination is a non-regular octagon. In the second example, the octagons are either formed by the exterior of two joined pentagons or the exterior of the center 4 polygons (2 pentagons and 2 rhombi). </span></li>
+
+    <li>Are there any heptagons? <br> <span class="light">Yes, but only from a pentagon joined to a rhombus.</span></li>
+</ul>
+
+
+<p>
+This activity is aimed to promote thinking flexibly about lines. Note: multiple clicks on "!" in TileDrive alternately shows printable patterns with (normal) and without the colours (like the two in this activity).
+</p>
+
+</div>
+
+<!-- ****************************************************    -->
+
+<div  class="activity" ><div  id="symmetry"><div class="inline piece explore"></div><div class="myhead" ><span style="font-weight: bold;">explore symmetry: </span>create some novel flowers</div></div>
+<div class="float">
+<div class="inline title" data-text =">{5y} xj 8i ....+7j .4g44{.33}{,3,3}4" data-w = "100" data-h="100" ></div>
+<div class="inline title" data-text ="3r<5>35{3}< xa 3,g3 xb 4t.3g,3, 3 3{5,3},3{,53} +3b5,, +5a" data-w = "100" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text =">{4i6p{.4p}} xa 4g xb  1i,,,,,,, +ca 4t6 +4b {.36} {,3,6} vb" data-w = "100" data-h="100" data-cur="false"></div> 
+</div>
+
+<p>This activity is aimed to promote creative exploration of shapes to make some new combinations. It would be assumed that the participant would already be competant with TileDrive: knows how to click on tiles and extend what is currently shown, knows how to make colourful paths of polygons, but may not have the cutting and pasting down. The goal here is novelty which will require a bit of experimentation. Can they discover something cool? Some creative activities might be more fun with a partner since sharing and discussing discoveries may spur on more experimentation. One way to direct this activity would be to start with a simple framing loop pattern and see what fits in or around the loop's hole or center.
+</p>
+</div>
+
+<!-- ****************************************************  --> 
+
+<div  class="activity" ><div id="replacements"><div class="inline piece endure"></div><div class="inline piece speed"></div><div class="myhead" ><span style="font-weight: bold;">make replacements: </span> follow an algorithm of replacement to make new patterns </div></div>
+
+<div class="start float">
+In <div class="inline title" data-text ="4o6g> xa +6a" data-w = "100" data-h="100"></div>
+replace <div class="inline title" data-text ="4o"  data-w = "20" data-h="20"></div>
+with <div class="inline title" data-text ="3o43," data-w = "40" data-h="28"></div>
+to get <div style="opacity:0.5;" class="inline title" data-text ="3o43,6g> xa +6a" data-w = "100" data-h="100"></div><br>
+In <div class="inline title" data-text ="4p44y  xa 
+4y4p4 xb
+ va 4a {.vb} xc
+ vb 4a {.va}  xd
+va 4a {.+1d}  xe
+.{+1e} xf 4r +4f" data-w = "100" data-h="100"></div>
+replace <div class="inline title" data-text ="4p44y"  data-w = "20" data-h="20"></div>
+with <div class="inline title" data-text ="5p3y," data-w = "40" data-h="28"></div>
+to get <div style="opacity:0.5;" class="inline title" data-text ="5p3y, xa 
+3y5p,xbva 4a {.vb} xc
+vb 4a {.va}  xd
+va 4a {.+1d}  xe
+.{+1e} xf 4r +4f" data-w = "100" data-h="100"></div>
+</div>
+<p>
+This activity, although somewhat prescriptive, has a similar goal to "recreate patterns" activity. Here the aim is to use the language to achieve a pattern that is described by a replacement process. This time, an overlay of the correct pattern is not included with TileDrive which means that on completing the replacment a bit of judgement will be required to decide if the goal was achieved. Perhaps adding the resulting pattern using TileDrive's "!" to a document or email would help promote the focus on the completion goal with the latter providing a timestamp which would indicate the speed of completion.  </p>
+<div class="start"></div>
+
+</div>
+<!-- ****************************************************  
+<div class="start"></div>-->
+
+<!-- ****************************************************  --> 
+<div class="activity">
+    <div id="loops"><div class="inline piece endure"></div><div class="inline piece speed"></div><div class="myhead" ><span style="font-weight: bold;">following loop recipes: </span>alternating different loop combinations </div>
+
+    <div class="start"></div>
+
+<div class="float">
+<div class="big">2</div> 
+<div class="inline title" data-text ="3g33333" data-w = "50" data-h="50" ></div>
+
+<div class="big">&#x21BA;</div> with <div class="big">3</div> <!-- counter clockwise-->
+<div class="inline title" data-text ="4l,4,4,4," data-w = "50" data-h="50" ></div>
+
+<div class="big">&#x21BB; </div>creates  <!-- clockwise-->
+
+<!--   proposed
+4g< xC +cC xA 
+3r xD +cD xB
+mAB
+-->
+
+<div style="opacity:0.5;" class="inline title" data-text ="4l,3g xa +ca" data-w = "100" data-h="100" ></div>
+</div>
+</div>
+
+
+
+<div class="start float">
+<div class="big">1</div> 
+
+<div class="inline title" data-text ="5o5o,4o, xa +4a" data-w = "75" data-h="75" ></div>
+
+<div class="big">&#x21BB; </div> with <div class="big"> 2</div> <!-- counter clockwise-->
+<div class="inline title" data-text ="3l xa +6a" data-w = "50" data-h="50" ></div>
+
+<div class="big">&#x21BA;</div>  creates <!-- clockwise-->
+
+<div style="opacity:0.5;" class="inline title" data-text ="5o3l5o,3l4o,3l xa +4a" data-w = "100" data-h="100" ></div>
+<div class="start"></div>
+<div class="big">1</div> 
+
+<div class="inline title" data-text ="5o.5o5o xa 5+2a" data-w = "75" data-h="75" ></div>
+
+<div class="big">&#x21BB; </div> with <div class="big"> 2</div> <!-- counter clockwise-->
+<div class="inline title" data-text ="6r,,6r,,6r,," data-w = "50" data-h="50" ></div>
+
+<div class="big">&#x21BA; </div> creates <!-- clockwise-->
+
+<div style="opacity:0.5;" class="inline title" data-text ="5o.6r,, 5o6r,,5o6r,,xa 5+2a" data-w = "100" data-h="100"  data-cur="false"></div> </br>
+</div>
+<p>
+    The main idea is to combine a number of clockwise and counter clockwise loops to create a new single loop. This first example has two loops of six triangles (12 triangles) and three loops of four squares (12 squares) combined by alternating squares and triangles (note that simple alternating works since there are 12 of each).  As before this can be a speed or endure activity.</p>
+ <div class="start"></div>
+
+<div class="start float">
+
+<div class="inline title" data-text ="4l.4.3g,4l.3g,3g, xa +4a" data-w = "100" data-h="100" ></div>
+<div class="inline title" data-text ="4l.4.3g,3g,xa +6a" data-w = "100" data-h="100" ></div>
+<div class="inline title" data-text ="3l5o3l35o,4o, xb +4b" data-w = "100" data-h="100" ></div>
+<div class="inline title" data-text ="5o3l35o,3l4o, xb +4b" data-w = "100" data-h="100" ></div>
+</div>
+<p>There could be another take on these recipes where the loops are combined in different ways which would turn each recipe into an explore activity. Expicitly, rather than employing strict alternation of each loop's polygons, a more varied approach could be taken. Not all combinations will work: polygons would overlap (if TileDrive allowed it) or the ends may not line up even if the angles of the ends are the same. </p>
+<div class="start"></div>
+The <a href="Unwind.html">Unwind</a> app quizes understanding these unevenly combined loop recipes.
+
+</div>
+<!-- ****************************************************  --> 
+
+<div  class="activity" ><div id="exploreLoops"><div class="inline piece explore"></div><div class="myhead" ><span style="font-weight: bold;">explore loops: </span>create some novel loops</div></div>
+
+<div class="float">
+<div class="big"># <div class="box">?</div> &#x21BA; </div>with <div class="big"># <div class="box">?</div> &#x21BB; </div>creates <div class="big"><div class="box">?</div></div><br>
+
+<div class="big">1</div> 
+<div class="inline title" data-text ="5o xa +aa" data-w = "75" data-h="75" ></div>
+
+<div class="big">&#x21BB; </div> with <div class="big"> 2</div> <!-- counter clockwise-->
+<div class="inline title" data-text ="3a,4,3,4,3," data-w = "50" data-h="50" ></div>
+
+<div class="big">&#x21BA; </div> creates 
+
+<div class="inline title" data-text ="3a,5o4a,5o3a,5o4a,5o3a,5o xb 5.+2b..." data-w = "100" data-h="100"  data-cur="false"></div> 
+<br/>
+<div class="big">1</div> 
+<div class="inline title" data-text ="5o xa +aa" data-w = "75" data-h="75" ></div>
+<div class="big">&#x21BB; </div> with <div class="big"> 2</div> <!-- counter clockwise-->
+<div class="inline title" data-text ="3a,4a,4,3,3," data-w = "50" data-h="50" ></div>
+
+<div class="big">&#x21BA; </div> creates 
+
+<div class="inline title" data-text ="3a,5o4a,5o4a,5o3a,5o3a,5o xb 5.+2b" data-w = "100" data-h="100"  ></div> 
+</div>
+<p>For a less constrained activity, arbitrary loops can be combined to see if new loops are created. The goal is to create novel patterns. A simple approach would be to look for simple loops where basic alternation works. In these examples, the number of tiles in the clockwise loops equals the number of tiles in the counter-clockwise loops. There are the same number of orange tiles and gray: ten. Notice how varying the order of the gray tiles changes the resulting loop.
+</p>
+
+<div class="start"></div>
+<div class="float">
+<div class="big">1</div> 
+<div class="inline title" data-text ="5b5.5 xa +2a" data-w = "75" data-h="75" ></div>
+
+<div class="big">&#x21BB; </div> with <div class="big"> 2</div> <!-- counter clockwise-->
+<div class="inline title" data-text ="8g...8...4." data-w = "50" data-h="50" ></div>
+
+<div class="big">&#x21BA; </div> creates 
+
+<div class="inline title" data-text ="5b8g,,,5b8g,,,5b.4g, xa +2a" data-w = "100" data-h="100"  data-cur="false"></div> ...
+    <div class="inline title" data-text ="5b8g,,,4l5b8g,,,4l5b.4g,4l xa +2a" data-w = "100" data-h="100"  data-cur="false"></div> 
+</div>
+<p>
+    Adding spacers can make loops more interesting. The olive squares below do not change any angles but add separation between the polygons: these olive tiles can be thought of as spacers.
+    </p>
+    <div class="start"></div>
+
+  <div class="float">
+  <div class="big">1</div> 
+  <div class="inline title" data-text ="5p, xa +aa" data-w = "75" data-h="75" ></div>
+  
+  <div class="big">&#x21BB; </div> with <div class="big"> 2</div> <!-- counter clockwise-->
+  <div class="inline title" data-text ="3y xa +6a" data-w = "50" data-h="50" ></div>
+  
+  <div class="big">&#x21BA; </div> creates <div class="big"><div class="box">?</div></div>
+</div>
+<p>Another way to discover new loops is to not alternate between the clockwise and counter clockwise loops evenly. The following show a number of choices for combining loops. Note: the last two examples require orange spacers so that the two pink pentagons don't collide. </p>
+<div class="start"></div>
+
+  <div class="inline title" data-text ="5p<3y35p<3y5p<3y35p<3y5p< xa +2a" data-w = "100" data-h="100"  data-cur="false"></div> 
+  <div class="inline title" data-text ="3y5p<3y5p<3y35p<3y5p<3y5p< xa 5,,+2a" data-w = "140" data-h="100"  data-cur="false"></div> 
+  <div class="inline title" data-text ="5p<3y35p<3y5p<3y5p<3y35p< xa +2a" data-w = "100" data-h="100"  data-cur="false"></div> 
+  <div class="inline title" data-text ="3y35p<5p<3y35p<5<3y35p< xa 5,,+2a" data-w = "100" data-h="100"  data-cur="false"></div> 
+  ...
+  <div class="inline title" data-text ="5p<3y4o3y5p<5i<5p<3y4o3y5p<3y4o3y xa +2a" data-w = "100" data-h="100"  data-cur="false"></div> 
+  
+  <div class="inline title" data-text ="5p<3y35p<5i<5p<3y35p<3y3o3<3y xa +2a" data-w = "100" data-h="100"  data-cur="false"></div> 
+
+</div>
+
+
+
+  <!-- 5<335<35<335<35<335<3<53<5<335<35<335<35<335<3<53< -->
+<!-- 
+5p<3y35p<3y5p<3y35p<3y5p<
+5p<3y35p<3y5p<3y5p<3y5p<3y
+5p<3y35p<3y5p<3y5p<3y35p<
+5p<3y435p<5<5<3y435p<3y43
+5p<3y35p<5<3y35p<3y35p<
+5p<3y35p<5<5<3y35p<3y33<3
+
+-->
+
+<!-- ****************************************************    -->
+<div class="start"></div>
+
+</div><div  class="activity" ><div id="neighbourhoods"><div class="inline piece focus"></div><div class="myhead" ><span style="font-weight: bold;">analyse neighbourhoods: </span> find all types of tiles around a single tile</div></div>
+
+<div class="inline title float" data-text ="4a54g{>4a5}{,5a}4a5<4g{>5a4}{,4a}{4a} xA 
+    5a<44g{>4a5}5a44g{>5a<4} {5a}xB 
+    4a54g {> +1B} 4a5<4g {> +1A} {4a} xC
+     >{ +1C} xD 
+    5t<<4g +4D" data-w = "200" data-h="200" data-cur="false"></div>
+        <p>This focus activity involves a careful examination of local neighbourhoods in a pattern. Specifically, it requires the ability to find all patches of single tiles and all of the tiles directly connected to it regardless of orientation. The result of this activity is a list containing all local patterns / a classification system (in this case, tiles on the edges weren't included). Here, all the gray squares have the same neighbourhood: a green square on one side and a gray pentagon on the opposite side&RightArrow;this is represented by "a".  The pentagons have two types of neighbourhoods: one with the green on the right&RightArrow;"b" and another with the green on the left&RightArrow;"c". This right and left  is a bit subtle since it seems to go against the "regardless of orientation" but it makes sense as a classification since all pentagons in the pattern have two non-adjacent squares attached so "b" and "c" cover all the cases. The most difficult part of the classification deals with the green squares which can categorized by the number of pentagons it is surrounded by: 0&RightArrow;"d",1&RightArrow;"e",2&RightArrow;"f", or 3&RightArrow;"g" but not 4 (type-i). As well, if there are two pentagons, then they appear on adjacent sides of the green square (not like type-h).  </p>
+
+        <div class="start"></div>
+
+        <div  style="opacity:0.5;" >
+        a<div class="inline title" data-text ="4a{<4g}{.5}" data-w = "50" data-h="50" ></div>  
+        &nbsp;&nbsp;b<div class="inline title" data-text ="5a{.4}{,,4g}" data-w = "50" data-h="50" ></div>  
+        &nbsp;&nbsp;c<div class="inline title" data-text ="5a{.4g}{,,4}" data-w = "50" data-h="50" ></div>  
+        &nbsp;&nbsp;d<div class="inline title" data-text ="4g {4a} {.4a} {..4a} {...4a}" data-w = "50" data-h="50" ></div>  
+        &nbsp;&nbsp;e<div class="inline title" data-text ="4g {4a} {.5a} {..4a} {...4a}" data-w = "50" data-h="50" ></div>  
+        &nbsp;&nbsp;f<div class="inline title" data-text ="4g {4a} {.5a} {..5a} {...4a}" data-w = "50" data-h="50" ></div>  
+        &nbsp;&nbsp;g<div class="inline title" data-text ="4g {4a} {.5a} {..5a} {...5a}" data-w = "50" data-h="50" ></div>  
+        &nbsp;&nbsp;h<div class="inline title x" data-text ="4t {4a} {.5a} {...5a} {..4a}" data-w = "50" data-h="50" ></div>
+        &nbsp;&nbsp;i<div class="inline title x" data-text ="4t {5a} {.5a} {...5a} {..5a}" data-w = "50" data-h="50" ></div><br>
+    </div>
+
+        
+        <div class="start float">
+
+
+        a<div class="inline title" data-text ="4a{<4k}{.5}" data-w = "50" data-h="50"></div>  
+        &nbsp;&nbsp;b<div class="inline title" data-text ="5y{.4a}{,,4k}" data-w = "50" data-h="50"></div>  
+        &nbsp;&nbsp;c<div class="inline title" data-text ="5i{.4k}{,,4a}" data-w = "50" data-h="50"></div><br>  
+        d<div class="inline title" data-text ="4r {4a} {.4a} {..4a} {...4a}" data-w = "50" data-h="50"></div>  
+        &nbsp;&nbsp;e<div class="inline title" data-text ="4b {4a} {.5a} {..4a} {...4a}" data-w = "50" data-h="50"></div>  
+        &nbsp;&nbsp;f<div class="inline title" data-text ="4g {4a} {.5a} {..5a} {...4a}" data-w = "50" data-h="50"></div>  
+        &nbsp;&nbsp;g<div class="inline title" data-text ="4p {4a} {.5a} {..5a} {...5a}" data-w = "50" data-h="50"></div> <br>
+
+        <div class="inline title" data-text ="4a5i4g{>4a5y}{,5i}4a5y<4g{>5y4a}{,4a}{4a} xA 5i<4a4g{>4a5i}5y4a4g{>5i<4a} {5i}xB 
+            4a5i4p {> +1B} 4a5y<4b {> +1A} {4a} xC
+            >{ +1C} xD 
+            5t<<4r +4D" data-w = "200" data-h="200" data-cur="false"></div>
+                </div>
+        <p>To verify that a list is correct, either the pattern can be exhaustively labeled with the letters or a colour-coded version can be created. On the left, a parallel list is created with "a"-"g" with unique colours for each central tile.
+        The black square in the first three ("a"-"c") indicates it is a square with four neighbours (a green square in the original pattern).  Underneath the newly coloured list is a coloured pattern. Visually, each of the tiles in the pattern can be seen to have the same neighbourhood as the corresponding colour in the list. 
+    </p>
+
+
+            <div class="start"></div>
+            <div class="float">
+            <div class="inline title" data-text ="5l<6r>>5l<<6r>>5l<6r xA
+            vA {>>vA} < xB
+            6{<+1B}>>{+1B}r 5t<6<5<<6>>5< xC
+            5+3C" data-w = "200" data-h="200" data-cur="false"></div> <br>
+            <div style="opacity:0.5;" >
+            &nbsp;&nbsp;a<div class="inline title" data-text ="5l {6r}{<6r}" data-w = "50" data-h="50" ></div>  
+            &nbsp;&nbsp;b<div class="inline title" data-text ="5l {6r}{<<6r}" data-w = "50" data-h="50" ></div>  
+            &nbsp;&nbsp;c<div class="inline title" data-text ="6r {5l}{<5l}" data-w = "50" data-h="50" ></div>  
+            &nbsp;&nbsp;d<div class="inline title" data-text ="6r {.5l}{<5l}{<<5l}{..5l}" data-w = "50" data-h="50" ></div> 
+            </div>
+            </div>
+            <p>This second example shows a clearer case where the list of local patterns doesn't determine the overall pattern. Notice that pentagons surrounded by 4 pentagons show up in the overall pattern in two distinguishable ways: missing pentagons in the horizontal direction and missing pentagons in the vertical direction. </p>
+
+            <p>After recolouring type-d hexagons, the red hexagons are the ones missing the horizontal pentagons whereas the pink hexagons are missing the vertical pentagon (the gray hexagons are type-c). In the overall pattern, red and pink hexgons have very different rolls.</p>
+            <div class="inline title" data-text ="5l<6i>>5g<<6a>>5l<6r xA
+                vA {>>vA} < xB
+               6{<+1B}>>{+1B}r 5t<6<5<<6>>5< xC
+                5+3C" data-w = "200" data-h="200" data-cur="false"></div> <br>
+  <br/>
+
+<div class="start"></div>
+</div>
+<!-- ****************************************************    -->
+
+<div  class="activity" ><div id="analyseLoops"><div class="inline piece focus"></div><div class="myhead" ><span style="font-weight: bold;">analyse loops </span>: find all simple loops in a pattern</div></div>
+<div class="float">
+<div class="inline title" data-text =" 4a54g{>4a5}4a5<4g{>5a4} xA
+    5a<44g{>4a5}5a44g{>5a<4} xB
+    4a54g {> +1B} 4a5<4g {> +1A} xC
+    >{ +1C} xD
+    5t<<4g +4D" data-w = "200" data-h="200" data-cur="false"></div>
+        </div>
+<div style="opacity:0.5;" class="float">
+        &nbsp;&nbsp;a<div class="inline title" data-text ="4g4a5,4g.5a44g.4a5,4g.5a4" data-w = "75" data-h="75" data-cur="false"></div>  
+        &nbsp;&nbsp;b<div class="inline title" data-text ="4g<4a54g.5a,44g.4a54g.5a,4"~ data-w = "75" data-h="75" data-cur="false"></div> <br> 
+        &nbsp;&nbsp;c<div class="inline title" data-text ="4g4a5,4g.4a54g.4a5,4g.4a54g" data-w = "75" data-h="75" data-cur="false"></div>  
+        &nbsp;&nbsp;d<div class="inline title" data-text ="4g<5a44g.5a,44g.5a44g.5a,44g" data-w = "75" data-h="75" data-cur="false"></div>  
+    </div>
+        <p>
+            Although related to the last activity, this activity focuses on finding all simple loops in a pattern. The loops can be of any size and can be oriented in any direction. The goal is to find all types of loops in a pattern. The first example uses a similar pattern as one used in the analyse neighbourhood activity but with this loop focus it is a new challenge. The solution is the four loops "a"-"d".  "a" and "b" are mirror images of each other and likewise "c" and "d" are mirror images.  </p>
+<div class="start"></div>
+<div class="float">
+
+        <div class="inline title" data-text ="5t<<4g>r{4a{b}5{b}4g{>5a{b}<4{b}4g{>4a{b}5{b}}{o{pbk}}5a{b}4{b}4g{>5a{b}<4{b}}{o}}{o}4a{b}5{b}<4g{>4a{b}5{b}4g{>4a{b}5{b}}{o}4a{b}5{b}<4g{>5a{b}4{b}}{o}}{o}}>{4a{b}5{b}4g{>5a<44g{>4a5}5a44g{>5a<4}}{o}4a{b}5{b}<4g{>4a54g{>4a5}4a5<4g{>5a4}}{o}}>{4a54g{>5a<44g{>4a5}5a44g{>5a<4}}4a5<4g{>4a54g{>4a5}4a5<4g{>5a4}}}>{4a54g{>5a<44g{>4a5}5a44g{>5a<4}}4a5<4g{>4a54g{>4a5}4a5<4g{>5a4}}}" data-w = "200" data-h="200" data-cur="false"></div>
+        </div>
+        <p> One way to verify that these four loops is the solution is to see that the upper right corner contains all four of the loops "a"-"d". "a" is in the upper right corner of the four with "b" being across the black square. "c" is to the left of "a" and "d" is below "a". The rest of the pattern can be seen as being made up of rotations of this group of four rotated around the central red square.</p>
+
+    <div class="start"></div>
+    <div class="float">
+
+    <!--div class="inline title" data-text ="9p{.{3g}.3g}<3g9p{3g{,9p..3g,9p,,{3g}{,3g}}9p{.{.3g}3g},{3g}}<<<3g9p>3g< xa
+        9p{.{3g}.3g}<3g9p{3g +2a}<<<3g{,}9p>3g{9p}< xb
+        9p,,3g{+2b}, xf
+        +3f" data-w = "250" data-h="250" data-cur="false"></div-->
+        <div class="inline title" data-text ="9p{.{.3g}3g},3g9p,,,3g, xc
+        9p{.{.3g}3g},3g9p{3g+1c{.9p.3g}+1c{.9p,3g,9p{,,{,3g}3g}3g}+1c},,,3g{9p.3g,+3c}, xa
+        +3a" data-w = "200" data-h="200" data-cur="false"></div>
+
+        </div>
+        <div  style="opacity:0.5;"  class="float">
+
+    &nbsp;&nbsp;a<div class="inline title" data-text ="9p,,3g9p.3g9p.3g" data-w = "55" data-h="55" data-cur="false"></div>  
+    &nbsp;&nbsp;b<div class="inline title" data-text ="9p,,,3g9p..3g,9p3g9p..3g,9p3g9p..3g,9p3g9p.." data-w = "75" data-h="75" data-cur="false"></div>  
+    &nbsp;&nbsp;c<div class="inline title" data-text ="9p>>3g9p{.{3g}.{3g}}<3g9p3g9p{.{3g}.{3g}}<3g9p3g9p{.{3g}.{3g}}<3g" data-w = "75" data-h="75" data-cur="false"></div>  
+    </div>
+    <p>This more exotic pattern is easier to spot the loops since the orientations of the loops are fixed. After finding the three loops, it is relatively easy to scan through and spot which of the three you see. Another verification would be to examine all the loops around an example of one loop and see only the other two loops (alternating around it).</p>
+
+    <p>A collection of patterns can be found <a href="TDpatterns.html">here.</a> </p>
+ <div class="start"></div>
+
+<div class="start"></div>
+<!-- ****************************************************    -->
+
+</div><div  class="activity" ><div id="link"><div class="inline piece bridge"></div><div class="myhead" ><span style="font-weight: bold;">Find a link: </span> relating two given patterns</div></div>
+
+<div class="float">
+
+<div class="inline bord">
+<div class="inline title" data-text ="5y<<5>6g> xa +6a" data-w = "100" data-h="100" data-cur="false"></div> is like
+<div class="inline title" data-text ="4i,44.3r xa +6a" data-w = "100" data-h="100" data-cur="false"></div> in that...
+</div>
+</div>
+
+<p>This activity requires finding and describing a link between two patterns. To bridge the gap some commonality must be found between the two patterns.  The first example, the green hexagonal tile has an analagous function as the red triangle&mdash;they each introduce a 60 degree rotation in their patterns which gives them a 6-way rotational symmetry.  Each pair of yellow pentagonal tiles has an analagous function as each pink triplet of square tiles&mdash;eventhough they do not change the angles, they introduce a translation. In this first example, the twelve parts of one pattern directly correspond to the twelve parts of the other.  </p>
+<div class="float">
+
+
+    <div class="inline bord">
+    <div class="inline title" data-text ="3r3,5o xa+3a . +3a xb+5b" data-w = "100" data-h="100" data-cur="false"></div> is like
+        <div class="inline title" data-text ="4l7g xa+3a .. +3a. xb+7b" data-w = "100" data-h="100" data-cur="false"></div> in that...
+    </div>
+    </div>
+<p>In the second example, the number of parts don't match. Instead, each have a "petal" structure consisting of six main tiles (orange and green) that are seperated with some spacers. In particular, the orange and red "petal" is a simple loop of six pentagonal tiles and twelve triangular tiles whereas the green and olive "petal" is a simple loop of six heptagonal (7-sided) tiles and six square tiles.  The number of petals of each pattern is determined by the central shape: five for the one with pentagons and seven for the one with heptagons.</p>
+<p>This bridge activity can promote a programming perspective since often the general similarites can be seen in the code structure. For example, in the first example here are some prepocessor codes for each:</p>
+<ul>
+    <li><div class="inline title" data-text ="+6[6g> 5y<<5>]" data-w = "40" data-h="40" data-cur="false"></div> <span class="code">+6[6g> 5y<<5>]</span></li>
+    <li><div class="inline title" data-text ="+6[3r  4i<44>]" data-w = "40" data-h="40" data-cur="false"></div> <span class="code">+6[3r &nbsp;4i<44>]</span></li>
+</ul>
+<p>In both pieces of code, their first parts, 6g> and 3r, result in a 60 degree turn (although, the 6g> also introduces a translation) whereas the rest of each of their codes adds a spacer.  </p>
+<p>In the second example, although not crucial to understand it's preprocessor code, seeing their code does suggest the similarities and connections between the patterns.</p>
+<ul>
+    <li><div class="inline title" data-text ="m[5o +5[{5o5o5o> 5o5o}>]] [3r:3<]" data-w = "40" data-h="40" data-cur="false"></div> <span class="code">m[5o +5[{5o5o5o> 5o5o}>]] [3r:3<]</span></li>
+    <li><div class="inline title" data-text ="m[7g +7[{7g7g7g>>7g7g}>]] [4l]" data-w = "40" data-h="40" data-cur="false"></div> <span class="code">m[7g +7[{7g7g7g>>7g7g}>]] [4l]</span></li>
+</ul>
+<p>In particular, the role of "5o" and "7g" is the same. Rather than imagining this as a code-focused activity for the learners, perhaps these code examples are more suggestive that tweaking prepocessor code allows for the creation of many related examples.   </p>
+
+<div class="start"></div>
+<!-- ****************************************************    -->
+</div><div  class="activity" ><div id="showLengths"><div class="inline piece show "></div><div class="myhead" ><span style="font-weight: bold;">length ratios: </span> create a visual story about the ratio of squares to hexagons</div></div>
+
+<div class="start">    
+    <div class="inline title float" data-text ="4p{>44}4a{>44}4a{>44}xa 4y.{vavava}.44,6r" data-w = "300" data-h="100"></div>A single hexagonal tile is less than 2 square tiles in length but more than 1. 
+</div>
+<div class="start">    
+    <div class="inline title float" data-text ="4p{>44}4a{>44}4a{>44}xa 4y.{vavava}.44,6r6" data-w = "300" data-h="100"></div>Two hexagonal tiles are less than 4 square tiles but more than 3. 
+</div>
+<div class="start">    
+    <div class="inline title float" data-text ="4p{>44}4a{>44}4a{>44}xa 4y.{vavava}.44,6r66" data-w = "300" data-h="100"></div>Three hexagonal tiles are less than 6 square tiles but more than 4. 
+</div>
+<div class="start">    
+    <div class="inline title float" data-text ="4p{>44}4a{>44}4a{>44}xa 4y.{vavava}.44,6r666" data-w = "300" data-h="100" data-cur="false"></div>Four hexagonal tiles are less than 7 square tiles (or potentially equal). Thus, a hexagon is under 7/4 squares or 1.75 squares.
+  </div>
+  <div class="start">    
+    <p>This sequence of TileDrive images illustrates how 7 square tiles are longer or equal to 4 hexagon tiles. Or mathematically, the height of a unit hexgon (if one side is horizontal) is less than or equal to 1.75, which can be confirmed by Pythagoras (&#8730;<span style="text-decoration:overline;font-size:small;">3</span>=1.73205...). The property that TileDrive doesn't allow for overlapping tiles is exploited to demonstrate some highly precise geometric facts. In this case, the squares from the gray and purple grid are removed by any of the hexagons that overlap them.  In fact, below we can demonstrate that 26/15=1.73333... is a better estimate for the height. Note: coloring is used to help visually count the number of square and hexagon tiles. </p>
+ 
+    <div class="start">    
+        <div class="inline title float" data-text ="4p{>44}4a{>44}4a{>44}xa 6r6i66 xb 4y.{+9a}.44,+3b6r6i6i" data-w = "400" data-h="50" data-cur="false"></div>
+ 15 hexagonal tiles are less than 26 square tiles. 
+    </div>
+    <div class="start"></div>
+    <p>Similar visual ratio stories can be made with other constructed lengths (see <a href="TDLengths.html">TDLengths</a>).</p>
+
+</div>
+</div>
+
+<!-- ****************************************************    -->
+
+</div><div  class="activity" ><div id="exploreAngles"><div class="inline piece explore "></div><div class="myhead" ><span style="font-weight: bold;">angle exploration: </span> finding small angles using only triangles, squares, and pentagons.</div></div>
+
+<div class="start">    
+    <div class=" float">    
+        <div class="inline title" data-text ="{.4y}{4.2.3i}4t," data-w = "100" data-h="100"></div>
+    </div>
+    <p><b>30 degrees</b> (a square minus a triangle &rightarrow;90 - 60)<br>
+    The brown line helps show the outline of the missing square. <br>(TileDrive code: 4y4t.3.3i)</p>
+</div>
+<div class="start">    
+    <div class="float">    
+        <div class="inline title" data-text ="{.4y}{3t32.5i<<}3t" data-w = "100" data-h="100"></div>
+    </div>
+    <p><b>12 degrees</b> (2 triangles minus a pentagon &rightarrow;120 - 108)<br>The brown line indicates where the division would be between the two missing triangles. <br>(TileDrive code: 4y3t33.5i)</p>
+</div>
+
+<div class="start">    
+    <div class="float">    
+    <div class="inline title" data-text ="5y>5y>4a4y>4a3y4i<" data-w = "100" data-h="100"></div><div class="inline title" data-text ="{.4y}5t.5.4.34i<" data-w = "100" data-h="100"></div></div>
+
+   <p><b>6 degrees</b> (2 pentagons plus a square plus a triangle&rightarrow;2&times;108 + 90 + 60 = 366 degrees)
+    <br>The first picture with the two gray squares indicates the sum of all the angles of the yellow polygons (the gray squares do not change the resulting angle but help seperate the initial 0 angle from the final 366 angle). The second picture shows only the resulting 6 degree angle.  <br>(TileDrive code: 4y5t>5>4>34i<)
+    </p>
+</div>
+   <div class="start ">    
+<p>Here, each angle between the pink and yellow tiles is the small angle achieved. In this case, since 60, 90, and 108 (the corresponding angles of triangles, squares, and pentagons) are all divisible by 6, no smaller angle can be made with these tiles. Another way is to say that the greatest common divisor of 60, 90, and 108 is 6, and thus there does not exist a natural number less than 6 that is a linear combination of 60, 90 and 108 with integer coefficients. Or simply, 6 degrees is the smallest angle that can be made with these tiles.</p>
+<p>Similar explorations can be made with other sets of tiles. If, however, the heptagon tile (or nonagon, unadecagon) is included, degrees may not be the best unit to describe angles &mdash; fractions of a rotation may be more natural. </p>
+</div>
+
+<p>More angles are explored as well as some trigonometric ideas in <a href="TDAngles.html">TDAngles</a>.</p>
+
+</div>
+ 
+<!-- ****************************************************  
+
+5p3y, xa 
+3y5p,xb
+ va 4a {.vb}xc
+ vb 4a {.va} xd
+va 4a {.+1d} vb 4a {. +1c} xe
+.{+1e} xf 4r +4f
+
+
+5p3y, xa 
+3y5p,xb
+ va 4a {.vb} vb 4a {.va}xc
+ vb 4a {.va} va 4a  {.vb} xd
+va 4a {.+1d} vb 4a {. +1c} xe
+.{+1e} xf 4r +4f
+
+
+
+5p3y, xa 
+3y5p,xb
+ va 4a {.vb} xc
+ vb 4a {.va}  xd
+va 4a {.+1d}  xe
+.{+1e} xf 4r +4f
+
+4p44y  xa 
+4y4p4 xb
+ va 4a {.vb} xc
+ vb 4a {.va}  xd
+va 4a {.+1d}  xe
+.{+1e} xf 4r +4f
+
+
+5b4 xa
+5p,4 xb
+4i5 xc
+4r5, xd
+3k xe
+vbve{,vave{vdveva},vb}vave{vb},vdve,vave xf
+vave{,vdve,va}vbve{,vave,vb}vave{vb},vdve, xg
+vave{+2f},vdve{,+2g}vcvevdve,xh
+vbve{+2h},vave, xi
++3i
+
+
+5b{,,3}3,xa
+5p{.3},3 xb
+3i,5{,3} xc
+3r5{3}, xd
+3k xe
+vbve{,vave{vdveva},vb}vave{vb},vdve,vave xf
+vave{,vdve,va}vbve{,vave,vb}vave{vb},vdve, xg
+vave{+2f},vdve{,+2g}vcvevdve,xh
+vbve{+2h},vave, xi
++3i
+
+5b3,xa
+5p,43 xb
+3i,4i5 xc
+3r5, xd
+3k xe
+
+5b3,xa
+5p,443 xb
+3i,445 xc
+3r5, xd
+3k xe
+
+5ixa
+5p{3},33, xb
+3p3,5{,,3} xc
+5i, xd
+3k xe
+
+5ixa
+3i5p,3i, xb
+3i5p3i, xc
+5i, xd
+3k xe
+vbve{,vave{vdveva},vb}vave{vb},vdve,vave xf
+vave{,vdve,va}vbve{,vave,vb}vave{vb},vdve, xg
+vave{+2f},vdve{,+2g}vcvevdve,xh
+vbve{+2h},vave, xi
++3i
+
+4i4.5,xa
+4p4p,5 xb
+5o,4.4 xc
+5y4,4 xd
+3k xe
+vbve{,vave{vdveva},vb}vave{vb},vdve,vave xf
+vave{,vdve,va}vbve{,vave,vb}vave{vb},vdve, xg
+vave{+2f},vdve{,+2g}vcve{,vdve}vdve,xh
+vbve{+2h},vave, xi
++3i
+-->
+
+</body>
+</html>

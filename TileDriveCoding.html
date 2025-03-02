@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="tdcode.css">
+
+  <!-- part of an assignment generator of many years ago-->
+  <script src="rpoly.js"> </script>
+  <script src="rtree.js"> </script>
+  <script src="TD.js"> </script>
+  <script src="tlCodeEl.js"> </script>
+  <script src="TDcode.js"> </script>
+
+  <meta charset="UTF-8">
+  <title>TileDrive Coding</title>
+</head>
+
+<body>
+  <header>
+    <h1>Computational Aspects of TileDrive</h1>
+  </header>
+  <main>
+    <div class="start float">
+
+      <span class="summary"
+        data-w="150"
+        data-h="150"
+        data-code=">7<<<p{43443444}{>4344}{>>44}{>>>44}{<<<43<44}<<43<443<444"
+        data-text="interactively created"></span> <br>
+      <span class="summary"
+        data-code="4644"></span>
+
+    </div>
+    <p> <a href="TileDrive.html">TileDrive</a> (jimmorey.com/td/TileDrive.html) is a pattern drawing environment with
+      many constraints that help focus attention on computationally interesting ideas. The tiles are constrained to be
+      regular polygons with unit side length: initially these are triangles, squares, pentagons, heptagons/7gon, and
+      octagons/8gon (which later gets extended to nonagons/enneagons/9gons, decagons/10gons, hendecagons/undecagons/11gons,
+      lines/2gons). Since all the sides are unit length, the larger the number of sides the larger the shape is.
+      Another constraint is that new tiles can only be added to edges of existing tiles. This is one reason to stick
+      with unit lengths—it makes connections exact. Interactively, with a small number of screen-clicks a purple bug can
+      be created like the one to the left. Underlying these interactions are some ideas of paths, branching, and their
+      encoding in a simple computer language. This tool is designed for use as a multi-stage introduction to coding
+      ideas. The first stage is to create patterns through immediate interactions. The second stage is to accelerate the
+      creation of patterns by using keyboard shortcuts that will allow for a potential speed up for repetitive patterns.
+      Next, through cutting and pasting, chunking/subroutines help focus on generalizing regular pattern creation.
+      Finally, a non-interactive aspect is promoted that adds explicit notation for branching and use of multiple banks
+      of subroutines into a sequence of instructions (a program) that produces a pattern.</p>
+    <p>
+      The focus here is to demonstrate the underlying language of TileDrive to help educators understand this world's
+      fundamentals. Keep in mind that the initial stages of TileDrive are immediate and interactive but there are single
+      characters associated with each interaction. For instance, creating a row of a square, then a hexagon, followed by
+      two more squares can be created by clicking the square icon, the hexagon icon, then the square icon twice more.
+      The tile icons include the number of sides associated with their shape which are used as shorthand. In this case
+      the shorthand (which is the underlying language) would be 4644 corresponding to the sequence: square, hexagon,
+      square, square. The following discussion will describe TileDrive's possible products through its underlying
+      language and relate them to computational ideas. Note: in the figures the thick-black-rounded line is the starting line and the thinner-black line connect to dotted polygon is the ending line of the path.
+    </p>
+    <p>
+      As the language features become more complex, it is important to remember that these will be very useful for the designer of activities and should only be introduced to students when they have ready after mastering lower-level features. Some <a href="TDActivities.html">TileDrive Activities</a> (jimmorey.com/td/TDActivities.html) are suggested to show how various patterns can be used to help students develop a sense of the computational ideas that are introduced here.  For those who would like to see the language first, jump to the summary of the <a href="#summary">TileDrive language</a>.
+    </p>
+    <br style="clear:both" />
+
+    <h2>tile paths</h2>
+    <div class="start float">
+      <span class="summary"
+        data-code="4684"></span>
+      <span class="summary"
+        data-code="55555"></span>
+      <span data-w="50"
+        data-h="50"
+        class="summary"
+        data-code="33333"></span><br>
+      <span class="summary"
+        data-code="53535"></span>
+      <span data-w="150"
+        data-h="150"
+        class="summary"
+        data-code="54377634"></span>
+    </div>
+    <p>
+      The connection side is implicitly defined as the opposite side from where it connected to the previous tile.
+      For odd-sided tiles, the connection side is implicitly defined as the side to the right of the opposite point from
+      where it is connected to the previous tile. The images to the left show examples of connected tiles along with
+      their associated shorthand.
+    </p>
+
+
+    <p>Notice how patterns involving odd-sided tiles have a curve to the right and that smaller tiles curve more. This
+      can been observed by looking at the effect of five triangles which rotate the active edge 330 degrees as opposed to five pentagons which only rotate the active edge 180 degrees. Further, the sequence 776 in the last example has even less curving effect.
+    </p>
+    <p>
+      To facilitate a variety of connections, discrete right and left rotations are introduced to the descriptions. The symbols &lt;, for left and &gt;, for right are used to indicate the rotations. Consistent with the exacting connections, a right or left rotation corresponds with a selection of which side of the current tile will be used for the next connection.
+    </p>
+    <br style="clear:both" />
+
+    <div class="start float">
+
+      <span class="summary"
+        data-code="4.6.4.4"></span>
+      <span class="summary"
+        data-code="7.5,,4.638"></span>
+    </div>
+    <p>
+      Turning left or right can seem easy and well defined since switching sides is discrete—although the amount of “turning” in terms of angle depends on the “current” tile. For instance, in the above example the first right turn deviates the angle by 90 degrees (since it occurs with a square) whereas the second right turn deviates the angle only 60 degrees (since it occurs with a hexagon). Thus, though basic instructions such as 3,4,5,6,7,8, &lt;, and &gt;, a pattern can be described by driving a sequence of tiles over a pattern, which is this environment is called “TileDrive.” With practice, it is not too difficult to link a description of a path to the pattern it produces.
+
+    </p>
+    <br style="clear:both" />
+    <h2>tile loops</h2>
+
+    <p>
+      In a way, TileDrive hides the complexity of regular polygon (associated angles and lengths) in the simplicity of the discrete choices in construction. All of the irrational lengths and more subtle concepts can be introduced or discovered after engaging and mastering TileDrive's interface/world. There are no real prerequisite concepts like quantities, vectors, variables, functions, data-structures, control-structures, etc. To offset this lack of complexity, TileDrive has a responsive canvas that does not allow for tiles to overlap—it achieves this by having the placement of the current tile remove any overlapping tiles that were previously placed. This feature allows for questions to be answered about combinations of tiles that fit together without having to rely upon adding up angles. For instance, do 4 pentagons fit together like 4 squares do? Or do 3 heptagons fit together like 3 hexagons?
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="4.4.4.4"></span> works but
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5.5.5.5"></span> doesn't
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="6..6..6"></span> works but
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="7..7..7"></span> doesn't.
+    </p>
+
+    <div class=" float">
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="333333"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5555555555"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="77777777777777"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="8.8.8.8.8.8.8.8."></span><br>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="55.555.5"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="7.77.7.77."></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5.5,5.5,5.5,5.5,5.5,"></span><br>
+    </div>
+    <p>
+      After a little exploration with TileDrive, it may seem like there are few ways that tiles fit together. By chance, it is unlikely that many paths of tiles will exactly meet up like 4 squares or 3 hexagons, but by design, there are a lot of paths that meet up. A few single tile solutions can be seen here but there are many other patterns that also meet up.
+    </p>
+    <br style="clear:both" />
+    <h2>focus on patterns</h2>
+    <div class="start float">
+
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="3g33333"></span>
+      <span class="summary"
+        data-code="4y3g 4y3g 4y3g 4y3g 4y3g 4y3g"></span>
+      <span class="summary medium"
+        data-code="5y5,3g 5y5,3g 5y5,3g 5y5,3g 5y5,3g 5y5,3g"></span> <br>
+      <span class="summary"
+        data-code="4y6g> 4y6g> 4y6g> 4y6g> 4y6g> 4y6g>"></span>
+      <span class="summary big"
+        data-code="5y,,5.6g. 5y,,5.6g. 5y,,5.6g. 5y,,5.6g. 5y,,5.6g. 5y,,5.6g."></span>
+    </div>
+    <p>
+      To highlight the ways patterns fit together, colours can be used to help emphasize similarities among patterns which can also suggest ways to design new paths especially those that exactly meet up with themselves to form loops. Colours can be included in the descriptions of the paths with the following letters: r, y, b, o, g, p, l, and i which represent red, yellow, blue, orange, green, purple, olive, and pink (later "k" for black and "a" for gray are included). By using a colour scheme, implicit connections among patterns can be suggested. For example, green can be used to colour the essential parts of a pattern and yellow the more decorative parts of a pattern. Each of the examples has a set of six green tiles that introduce a sixth of a full rotation whereas yellow tiles do not add any rotation instead they provide a means of separating green tiles.
+    </p>
+    <p>Note: colour is part of the state that a tile inherits from its predecessor (red is the default colour). Only one g (green) was required to make all six triangular tiles green in 3g33333 whereas six gs are required in the others because of the intervening yellow tiles.
+    </p>
+    <br style="clear:both" />
+    <h2>using repetition</h2>
+    <div class="start float">
+      <div class="summary"
+        data-code="5y,,5.6g."></div>
+      <div class="summary"
+        data-w="50"
+        data-h="50"
+        data-code=""
+        data-text="cut A"></div>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5y,,5.6g."
+        data-text="paste A"></span>
+
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5y,,5.6g.  xA +2A"
+        data-text="paste A (2 times)"></span><br>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5y,,5.6g.  xA +3A"
+        data-text="paste A (3 times)"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5y,,5.6g.  xA +4A"
+        data-text="paste A (4 times)"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="5y,,5.6g.  xA +5A"
+        data-text="paste A (5 times)"></span>
+      <span class="summary big"
+        data-w="50"
+        data-h="50"
+        data-code="5y,,5.6g.  xA +6A"
+        data-text="paste A (6 times)"></span>
+    </div>
+    <p>
+      Although all the paths described above can be created by typing (or clicking on screen buttons) in their associated sequences of character commands, their repetitive nature allows for a means of creating them faster and less error-prone by using <em><strong>cutting and pasting</strong></em>. TileDrive's interface has ten banks (labeled A-J) to store and append sequences in path descriptions. To keep the interface simple, the act of storing sequences puts the entire sequence currently displayed and removes it from the screen behaving like "cut-all" action. The sequence shown to the right cuts the code with two pentagons and a hexagon into bank A then uses what is stored in bank A six times to create a pattern that has 12 pentagons and 6 hexagons. In this case, the number of steps to create this pattern has been reduced: from 54 simple steps down to 9 simple steps, 1 cut, and 6 pastes (or 16ish steps).
+    </p>
+    <p>Experience with this type of repetition can help form a foundation for computation ideas relating to subroutines and loops. Each paste from a bank is like calling a subroutine and the number of repetitions can be thought of as a simple loop. One way to think about this would be to write some python code to produce the same description of the pattern. Below would be one example using a for-loop that produces and highlights a looping parallel.
+
+    </p>
+    <div>
+      <code>for x in range(6):<br>&emsp;&emsp;print("5y&lt;&lt;5&gt;6g&gt;") </code>
+      <p>Also, the implicit connections between the visual and the conceptual can be used to help better understand loops. In this example, the tiles' shape suggests a visual loop and its symmetry implicitly indicates the number of iterations. Since all the green and yellow patterns have a similar six-way symmetry, their codes/descriptions could be done with the same number of iterations in the loop. </p>
+    </div>
+    <br style="clear:both" />
+    <h2>more repetitive paths</h2>
+    <div class="start float">
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="4o5b"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code=""
+        data-text="cut A"></span><br>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="4o5bxA +aa"
+        data-text="paste A (10 times)"></span>
+      <span class="summary"
+        data-w="100"
+        data-h="100"
+        data-code="4o5bxA +aar>"
+        data-text="r> (red turn right)"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code=""
+        data-text="cut B"></span><br>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="4o5bxA +aar> xB +2B"
+        data-text="paste B (2 times)"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="4o5bxA +aar> xB +3B"
+        data-text="paste B (3 times)"></span>
+      <span class="summary"
+        data-w="50"
+        data-h="50"
+        data-code="4o5bxA +aar> xB +4B"
+        data-text="paste B (4 times)"></span><br>
+      <span class="summary medium"
+        data-w="150"
+        data-h="150"
+        data-code="4o5bxA +aar> xB +5B"
+        data-text="paste B (5 times total)"></span>
+    </div>
+    <p>
+      These simple steps ("345678&lt;&gt;rybogpli": tiles + turning + colours) along with <em>cutting and pasting</em> allow for many elaborate tile patterns to be produced quickly. For instance, in this orange and blue case, a loop of loops can be quickly constructed with 6 simple steps, 2 cuts, and 15 pastes (or 23ish steps) as opposed to 205 simple steps.
+    </p>
+    <p>I believe a key to appreciating and understanding an idea is to realize the power that it gives you. So, I would suggest holding off introducing the cutting and pasting feature until a lot of experience and tacit knowledge of repeating sequences (with pitfalls) have been gained. When this new faster means of constructing patterns is revealed, I am sure they will be appreciated.
+    </p>
+    <br style="clear:both" />
+
+    <h2>diverging from paths to trees</h2>
+
+    <div class="start float">
+
+      <span class="summary"
+        data-w="100"
+        data-h="100"
+        data-code="4b5 {<3r<3<3} 3y33"></span>
+      <span class="summary"
+        data-w="80"
+        data-h="80"
+        data-code="4b5<3r<3<3>g335b<<3y33"
+        data-text="4b5&lt;3r&lt;3&lt;3 <strong><em> &gt;g335b&lt;&lt; </em></strong> 3y33"></span><br>
+    </div>
+    <p>
+      Cutting and pasting of simple steps allows for a lot of interesting patterns and for an introduction to a few computational concepts but the reliance on a single path to create a pattern makes construction and exploration of patterns often cumbersome and tedious. To address this problem, new paths can be introduced at any tile. This functionality is achieved by simply clicking on a given tile and starting a new path. In terms of code or pattern description, curly braces are used to indicate the new path that branches out. A red path of triangle continues from blue pentagon without affecting the yellow path that follows the blue. Note that the first step of turning changes the attachment side of the pentagon so this new path will not intersect and erase the yellow path of tiles.</p>
+    <p>This branching feature makes exploration of the gaps or space around an existing pattern much easier than having to backtrack to turn a branching pattern into a single path. The green path of &gt;g335b&lt;&lt; is an example of how to double back overtop a path without using branching. In theory, this can be done in place of using branching, but in practice it would be a pain and would add a lot of frustration of creating new patterns. Instead branching facilitates and encourages exploration of patterns especially when goals are more artistic.
+    </p>
+
+    <br style="clear:both" />
+
+    <div class="start float">
+      <span class="summary medium"
+        data-w="150"
+        data-h="150"
+        data-code=" 8p{>>>>6b {<4344} >43<44} {<<6>45y} {>>6>45y} 8iy"></span></span>
+
+      <div class="summary medium"
+        data-w="150"
+        data-h="150"
+        data-code="5l{<3b}{<<3b}5l{>3}{<3b}{<<3b}5l{<3b}{<<3b}5l{>3}{<3b}{<<3b}5l{<3b}{<<3b}5l{<3b}{<<3b}5l{>33}{<}{<3b}{<<3b}5l{<3b}{<<3b}5l{>3<3}{<3b}{<<3b}5l{<3b}{<<3b}"
+        data-text="5l{<3b}{<<3b} pasted 10 times with embellishment""></div><br>
+        
+        <span class="
+        summary
+        medium"
+        data-w="150"
+        data-h="150"
+        data-code="5o<3l5o<3l5o<3l5o<3l5o<3l5o<3l5o
+{35b3o<5{<3}>3<5b3o}<3l5o<3l5o<3l5o<3l5o<3l5o<3l5o<3l5o<3l5o
+{>3<5r{<3}>3<53<5{>3o}<3}<3l"
+        data-text="embellished 5o<3l repeated 15 times"></span></span><br>
+      </div>
+      <p>A stickman can be created by tackling each segment separately by exploiting the branching feature. By clicking on the purple octagonal tile, a new set of curly brackets are inserted, and subsequent actions are put within these brackets. To jump to a new branch, another click on the purple octagonal will add another set of curly brackets. This interactive means of creating is more natural than typing in the code sequentially. Some simple patterns can be embellished by filling in the holes. </p>
+      <p>Often negative spaces or gaps are more interesting than the tiles. Part of this is due to gaps not as constrained as the tiles. In the olive and blue pattern, a central white almost bird-like figure is outlined which even though all the edges are unit length has very irregular angles. Exploring possible ways to partially fill gaps left behind by introducing different tiles can make provocative patterns. Adding blue tiles on the outside can be done algorithmically but the inner olive tiles break up this pattern's regularity. </p>
+      <br style="clear:both" />
+
+      <div class="start float">
+
+        <span class="summary"
+          data-w="150"
+          data-h="150"
+          data-code="3<5o3l<5o3l5o3l<5o3l5o3l<5o3l5o3l<5o3l5o3l<5o3l{>>4t>>443r{<4}{4}3t<3<3o4t{<3b}>3b}"
+          data-text="uses <em><strong>t</strong></em> for hidden squares"></span><br>
+
+      </div>
+      <p>
+        To help promote artistic ventures using TileDrive, a transparent colour was added (t in code). The lion-like pattern has several transparent tiles which do not remove tiles. Notably, there are two transparent squares that connect the bottom most triangle to the triangle at the bottom of the mouth. Another transparent square, which is easier to see, is the one between the blue triangle "eyes".
+      </p>
+      <p>
+        <!-- I should make a new branch go to the last branch for the polygon  -->
+        In a sense, this new branch feature corresponds to a fork in processing terms. A forked process inherits the current state which in TileDrive only relates the current polygon &mdash; the blue pentagon's position and colour. In terms of implementing the order of what happens, the new fork is added to the end of implicit list of forks. When the forked processes have completed, the original path is completed. During an interactive pattern construction, this choice of fork implementation may be exposed since only the last tile placed will be shown (erasing previous tiles). The choice of adding a new fork to the end of the list can diminish this potentially disorienting feature. 
+      </p>
+      <br style="clear:both" />
+      <h2>automating cutting and pasting</h2>
+      <div class="start float">
+        <span class="summary medium"
+          data-w="150"
+          data-h="150"
+          data-code="4o5p4o5p xA +4A << xB +5B {4k5a4k5a}"
+          data-text="4o5p4o5p xA<br> vAvAvAvA << xB<br> vBvBvBvBvB"></span>
+        <span class="summary medium"
+          data-w="150"
+          data-h="150"
+          data-code="3o5p3o<5p xA +4A << xB +5B  {3k5a3k<5a}"
+          data-text="3o5p3o<5p xA<br> vAvAvAvA << xB<br> vBvBvBvBvB"></span>
+        <span class="summary medium"
+          data-w="150"
+          data-h="150"
+          data-code=">{3o43y4443r443} xA 7r +7A {3a43k4443a443}"
+          data-text=">{3o43y4443r443} xA<br>7r vAvAvAvAvAvAvA"></span>
+      </div>
+
+      <!-- perhaps better....
+        6l<5g6l>5g xA
+          6l{>>5g}<5g6l>5g xB
+          +2A vB vA << xC
+          +5C
+          -->
+      <p>Much of the computational thoughts occur through interactions with the interface of TileDrive. One way to help focus attention on computation thinking is to make the interactions more formal. Extending the simple language of tiles/turns/colour with cutting and pasting allows for better reflection on the processes of pattern construction. Specifically, xA,vA,xB,vB,xC,vC,...,xJ, and vJ or x[A-J] and v[A-J] were added to the simple language. This breaks the single character instruction. The shorthand code describes completely describe the iterations that create each pattern. In these three examples, the first "vA" is coloured gray and black to indicate its function in the whole pattern. Notice that there is little difference between the first and second descriptions and yet the patterns can be challenging to see that they are related. </p>
+
+        <!--
+        6a xA 6p {> +4A} xB > {+4B} xC 6r +6C
+6a xA 6i6p{> +5A} xB > {+3B} xC 6r +6C
+55{>5i}<xA 55{a+5A}< xB < {+5B} xC 5b +5C
+q4a6{>{>4}4} xA 4p6 {>{>4a} +3A} xB > {+3B} xC 6r +6C
+
+6l<5k6l>5g xA          
++4A << xC          
++5C
+        -->
+      <p>When creating these types of programs, rather than use the same interactive interface (either keyboard or screen buttons) an advanced panal is used where you type in this preprocessor language and the click "process" to execute all the interactions at once. When interactively making patterns, it can be easy to keep clicking on a bank to repeatedly paste until the desired pattern is shown in the picture but when using the preprocessor the repeated v's can difficult visualize and tedious to type. So along with the cutting and pasting, this new language includes a multi-paste which pastes from a bank several times. In these examples, the repetition of vA can be replaced in the follow way: vAvAvAvA can be replaced with +5A. In general, this new command is + followed by a single digit and the letter of the bank. To aid with some cases that need more than 9 repetitions is convienent to use hexatridecimal, base 36, which means after 9, a is 10, b is 11, ..., and z is 35. Also as a convention, after storing each of the banks a new line is added to add clarity.  
+      </p>
+      <br style="clear:both" />
+
+      <div class="start float">
+        <!--
+        <span class="summary big"
+          data-code="6l<5k6l>5g xA          
+            +4A << xB         
+            +5B"
+          data-text="6l<5k6l>5g xA<br>         
+              +4A << xB<br>          
+              +5B"
+          data-w="250"
+          data-h="250"></span>
+          -->
+          <span class="summary big"
+          data-code="3o3g,7p xA +6A+6A ,,, xB +7B"
+          data-text="3o3g,7p xA<br> +6A+6A ,,, xB<br> +7B"
+          data-w="250"
+          data-h="250"></span>
+
+        <span class="summary big"
+          data-code="5g4r,5g.4r,5g xA
+            vA 6k{..vA},,vA6k,,vA 6k ..xB
+            +3B"
+          data-text="5g4r,5g.4r,5g xA<br>
+              vA 6k{..vA},,vA6k,,vA 6k ..xB<br>
+              +3B<br>"
+          data-w="250"
+          data-h="250"></span>
+
+
+      </div>
+      <p>These next cases better demonstrate this preprocessor language. Note that periods (.) and commas (,) can be used instead of &gt; and &lt; because these can sometimes cause issues within HTML. The first example is related to the previous first example except it replaces pentagons with heptagons and likewise replaces the squares with a pair of triangles. Also, the number of repetitions required changes. Here the twelve repetitions represented "+6A +6A" could be replaced by "+cA" since c is 12.   </p>
+      <p>In the second example, bank A stores the decorative path whereas bank B stores a path that uses A and 3 hexagons.  Since A's path's initial edge and final edge are parallel, B's overall effect is to produce a large triangle with decorative sides with an extra dangling path A produced by the branch "{..vA}" (which could have been written "{>>vA}").  When three of the B's are combined, the dangling A's connect the three large triangles producing a large hexagon. </p>
+      <p>The example from "more repetitive paths" can be succintly reduced to "4o5b xA +aA > xB +5B": note the use of "a" in the 10 times paste. This representation allows for easy alterations of colour and shapes.</p>
+      <br style="clear:both" />
+
+      <h2 id="mix">creating loops through interweaving code</h2>
+      <!--br style="clear:both" /-->
+      <div class="start float">
+        <div class="start float">
+          <span class="summary medium"
+            data-w="75"
+            data-h="75"
+            data-code="3r xA +6A">
+          </span>
+          <span class="summary medium"
+            data-w="100"
+            data-h="100"
+            data-code="3r4g  xA +6A"
+            ></span>
+        </div>
+<p>A simple loop can be altered to appear much more complicated by introducing polygons within the loop. For instance a loop of 6 triangles, can be altered by inserting squares between each pair of triangles. This program can be simply altered by changing the 4 to a 6 or an 8 allowing for a quick swap out of the squares to hexagons or octagons. If pentagons are desired as the inserted polygons, the programs needs more complicated changes. </p>
+<br style="clear:both" />
+<div class="start float">
+  <span class="summary medium"
+    data-w="75"
+    data-h="75"
+    data-code="3r5g3r5g< xA +3A">
+  </span>
+  <span class="summary medium"
+    data-w="100"
+    data-h="100"
+    data-code="3r6r>3r4r  xA +2A"
+    ></span>
+    <span class="summary medium"
+    data-w="150"
+    data-h="150"
+    data-code="6r>5g3r5g<4r5g3r5g<  xA +2A"
+    ></span>
+    
+</div>
+
+<p>By alternating a right-bending with left-bending pentagon, a pleasing guitar-pick looking loop arrises. The style of process can be done with more complicated loops but the coding can become more prone to typos or forgetting where in a loop which bending pentagon comes next. The frustration and confusion associated with this style of construction may cause it's lack adoption and exploration. </p><br style="clear:both" />
+
+<div class="start float">
+  <span class="summary medium"
+    data-w="75"
+    data-h="75"
+    data-code="3r3r3r3r3r3r xa
+    5g5g< xb
+    mab"
+    data-text="3r3r3r3r3r3r xA <br>
+    5g5g< xB<br>
+    mAB">
+  </span>
+  <span class="summary medium"
+    data-w="100"
+    data-h="100"
+    data-code="6r>3r4r3r xa +2a xa 5g5g< xb mab"
+    data-text="6r>3r4r3r xA +2A xA <br>5g5g< xB <br>mAB"
+    ></span>
+</div>
+<p>To ease this problem and also expand the expressivness of TileDrive, a new command is introduced into the preprocessor language: m which stands for mix. Syntax for this command is simply mAB where A is the bank index for the primary pattern and B is the bank index for the secondary pattern. This mix command implicitly breaks each pattern into chunks that contain only one polygon with their associated turns and colouring and returns the chunks interleaved starting with A. If there are more chunks in B, than A the excess in B are ignored. If there are fewer chunks in B, than more copies of B are used.  More than having not balance the number of chunks of the two patterns, this last feature simplifies description of the B pattern. Note: each description of the secondary pattern here only has two pentagons yet their mixed results contain six pentagons. </p>
+<br style="clear:both" />
+
+
+<div class="start float">
+  <div class="inline title" data-text ="3r xA +6A " data-w = "30" data-h="30" ></div>
+  <div class="inline title" data-text ="3r xA +6A xA
+    5p<5p xD 
+    mAD" data-w = "50" data-h="50" ></div>
+  <span class="summary medium"
+    data-w="75"
+    data-h="75"
+    data-code="3r xa +6a xa 
+    4y<4y> xb 
+    5p<5p xd 
+    mad xc
+    mcb"
+    data-text="3r xA +6A xA<br>
+    4y<4y> xB<br> 
+    5p<5p xD<br>
+    mAD xC<br>
+    mCB">
+  </span>  <div class="inline title" data-text ="3r xA +6A xA
+  4y<4y> xD 
+  mAD" data-w = "50" data-h="50" ></div>
+  <span class="summary medium"
+    data-w="100"
+    data-h="100"
+    data-code="3r xa +6a xa 
+    4y<4y> xb 
+    5p<5p xd 
+    mab xc
+    mcd"
+    data-text="3r xA +6A xA <br>
+    4y<4y> xB <br>
+    5p<5p xD <br>
+    mAB xC<br>
+    mCD"
+    ></span>
+</div>
+<p>Mixed patterns can also be mixed. These examples are closely related: the order of mixing makes the difference. In the first case, pentagons are mixed with the triangle loop then the squares are mixed in.  Since there are 12 polygons before the mixing in the squares, there are 12 squares added. In the second case, squares are mixed first so there is only 6 squares and then there are 12 pentagons mixed in later. Observe that the only difference between the two codes is that  D and B are exchanged in their last two lines.</p>
+<br style="clear:both" />
+<div class="start float">
+  <div class="inline title" data-text ="3l xa +6a" data-w = "50" data-h="50" ></div>
+  <div class="inline title" data-text ="4<g xb +4b" data-w = "70" data-h="70" ></div>
+  <span class="summary medium"
+    data-w="100"
+    data-h="100"
+    data-code="3l xA +6A +6A xA 
+    4g< xB 
+    mAB"
+    data-text="3l xA +6A +6A xA <br>
+    4g< xB mAB">
+  </span><br>
+
+    <div class="inline title" data-text ="5o5o<4o< xA +4A" data-w = "75" data-h="75" ></div>
+    <div class="inline title" data-text ="3l xb +6b" data-w = "50" data-h="50" ></div>
+    <span class="summary medium"
+      data-w="100"
+      data-h="100"
+      data-code="5o5o<4o< xA +4A xA 
+      3l xB 
+      mAB"
+      data-text="5o5o<4o< xA +4A xA <br>
+      3l xB 
+      mAB">
+  </span>
+</div>
+<p>Beyond elaborating a single loop, multiple loops can be mixed. The first case has two clockwise loops of triangles mixed with three counterclockwise loops of squares which creates a single mixed clockwise loop. Note that the three square loops are implicitly defined making use of how the secondary pattern is used in mixing--12 squares line up with the 12 triangles which happens to make 3 loops of squares. </p>
+<p> The second case has a more complicated. The first loop of 12 polygons (which can be thought as an elaborated loop of 4 squares) is a single counterclockwise loop whereas the second is two implicitly defined clockwise loops of triangles. The mixed result is a single clockwise loop that may have been hard to imagine without this process. </p>
+<br style="clear:both" />
+
+<div class="start float">  
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="5o:5o<4o< xA +4A xA 
+  3l3l:3l xB 
+  mAB"
+  data-text="5o:5o<4o< xA +4A xA 
+  3l3l:3l xB 
+  mAB">
+  </span>
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="5o5o<:4o< xA +4A xA 
+  3l3l:3l xB 
+  mAB"
+  data-text="5o5o<:4o< xA +4A xA 
+  3l3l:3l xB 
+  mAB">
+  </span>
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="4o<:5o5o< xA +4A xA 
+  3l3l:3l xB 
+  mAB"
+  data-text="4o<:5o5o< xA +4A xA 
+  3l3l:3l xB 
+  mAB"> 
+</span> <br>
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="5o:5o<4o< xA +4A xA 
+  3g:3g3l xB 
+  mAB"
+  data-text="5o:5o<4o< xA +4A xA 
+  3g:3g3l xB 
+  mAB">
+  </span>
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="5o5o<:4o< xA +4A xA 
+  3g:3g3l xB 
+  mAB"
+  data-text="5o5o<:4o< xA +4A xA 
+  3g:3g3l xB 
+  mAB">
+  </span>
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="4o<:5o5o< xA +4A xA 
+  3g:3g3l xB 
+  mAB"
+  data-text="4o<:5o5o< xA +4A xA 
+  3g:3g3l xB 
+  mAB"> </span>
+  <br>
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="5o:5o<4o< xA +4A xA 
+  3g:3g3l3l3l:3l xB
+  mAB"
+  data-text="5o:5o<4o< xA +4A xA 
+  3g:3g3l3l3l:3l xB
+  mAB">
+  </span>
+  <span class="summary medium"
+  data-w="100"
+  data-h="100"
+  data-code="5o5o<:4o< xA +4A xA 
+  3l:3l3g:3g3l3l xB
+  mAB"
+  data-text="5o5o<:4o< xA +4A xA 
+  3l:3l3g:3g3l3l xB
+  mAB">
+  </span>  50+ variations (see <a href="TDPlay.html">TDPlay</a>)
+</div>
+<p>Alternating code between two patterns can make some interesting patterns but the implicit single tile chunking of the patterns can be restrictive. To add flexibility and expressability a gluing feature is included in the language with a ":" character. The example above can be altered by inserting colons into the codes so that neighbouring polygons will now be put in the same chunk when the codes are mixed. Each insertion of a ":" is right before a polygon number in the code. The mixed result forms a loops with neighbouring polygons that share a colour: these are examples of gluing since the primary and secondary patterns do not share color (in these examples, each polygon declares a color).To match the looping structure, each of the primary and secondary includes gluing. </p>
+
+<br style="clear:both" />
+
+</div>
+      <h2>creating patches</h2>
+      <br style="clear:both" />
+      <div class="start float">
+        <div class="inline" >
+          <div class="inline title" data-text ="4a" data-w = "10" data-h="10" ></div><br>
+          A<br>
+          <div class="inline title" data-text ="4p{>4a4a4a4a}" data-w = "50" data-h="10" ></div><br>
+          B<br>
+          <div class="inline title" data-text ="4a xA 4p{>+4A} xB+4B" data-w = "50" data-h="50" ></div><br>
+          C<br>
+
+        </div>
+        <span class="summary medium"
+        data-w="150"
+        data-h="150"
+        data-code="4axA 4p{>+4A}xB >{+4B}xC 4r+4C"
+        data-text="4a xA<br> 4p{>+4A} xB<br> >{+4B} xC<br> 4r+4C"></span>
+        <span class="summary medium"
+          data-w="200"
+          data-h="200"
+          data-code="6a xA 6p{>+3A} xB >{+3B} xC 6r+6C"
+          data-text="6a xA<br>6p{>+3A} xB<br>>{+3B} xC<br> 6r+6C">
+        </span>
+
+        <span class="summary medium"
+          data-w="150"
+          data-h="150"
+          data-code="3a3a< xa
+          3p{+3a}<3p xb
+          3t<{+4b}3r< xc 
+          +3c "
+          data-text="3a3a< xA <br>
+          3p{+3A}<3p xB <br>
+          3t<{+4B}3r< xC <br> 
+          +3C "></span>
+      </div>
+      <p>Here are some examples on how to create filled-in patches. The first two are similar with three banks: the first (A) has a single gray shape, the second (B) describes a line of gray shapes (from A) starting with a purple shape, with the last bank (C) describes a wedge of lines (from B). A number of the wedges (from C) are placed arround a central red shape.  The triangular patch is related but because of the oddness of triangles requires a few tweaks as can be seen reflected in it's associated code. In each of these examples the branching is exploited to spread out the polygons. Their central red polygons branch out with a number of purple branches which in turn branch out with gray branches. The size of each patch is determined by length of each branch which  is determined by the number of repetitions of the gray polygon (see +#A) and the number of repetitions of the purple polygon (see +#B). The last repetition relates to the number of wedges that fit (see +#C): 4 for the square pattern, 6 for the hexagonal pattern, and 3 for the triangular pattern. </p>
+      <br style="clear:both" />
+      <div class="start float">
+        <span class="summary medium"
+        data-w="150"
+        data-h="150"
+        data-code="4axA 4p{>+3A}xB >{+3B}xC 4r+4C xd 6o xe mde"
+        data-text="<span class='gray'>4a xA<br> 4p{>+</span>3<span class='gray'>A} xB<br> >{+</span>3<span class='gray'>B} xC<br> 4r+4C</span> xD <br> 6o xE mDE"></span>
+
+        <span class="summary medium"
+          data-w="200"
+          data-h="200"
+          data-code="6a xA 6p{>+2A} xB >{+2B} xC 6r+6C xd 4o xe mde"
+          data-text="<span class='gray'>6a xA<br>6p{>+</span>2<span class='gray'>A} xB<br>>{+</span>2<span class='gray'>B} xC<br> 6r+6C </span>xD <br> 4o xE mDE">
+        </span>
+
+        <span class="summary medium"
+          data-w="150"
+          data-h="150"
+          data-code="3a3a< xa
+          3p{+2a}<3p xb
+          3t<{+3b}3r< xc 
+          +3c xd 4o xe mde "
+          data-text="<span class='gray'>3a3a< xA <br>
+          3p{+</span>2<span class='gray'>A}<3p xB <br>
+          3t<{+</span>3<span class='gray'>B}3r< xC <br> 
+          +3C </span>xD <br> 4o xE mDE"></span>
+      </div>
+      <p>The construction style of these patches can be more easily seen by introducing spacers between the polygons exposing disconnections in these patches and revealing their tree-like structure. Although creating patches don't require the use of the code "mixing" feature it certainly can help in the creation of more complex patterns as wells as exploration of variations. Each example mixes in orange spacer polygons stored in the E bank. The alteractions in each code are highlighted leave the unchanged code gray. As well as the spacer code, the size of the patches are reduced to accommodate for the size increase of the patterns with the spacers.</p>
+    </p>
+      <br style="clear:both" />
+      <div class="start float">
+        <span class="summary medium"
+        data-w="150"
+        data-h="150"
+        data-code="6o xE 4a{>:ve} xA 4p{>+3A}xB >{+3B}xC 4r+4C xd mde"
+        data-text="6o xE<br><span class='gray'> 4a</span>{>:ve}<span class='gray'> xA<br> 4p{>+4A} xB<br> >{+4B} xC<br> 4r+4C xD mDE</span>"></span>
+
+        <span class="summary medium"
+          data-w="200"
+          data-h="200"
+          data-code="4o xE 6a{>>:ve} xA 6p{>+2A} xB >{+2B} xC 6r+6C xd mde"
+          data-text="4o xE<br> <span class='gray'>6a</span><s>{>:ve}</s>{>>:ve}<span class='gray'> xA<br>6p{></span><s>{>:ve}</s><span class='gray'>+2A} xB<br>>{+2B} xC<br> 6r+6CxD  mDE</span>">
+        </span>
+
+        <span class="summary medium"
+          data-w="150"
+          data-h="150"
+          data-code="4o xE  3a3a{:ve}< xa
+          3p{+2a}<3p xb
+          3t<{+3b}3r< xc 
+          +3c xd mde "
+          data-text="4o xE <span class='gray'><br>3a3a</span>{:ve}<span class='gray'>< xA <br>
+          3p{+2A}<3p xB <br>
+          3t<{+3B}3r< xC <br> 
+          +3C xD mDE</span>"></span>
+      </div>
+      <p>To reconnect the patches, polygons are needed at each shape made by A which can be achieved by short branches. Bank E is defined now at the begining so that is can also be used in A's definition of the short branches. One way these branches can be attached is by gluing ({&gt;:vE}) them to in each A. For the hexagonal grid pattern, if all six sides of the hexagons are desired to be filled with spaces the stroked out code should be used but it turns out that creating a loop containing 3 hexagons limits flexibility for the following  examples.   </p>
+      <br style="clear:both" />
+      <div class="start float">
+
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="5g5g< xE
+      3p3p{:5g}< xA
+      3p{+2A}<3p xB
+      3t<{+3B}3t< xC
+      +3C xD mDE"
+      data-text="5g5g< <span class='gray'>xE<br>
+      3p3p{</span>:5g<span class='gray'>}< xA<br>
+      3p{+2A}<3p xB<br>
+      3t<{+3B}3t< xC<br>
+      +3C xD mDE</span>"></span>
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="7i7i< xE
+      3p3p{:7i}< xA
+      3p{+2A}<3p xB
+      3t<{+3B}3t< xC
+      +3C xD mDE"
+      data-text="7i7i< <span class='gray'>xE<br>
+        3p3p{</span>:7i<span class='gray'>}< xA<br>
+        3p{+2A}<3p xB<br>
+        3t<{+3B}3t< xC<br>
+        +3C xD mDE</span>""></span>
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="8r>8r<xE
+      3p3p{:8r}< xA
+      3p{+2A}<3p xB
+      3t<{+3B}3t< xC
+      +3C xD mDE"
+      data-text="8r>8r< <span class='gray'>xE<br>
+        3p3p{</span>:8r<span class='gray'>}< xA<br>
+        3p{+2A}<3p xB<br>
+        3t<{+3B}3t< xC<br>
+        +3C xD mDE</span>""></span><br>
+      </div>
+      <p>These basic grids can be turned into elaborate patterns relatively easily. One key to way to add right and left twists into the local loops. These examples here utilise mix and gluing to insert polygons between the grids original polygons. The codes below were selected so that it would be fairly easy to use them as templates to create many variations to use in activities.  </p>
+      <br style="clear:both" />
+      <div class="start float">
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="3o3o< xE
+      4a xA
+      4p{>+4A} xB
+      >{+4B} xC
+      4r+4C xD 3t mDE"
+      data-text="3o3o< xE<br>
+      <span class='gray'>4a xA<br>
+      4p{>+4A} xB<br>
+      >{+4B} xC<br>
+      4r+4C xD</span> 3t <span class='gray'>mDE</span>"></span>
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="7l7l< xE
+      4a{>:7l} xA
+      4p{>+2A} xB
+      >{+2B} xC
+      4p+4C xD mDE"
+      data-text="7l7l< xE <br>
+      <span class='gray'>4a</span>{>:7l} <span class='gray'>xA<br>
+      4p{>+2A} xB<br>
+      >{+2B} xC<br>
+      4p+4C xD mDE</span>"></span>
+      <span class="summary medium"
+      data-w="160"
+      data-h="160"
+      data-code="3b<:5b<:3b xG
+      3b<:5b:3b xH
+      vGvH xE
+      4a{.:vG}4a{.:vH} xA
+      4a{.:vH}4a{.:vG} xF
+      4p{>+1A} 4p{>+1F} xB
+      >{+1B} xC
+      4p+4C xD
+      3tmDE"
+      data-text="3b<:5b<:3b xG <br>
+      3b<:5b:3b xH <br>
+      vGvH xE <br>
+      4a{.:vG}4a{.:vH} xA <br>
+      4a{.:vH}4a{.:vG} xF <br>
+      <span class='gray'>4p{.+1A}4p{.+1F}xB <br>
+      >{+1B} xC <br>
+      4p+4C xD<br>
+      3t mDE</span>"></span>
+
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="5o<:3l< xG 3l:5o xH
+      vGvH xE
+      3g3g{<.:vH}< xA
+      3g{+2A}<3g xB
+      3t<{+3B}3t< xC
+      +3C xD mDE"
+      data-text="5o<:3l< xG<br> 3l:5o xH<br>
+      vGvH xE <br>
+      <span class='gray'>3g3g</span>{<.:vH}<span class='gray'>< xA  <br>
+      3g{+2A}<3g xB <br>
+      3t<{+3B}3t< xC <br>
+      +3C xD mDE</span>"></span>
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="5i< xG
+      5i xH
+      vGvH xE
+      6a{..:vG}6a{..:vH} xA
+      6a{..:vH}6a{..:vG} xF
+      6p{.+1F}6p{.+1A}xB
+      >{+1B} xC
+      6p+6C xD
+       mDE"
+      data-text="5i< xG<br>
+      5i xH <br>
+      vGvH xE <br>
+      <span class='gray'>6a</span>{..:vG}6a{..:vH}  <span class='gray'>xA</span><br>
+      6a{..:vH}6a{..:vG} xF<br>
+      <span class='gray'>6p{.+1F}6p{.+1A}xB<br>
+      >{+1B} xC<br>
+      6p+6C xD
+       mDE</span>"></span>    
+
+      <span class="summary medium"
+      data-w="150"
+      data-h="150"
+      data-code="3i:5i<:3i xG
+      3i<:5i:3i< xH
+      vGvH xE
+      6a{..:vG}6a{..:vH} xA
+      6a{..:vH}6a{..:vG} xF
+      6p{.+1A}6p{.+1F}xB
+      >{+1B} xC
+      6p+6C xD
+      mDE"
+      data-text="3i:5i<:3i xG <br>
+      3i<:5i:3i< xH <br>
+      vGvH xE <br>
+      <span class='gray'>6a</span>{..:vG}6a{..:vH} <span class='gray'> xA </span><br>
+      6a{..:vH}6a{..:vG} xF <br>
+      <span class='gray'>6p{.+1A}6p{.+1F}xB <br>
+      >{+1B} xC <br>
+      6p+6C xD <br>
+      mDE"></span>
+  </div>
+
+  <br style="clear:both" />
+
+  </div>
+  <br style="clear:both" />
+
+  <h2>mutating banks with anonymous banks</h2>
+  
+  <div class="start float">
+    <div class="inline float">
+      <span class="summary big"
+        data-w="200"
+        data-h="200"
+        data-code="+7[vB 4r> vA xB vA 4o xA] vB"
+        data-text="xA xB <br>+7[vB 4r> vA xB vA 4o xA] vB" data-cur="false">
+      </span> <br>
+    </div>
+    <p>Another approach to making grids through spirals rather than trees. Rather than name all banks of repeated instructions, square brackets can be used to indicate an anonymous bank. In this code, both banks for A and B change or mutate value with each of the 7 times the anonymous bank is processed. Bank A is changed to what it was as well as a new orange square&mdash;visually this can be seen in the pattern as the strip of orange squares growing by one square as it gets further from the center. Bank B essentially stores the cumulative changes of adding a red square with a turn and then bank A 7 times. Note: in <em>adv</em> mode in TileDrive! if "vB 4r> vA xB vA 4o xA" is processed a number of times (by clicking of <em>process</em> repeatedly), a spiral will incrementally be created in bank B. This will only work if bank A is originally empty.This code parallels the standard "for(i=0;i&lt;7;i++)" where bank A holds the number of squares with the same value of i. An initial xA with nothing would be equivalent to i=0. 
+    </p>
+
+    <br style="clear:both" />
+  
+    <div class="start float">
+      <div class="inline float">
+        <span class="summary big"
+          data-w="150"
+          data-h="150"
+          data-code="+7[vB 6r>> vA xB vA 6o xA] vB"
+          data-text="<span class='gray'>xA xB<br>+7[vB </span>6r>><span class='gray'> vA xB<br> vA </span>6o<span class='gray'> xA] vB</span>" data-cur="false">
+        </span> 
+        <span class="summary big"
+        data-w="150"
+        data-h="150"
+        data-code="+7[vB 6r>> vA xB vA 6o{.2}{..2} xA] mB[4i]"
+        data-text="<span class='gray'>xA xB<br>+7[vB 6r>> vA xB <br>vA 6o</span>{.2}{..2}<span class='gray'> xA] <br></span>mB[4i]" data-cur="false">
+      </span> 
+      </div>
+      </div>
+    <p>With a few small changes, (4r. &RightArrow; 6r.. and 4o&RightArrow;6o) the square spiral above can create a filled in grid of hexagons. By adding a few branches to the orange hexagons (the two lines {.2}{..2} on the right sides of these hexagons), bank B is ready to create more interesting patterns with mixing. The simplist variation is adding pink squares with mB[4i] that introduces triangular holes in the pattern. Without the added branches containing lines, the resulting pattern would be a spiral of alterating hexagons and squares instead of a patch.</p>
+    </div>
+
+    <br style="clear:both" />
+
+    <div class="start float">
+      <div class="inline float">
+        <span class="summary big"
+        data-w="200"
+        data-h="200"
+        data-code="+7[vB 6r>> vA xB vA 6o{.2}{..2} xA] mB[4i:5:5<]"
+        data-text="<span class='gray'>xA xB<br>+7[vB 6r>> vA xB <br>vA 6o{.2}{..2} xA] <br>mB[</span>4i:5:5<<span class='gray'>]" data-cur="false">
+        </span> 
+      </div>
+      <p>By changing the secondary mix pattern from a square to a non-symmetrical path with parrallel end-lines, less predictable patterns are be created. Notice the holes in these are not a single shape but a few with a few orientations. Being able to easily create a number of variants can be useful for producing activities for analysis of pattern (see <a href="TDActivities.html">TDActivities</a>). Aside from modifying the secondary, the choice of space filling paths that make the primary pattern can be altered. Instead of a spiral path, an number of wiggly ways could fill the grids resulting in more variations in the holes and their arrangements in the pattern. The primary grid could use branching and wiggly paths.</p>
+      </div>
+    <br style="clear:both" />
+
+    <div class="start float">
+      <div class="inline float">
+        <span class="summary big"
+        data-w="160"
+        data-h="160"
+        data-code="xA xB+3[vB 6g{>>vA} xBvA 6g xA] 6g+6[>{vB}] xC mC[4g:5:5<] xDxA xB+3[vB 6a{<<2} {>>vA} xBvA 6a{>2}{>>2} xA] { 6+6[>{vB}] xC mC[4a:5:5<]} vD"
+        data-text="xA xB+3[vB 6g{>>vA} xB<br>vA 6g xA] 6g+6[>{vB}] xC
+        <br>mC[4g:5:5<]" data-cur="false">
+        </span> 
+        <span class="summary big"
+        data-w="160"
+        data-h="160"
+        data-code="xA xB xC+3[vB 6{>>+5[vA6g>] vA} xBvA 6g xA] 6g vB xC mC[4g:5:5<] xD xA xB xC+3[vB 6a{<<2} {>>+5[vA6a>{>2}] vA} xBvA 6a{>2}{>>2} xA] 6a vB xC {mC[4a:5:5<] } vD"
+        data-text="xA xB xC<br>+3[vB 6{>>+5[vA6g>] vA} xB<br>vA 6g xA] 6g vB xC <br>mC[4g:5:5<]" data-cur="false">
+        </span> 
+        <span class="summary big"
+        data-w="160"
+        data-h="160"
+        data-code="xA xB xC+3[vB 6g{>>vA6g> vA} xBvA 6g xA] >>{vB} xC m[6g+3C][4g:5:5<] xDxA xB xC+3[vB 6a{<<2} {>>vA6a>{>2} vA} xBvA 6a{>2}{>>2} xA] >>{vB} xC {m[6a+3C][4a:5:5<]} vD"
+        data-text="xA xB xC<br>+3[vB 6g{>>vA6g> vA} xB<br>vA 6g xA] >>{vB} xC<br> m[6g+3C][4g:5:5<]" data-cur="false">
+        </span> 
+        <span class="summary big"
+        data-w="160"
+        data-h="160"
+        data-code="xA 6g>>xB +3[vB+3[vA 6g> ] xB vA 6g xA] m[{vB}>{vB}][4g:5:5<] xDxA 6a>>xB +3[vB+3[vA 6a>{>2} ] xB vA 6a{>2}{>>2} xA] {m[{vB}>{vB}][4a:5:5<]}vD"
+        data-text="xA 6g>>xB +3[vB+3[vA 6g> ] xB vA 6g xA] m[{vB}>{vB}][4g:5:5<] xDxA 6a>>xB +3[vB+3[vA 6a>{>2} ] xB vA 6a{>2}{>>2} xA] {m[{vB}>{vB}][4a:5:5<]}vD" data-cur="false">
+        </span> 
+      </div>
+      </div>
+<!--
+xA xB+4[vB 6g{>>vA} xBvA 6g xA] 6g+6[>{vB}] xC mC[4g:5:5<] xDxA xB+4[vB 6a{<<2} {>>vA} xBvA 6a{>2}{>>2} xA] { 6+6[>{vB}] xC mC[4a:5:5<]} vD
+
+xA xB xC+4[vB 6{>>+5[vA6g>] vA} xBvA 6g xA] 6g vB xC mC[4g:5:5<] xD xA xB xC+4[vB 6a{<<2} {>>+5[vA6a>{>2}] vA} xBvA 6a{>2}{>>2} xA] 6a vB xC {mC[4a:5:5<] } vD
+
+xA xB xC+3[vB 6g{>>vA6g> vA} xBvA 6g xA] >>{vB} xC m[6g+3C][4g:5:5<] xDxA xB xC+3[vB 6a{<<2} {>>vA6a>{>2} vA} xBvA 6a{>2}{>>2} xA] >>{vB} xC {m[6a+3C][4a:5:5<]} vD
+  
+xA 6g>>xB +3[vB+3[vA 6g> ] xB vA 6g xA] m[{vB}>{vB}][4g:5:5<] xDxA 6a>>xB +3[vB+3[vA 6a>{>2} ] xB vA 6a{>2}{>>2} xA] {m[{vB}>{vB}][4a:5:5<]}vD
+
+  -->
+<!--
+    
+    xA xB+4[vB 6r {>>vA} xBvA 6o xA]  6+6[>{vB}] xC mC[4i]
+xA xB+4[vB 6r{<<2} {>>vA} xBvA 6o{>2}{>>2} xA] 6+6[>{vB}] xC mC[4i]
+
+    xA xB xC+4[vB 6r {>>+5[vA6r>] vA} xBvA 6o xA]  6r vB xC mC[4i]
+    xA xB xC+4[vB 6r{<<2} {>>+5[vA6r>{>2}] vA} xBvA 6o{>2}{>>2} xA] 6r vB xC mC[4i]
+
+    xA xB xC+4[vB 6r{<<2} {>>+5[vA6b>{>2}] vA} xBvA 6o{>2}{>>2} xA]  6r vB xC mC[4i] 
+      
+    xA xB xC+4[vB 6r {>>vA6b> vA} xBvA 6o xA]  >>{vB} xC m[6r+3C][4i]
+      -xA xB xC+4[vB 6r{<<2} {>>vA6b>{>2} vA} xBvA 6o{>2}{>>2} xA] >>{vB} xC m[6r+3C][4i]
+
+
+   xA 6k>>xB +3[vB+3[vA 6r> ]  xB vA 6o xA] m[{vB}>{vB}][4i]
+   xA 6k>>xB +3[vB+3[vA 6r>{>2} ]  xB vA 6o{>2}{>>2} xA] m[{vB}>{vB}][4i:5:5<]
+      -->
+  <br style="clear:both" />
+
+  <h2>pitfalls and limits</h2>
+  
+
+<br style="clear:both" />
+<div class="start float">
+  <div class="inline float">
+    <div class="inline title" data-text ="32>3g5y<3g<5y<<3g5y<3g<5y<3g5y<<3g<5y<" data-w = "80" data-h="70" ></div>    
+    <div class="inline title" data-text ="32>3g5y<3g<5y<<3g5y<5y<<3g5y<3g<3g<5y<" data-w = "70" data-h="70" ></div>
+    <div class="inline title" data-text ="32>3g5y<3g<3g<5y<3g5y<<5y<3g5y<<3g<5y<" data-w = "70" data-h="70" ></div><br>
+    <div class="inline title" data-text ="5>2>5y<3g5y<<5y<<3g5y<3g<5y<3g5y<<5<<3g" data-w = "80" data-h="70" ></div>
+    <div class="inline title" data-text ="5>2>5y<3g5y<<5y<<3g5y<5<<3g5y<3g<5y<<3g" data-w = "70" data-h="70" ></div>  
+    <div class="inline title" data-text ="5>2>5y<3g5y<<3g<5y<3g5y<<5y<3g5y<<5y<<3g" data-w = "70" data-h="70" ></div>
+   
+
+  </div>
+  <p>There are a number of interesting polygon loops that can be made but it is difficult to predict which polygons will make loops (without some additional structure or constraints). To the right are a number of examples with pentagons and triangles. The first one can be made with 3m[+2[5y5y>5y]][3g3g<] where the primary is a simple loop of 6 pentagons and the secondary is a straight line of triangles (alternating right and left turn triagnles). The others are related but are not as easily defined and beg the question how do we generated sequences of polygons that always form edge connected loops.</p>
+</div>
+  <div class="start float">
+    <div class="inline float">
+      <div class="inline title" data-text ="3l3l4l>3l4l>" data-w = "70" data-h="70"  ></div>
+      <span class="summary medium"
+        data-w="100"
+        data-h="100"
+        data-code="3l4l.3l3l4l.xa
+        4o xb
+         mAb "
+        data-text="3l4l.3l3l4l. xA<br>
+        4o xB
+         mAB " data-cur="false">
+      </span> <br>
+      <div class="inline title" data-text ="5b5b<< xA+5A" data-w = "50" data-h="50" ></div>
+      <div class="inline title" data-text ="3l3l4l>3l4l>" data-w = "70" data-h="70"  ></div>
+      <span class="summary medium"
+        data-w="100"
+        data-h="100"
+        data-code="5b5b<< xA+5A xA
+        3l3l4l>3l4l>xB mAB"
+        data-text="5b5b<< xA+5A xA<br>
+        3l3l4l>3l4l>xB mAB" data-cur="false">
+      </span> <br>
+    </div>
+    <p>One strategy may be to elaborate preexisting loops patterns but there is some subtle issues of balance and symmetry that can arise. For instance, the first example to the right, shows that even a simple pattern when you mix in squares can fail to produce a connected result. The next example uses the strategy of combining two types of loops: a counterclockwise star (formed with 10 pentagons), and two clockwise loops (formed with 3 triangles and 2 squares). The result is not a loop&mdash;there is a gap between the first and last polygon. The issues here have to do with underlying symmetry of construction. A better perspective is to not only consider the angles of the last and first sides but also the associated translations. An easy way to insure that associated translations sum to zero is to force rotational symmetry in the construction.
+ </p>
+</div>
+
+
+
+  <br style="clear:both" />
+  <div class="start float">
+    <div class="inline float">
+      <div class="inline title" data-text ="+5[5b<] +5[5a<]" data-w = "50" data-h="50" ></div>
+      <div class="inline title" data-text ="3l3l4l>3l4l>" data-w = "70" data-h="70"  ></div>
+      <span class="summary medium"
+        data-w="100"
+        data-h="100"
+        data-code="m[+5[5b<]][3l3l4l>3l4l>]m[+5[5a<]][3a3a4a>3a4a>]"
+        data-text="5b< xA+aA xA<br>
+        3l3l4l>3l4l>xB mAB<br>or<br>
+        +2[ m[+5[5b<]][3l3l4l>3l4l>] ]" data-cur="false">
+      </span> <br>
+      <div class="inline title" data-text ="3r3r4o3r4o 3a3434 " data-w = "70" data-h="50"  ></div>
+       <div class="inline title" data-text ="5b5p<< xA+5A" data-w = "50" data-h="80" ></div>
+      <span class="summary medium"
+        data-w="140"
+        data-h="140"
+        data-code="m[3r4o3r3r4o][5b:5p<< ]m[3a4334][5:5<< ]"
+        data-text="+2[m[3r4o3r3r4o][5b:5p<< ]]" data-cur="false">
+      </span>  <br>
+      <div class="inline title" data-text ="3r3r3r3o23a3a" data-w = "70" data-h="30"  ></div>
+      <div class="inline title" data-text ="5b5p<< xA+5A" data-w = "50" data-h="70" ></div>
+            <span class="summary medium"
+        data-w="140"
+        data-h="140"
+        data-code="m[3r3r3r3o2][5b:5p<< ]+2[m[3a3332][5:5<< ]]"
+        data-text="+3[m[3r3r3r3o2][5b:5p<< ]]" data-cur="false">
+      </span> 
+      </div>
+      <p>The first two examples force a 2-fold rotational symmetry by constucting a path which has an angle change by 180&deg; and then repeating that path 2 times. The first example combines a five of the pentagons counter-clockwise and the squares and triangles contribute a full turn clockwise resulting in the required 180&deg;. The subsequent copy of the path returns to the initial side completing the loop. The second example uses half twist of the triangle and squares loop minus a full rotation of the pentaon star which similarly makes a loop.  The last example, uses 3-fold rotational symmetry which requires a 120&deg; deviation in the path. Here, it is achieved with a two-thirds turn of triangles subtracting a full turn with the pentagonal star.
+      </p>
+      <p>For the mix operator to work in this context, the number of chunks of each pattern has to be carefully considered. This can be achieved using the : to glue polygons together so they behave as a unit. An alternative means to alter the number of chunks is by inserting lines, 2s, into the path to add to the number of chunks in a path. Although this can be done for particular case it can become a cumbersome process. To help with explorations of variations, a formatting operation is available that replaces the colons in a path. The syntax is similar to mix: fAB where A is the primary and B is a secondary which contains the gluing information. For example, the last case (3-fold rotational symmetry) can be expressed without needing extra 2 with the triangles if the pentagon part is expressed as 
+        5b:5p,,5b:5p or with the formatting operation f[+5[5b5p,,]][2:22:22:22:2:2:2]. Since the secondary patterns path is irrelevant, lines without turning work as well as using a visible path. To see more examples of variants with different chunking see <a href="TDPlay.html">TDPlay</a></p>
+        </div>
+
+      <!-- 5b:5p<< xA
++fA xA
+3r3o3r3r3t.:3t. xb mAB-->
+<p>Forced rotational symmetry along with mixing and formatting allow for a great variety of loops to be constructed. However, as demonstrated in the initial yellow and green pentagon & triangle patterns of this section, there are other types loops that cannot be constructed this way.</p>
+  </div>
+  <br style="clear:both" />
+
+<h2 id = "summary">Summary</h2>
+<p>Coding in TileDrive can take many forms: immediate(interactive), immediate with banks, asynchonous with preprocessing language, or combinations of the three. The TileDrive instructions can be either screen buttons or keyboard keys along with clicking on the tiles (polygons) in the pattern.   </p> 
+<ul><li>basic TD instructions: <em>one character instructions</em>
+  <ul><li>polygons:<span class="code">345678</span> (with keyboard: <span class="code">9012</span>) </li>
+    <li>turning: <span class="code">&lt;&gt;</span> (with keyboard: <span class="code">,</span>(=&lt;) <span class="code">.</span>(=&gt;)) </li>
+    <li>colours: <span class="code">rybogpli</span> (keyboard extension: <span class="code">ka</span>) </li>
+    <li>branching: 
+      <ul><li>clicking on a tile</li>
+      <li><span class="code">{</span> with a right arrow key (or <span class="code">e</span>) to exit branch</li></ul>
+    </li>
+  </ul>
+</li>
+<li>bank TD instructions: <em>two character instructions</em>
+  <ul>
+    <li>cut: <span class="code">xA</span> cut current tiles and put into bank A</li>
+    <li>paste: <span class="code">vA</span> paste bank A</li>
+  </ul>
+</li>
+<li>preprocessor language: <em>three character instructions (unless anonymous banks are used)</em>
+  <ul>
+    <li>repeated: <span class="code">+#A</span> # is a one digit number and A is a bank
+      <ul>
+        <li><span class="code">+3A</span> paste bank A three times</li>
+        <li><span class="code">+f[53<]</span> paste <span class="code">53<</span> fifteen times</li>
+        <ul>
+          <li><span class="code">f</span> stands for 15: 0-9a-z represent numbers up to 35</li>
+        </ul>
+      </ul>
+    </li>
+    <li>mix: <span class="code">mAB</span> 
+      <ul>
+        <li><span class="code">mAB</span> mixes bank A with as much of bank B repeated as needed </li>
+        <li><span class="code">m[+6[3i<:3i<]][5y>5y5y]</span> mix 6 chunks of 2 pink triangles with a bunch of pentagons<br><span class="summary large"
+          data-w="100"
+          data-h="100"
+          data-code="m[+6[3i<:3i<]][5y>5y5y]"
+          data-text=''
+
+          data-cur="false">
+        </span>
+        </li>
+      </ul>
+    </li>
+    <li>format: <span class="code">fAB</span>
+      <ul>
+        <li><span class="code">fAB</span> formats bank A as B is formatted&dash;  chunks A's polygons as B is chunked </li>
+        <li><span class="code">f[+5[5a5o]][2:2:222]</span> chunks pentagons three then two single pentagons &dash; this only is useful with mixing
+          <ul>
+            <li>+2[m[<span class="code">f[+5[5a5o]][2:2:222]</span>][4p<]]<br><span class="summary large"
+              data-w="150"
+              data-h="150"
+              data-code="+2[m[f[+5[5a5o]][2:2:222]][4p<]]"
+              data-text=''
+              data-cur="false">
+            </span>
+             </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Banks as variables: <span class="code">,,,,xI xJ 7a +7[vI . xI vJ 3o,3oxJ {vJ 8ivI3r}.]</span>
+    </span> <br><span class="summary large"
+    data-w="150"
+    data-h="150"
+    data-code=",,,,xI xJ 7a +7[vI . xI vJ 3o,3oxJ {vJ 8ivI3r}.]"
+    data-text=''
+    data-cur="false"></li>
+  </ul>
+</li>
+
+</ul>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,283 @@
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>TileDrive Angles</title>
+    <link rel="stylesheet" href="tdcode.css">
+    <link rel="stylesheet" href="goal.css">
+
+    <script src="rpoly.js"> </script>
+    <script src="rtree.js"> </script>
+    <script src="TD.js"> </script>
+    <script src="tlCodeEl.js"> </script>
+    <script src="TDcode.js"> </script>
+</head>
+<body>
+
+<h1>TileDrive Angles and Protractors
+</h1>
+
+<p>The limited number of TileDrive's shapes constrains the possible angles that can be created within its environment yet dispite the restrictions many angles can be made and even a protractor can be produced with up to 1/77 of a degree accuracy. </p>
+
+<h2>Introduction</h2>
+<p>Regular polygons are easy to introduce but some of their properties are subtle and difficult to discuss in elementary school. One discussion that can be fruitful is about angles and how angles can relate to lines in a grid. An easy-to-learn tool for creating polygonal art, TileDrive, can be used to quickly produce visuals that can ground discussions with concrete examples. TileDrive's precise creation of polygons and its feature of removing overlapping polygons enable a visual way to illustrate certain concepts.
+   <div style="float:right;width:50%;margin:5px;" >
+    <img src="screenTD.png" style="width:100%;"/>
+</div>
+
+    <a href="https://jimmorey.com/td/TileDrive.html">TileDrive</a> (jimmorey.com/td/TileDrive.html) is a prototype designed to aid in creating polygon patterns with few prerequisites.  </p>
+
+
+</p>
+<!--div class="fig"><img src="screenTD.png" style="width:50%;"/></div-->
+
+
+<h2>Angle exploration</h2>
+
+TileDrive has no explicit coordinates or measuring interface but its fixed set of regular polygons can be used to construct and visually measure certain values. Visible from the interface are triangles, squares, pentagons, hexagons, heptagons, and octagons.  Their interior angles are 60, 90, 108, 120, 128.<span style="text-decoration:overline;font-size:90%;">571428</span> (5/14*360), and 135 degrees respectively. Or in terms of rotations instead of degrees 1/6, 1/4, 3/10, 1/3, 5/14, and 3/8.  Visually, the triangle, square, and hexagon are the easiest to see their factions of a rotation. Putting 6 triangles down (333333) produces a complete red hexagon below implying that each triangle introduces 1/6 of a rotation. Similarly, putting 4 squares down with turns (4>4>4>4>) produces one big square implying each squares introduces 1/4 of a rotation. Finally, putting 3 hexagons down with turns (6>>6>>6>>) produces a purple 12-sided figure implying each hexagon introduces 1/3 of a rotation. </p>
+
+<div class="inline title" data-text ="+6[3]" data-w = "70" data-h="100" data-cur="true" data-arrow="false"></div>
+<div class="inline title" data-text ="+4[4b.]" data-w = "80" data-h="80" data-cur="true"></div>
+<div class="inline title" data-text ="+3[6p..]" data-w = "120" data-h="120" data-cur="true"></div>
+
+<p>Showing that an octagon has a 3/8 of a rotation is more subtle with TileDrive. Putting 8 octagons with turns (8>>>8>>>8...) has octagons overwrite previous octagons. To help illustrate how the 8 octagons fit together, examine the sequence of images are shown below. Each image contains the same horizontal line which is the starting line for the initial red octagon and the dashed octagon with the brown "forward"-side indicates the curent octagon. The 8 octagons are coloured in the following order: red, orange, yellow, green, olive, pink, purple, then finally blue.  Closely following the "forward"-side of the octagon it can be seen to pass through 3 rotations. The same 8 octagons are show in the final image which shows a summary of these images where all the octagons would be if they were not removed by collisions.</p>
+1,2<div class="inline title" data-text ="+2[8r>>>]o" data-w = "80" data-h="80" data-cur="true"  data-start="true"></div>
+3<div class="inline title" data-text ="+3[8o>>>]y" data-w = "80" data-h="80" data-cur="true" data-start="true"></div>
+4<div class="inline title" data-text ="+4[8y>>>]g" data-w = "80" data-h="80" data-cur="true" data-start="true"></div>
+5<div class="inline title" data-text ="+5[8g>>>]l" data-w = "80" data-h="80" data-cur="true" data-start="true"></div>
+6<div class="inline title" data-text ="+6[8l>>>]i" data-w = "80" data-h="80" data-cur="true" data-start="true"></div>
+7<div class="inline title" data-text ="+7[8i>>>]p" data-w = "80" data-h="80" data-cur="true" data-start="true"></div>
+8<div class="inline title" data-text ="+8[8p>>>]b" data-w = "80" data-h="80" data-cur="true" data-start="true"></div>
+<div class="inline title" data-text ="{+2[8r>>>]}2|{+3[8o>>>]}2|{+4[8y>>>]}2|{+5[8g>>>]}2|{+6[8l>>>]}2|{+7[8i>>>]}2|{+8[8p>>>]b}2" data-w = "80" data-h="80" data-cur="true" data-multi="true"></div>
+
+<div class="start">  </div>
+
+
+    <p>Alternately, 3 clockwise rotations created by 8 octagons can be unraveled by 3 counter-clockwise rotations constructed with a combination of 18 triangles with 9 separating squares to prevent polygon collisions. The blue squares are placed to make it clearer that the intial and final lines are parallel. Included code can be ignored but is included for those who prefer the exacting nature of code. </p>
+    <div class="inline title float" data-text ="3p<43< xA 4b<444> vA +8[8y>>> vA] 4b>444" data-w = "150" data-h="300" data-cur="false"></div>
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        3p<43< <b>xA</b><br>
+        4b<444> <b>vA</b> +8[8y>>> <b>vA</b>] 4b>444
+</div>
+<div class="start">  </div>
+<p>For a more compact visual, the 3 clockwise rotations of the octagons can be partially unraveled with 2 counter-clockwise rotations leaving a single clockwise rotation. In this case, 2 rotations of squares nicely alternate with the octagons producing a tight single loop. </p>
+<div class="inline title float" data-text ="+8[8y>>>4b<]" data-w = "200" data-h="200" data-cur="false"></div>
+<div class="inline">
+    <span class="h3ish">code</span><br>
+    +8[8y>>>4b<]
+</div>
+<div class="start">  </div>
+
+<p>In a similar visual argument, the 3/10 rotation of pentagons can be illustrated with the 10 pentagons' 3 rotations being mostly unraveled by 2 counter-clockwise rotations &mdash; one comprised of squares and one comprised of triangles. </p>
+<div class="inline title float" data-text ="3r<4b<3r<3r<4b<3r<4b<3r<3r<4b< xA 3<mA[5o>]" data-w = "200" data-h="150" data-cur="false"></div>
+<div class="inline">
+    <span class="h3ish">code</span><br>
+    3< +2[3r<5o>4b<5o>3r<5o>3r<4b<5o>] <br>
+    or<br>
+    3< m[+2[3r<4b<3r<3r<4b<]] [5o>]
+</div>
+<div class="start"> </div>
+
+<p>Finally, the 5/14 rotation of the heptagon can be illustrated with the 14 heptagons' 5 rotations being mostly unraveled by 4 counter-clockwise rotations &mdash; two comprised of squares (blue) and two comprised of triangles. The red squares are required so that the heptagons don't collide. In terms of angles, two loops of hexagons would have worked since 6 hexagons and 8 squares would have balanced the 14 heptagons but this combination would have had caused collisions which are avoided with the replacement of each hexagon with two triangles and one square. </p>
+
+<div class="inline title float" data-text ="3r<:4:3r< xB
++2[vB 4b< vB 4b<4b< vB 4b<] xA
+4<3mA[7i>>]" data-w = "220" data-h="180" data-cur="false"></div>
+<div class="inline">
+    <span class="h3ish">code</span><br>
+    3r<:4:3r< <b>xB</b> <br>
+    +2[<b>vB</b> 4b< <b>vB</b> 4b<4b< <b>vB</b> 4b<] <b>xA</b><br> 4<3mA[7i>>]
+</div>
+<div class="start">  </div>
+<p>As seen, the values of the interior angles associated with the basic polygons can be exactly represented indirectly by fractions of a rotation within TileDrive. This indirect means can help build up a geometric foundation of facts and connections among the polygons. By using the squares and triangles to express the pentagon's interior angles, it helps connects polygons into a visual narative and demonstrate the importance of the easier facts of the interior angles of squares and triangles. Further, the use of the more natural measure of fractions of rotation is illustrated by the simplicity of 5/14 as opposed to 128.<span style="text-decoration:overline;font-size:90%;">571428</span>.</p>
+
+<h2>Constructing small angles to create protractors</h2>
+
+<p>Angles smaller than 60 degrees can be constructed by combining polygons. For example, 30 degrees (1/12 rotation) can be constructed by subtracting a triangle from a square. 12 degrees (1/30 rotation) can be constructed by subtracting a pentagon from two triangles. 6 degrees (1/60 rotation) can be constructed by adding two pentagons, a square, and a triangle which is a full rotation plus 6 degrees. </p>
+
+<div class="start">    
+    <div class=" float">    
+        <div class="inline title" data-text ="{.4y}{4.2.3i}4t," data-w = "100" data-h="100"></div>
+    </div>
+    <p><b>30 degrees</b> (a square minus a triangle &rightarrow;90 - 60)<br>
+    The brown line helps show the outline of the missing square. <br>(TileDrive code: 4y4t.3.3i)</p>
+</div>
+<div class="start">    
+    <div class="float">    
+        <div class="inline title" data-text ="{.4y}{3t32.5i<<}3t" data-w = "100" data-h="100"></div>
+    </div>
+    <p><b>12 degrees</b> (2 triangles minus a pentagon &rightarrow;120 - 108)<br>The brown line indicates where the division would be between the two missing triangles. <br>(TileDrive code: 4y3t33.5i)</p>
+</div>
+
+<div class="start">    
+    <div class="float">    
+    <div class="inline title" data-text ="5y>5y>4a4y>4a3y4i<" data-w = "100" data-h="100" data-start="true"></div><div class="inline title" data-text ="{.4y}5t.5.4.34i<" data-w = "100" data-h="100"></div></div>
+
+   <p><b>6 degrees</b> (2 pentagons plus a square plus a triangle&rightarrow;2&times;108 + 90 + 60 = 366 degrees)
+    <br>The first picture with the two gray squares indicates the sum of all the angles of the yellow polygons (the gray squares do not change the resulting angle but help separate the initial 0 angle from the final 366 angle). The second picture shows only the resulting 6 degree angle.  <br>(TileDrive code: 4y5t>5>4>34i< and 4y5t>5>4>34i<)
+    </p>
+</div>
+ <p>The small angles created above show that it is not too difficult to produce small angles but which angles can be poduced? Using only triangles, squares, and pentagons nothing smaller than 6&deg; can be produced since their greatest common divisor (GCD) is 6&deg; (60=6&times;10, 90=6&times;15, 108=6&times;18).  </p>
+
+ <h3>Protractors</h3>
+<p>To construct a useful protractor, it would be nice to construct 15&deg;, 5&deg;, and 1&deg;. The first angle of 15&deg; is easily achieved by removing a hexagon from an octagon (135&deg; - 120&deg;). This construction can be iterated into the design below. Some TileDrive code is included to show how these examples were made but not only are there lots of ways to code these, it is not critical to understand the details. One thing of note in each code chunk is the role of bank A: its function is to create the smallest angle for each protractor. </p>
+<div class="inline title float" data-text ="8<<<2>6>>2>4g{<3} xA 4l{<3<3t2l{64}4}+4[+3Al{<3}]<3t3<2l{64}4" data-w = "200" data-h="120" data-cur="false"></div>
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        8<<<2>6>>2>4g{<3} <b>xA</b><br> 4l{<3<3t2l{64}4}+4[+3Al{<3}]<3t3<2l{64}4
+</div>
+<div class="start">    
+</div>
+<p>The second angle of 5&deg; is easily achieved by removing an octagon from a nonagon (140&deg; - 135&deg;). In this case, the nonagon is an addition to TileDrive that can be accessed by pressing 9 on the keyboard. The colouring parallels the previous construction with the addition of the new angles being orange.</p>
+<div class="inline title float" data-text ="9<<<<2>8>>>2>4o{<3} xA 4l{<3<3t2l+a[4]}+4[+3[+3Ag{<3}]l{<3}]<3t3<2l+a[4]" data-w = "200" data-h="105" data-cur="false"></div>
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        9<<<<2>8>>>2>4o{<3} <b>xA</b><br> 4l{<3<3t2l+a[4]}+4[+3[+3<b>A</b>g{<3}]l{<3}]<3t3<2l+a[4]
+</div>
+<div class="start">    
+</div>
+<p>The final protractor is more complicated and debatably less useful to print out as an artifact. The construction relies on solving a Diophantine equation a60 + b108 + c135 + d140 = 1 which is reasonable since GCD(60,108,135,140)=1. Although there are many solutions, (a,b,c,d)=(-1,-2,1,1) satisfies the equation. -60-2&times;108+135+140 = 1. Given the small scale of the polygons below it is potentially only useful as a theoretical example.</p>
+<div class="inline title float" data-text ="8...9...2.3,5,,5,,2. xD 4t+i[444]4433a xB {vB} vD xF {vB b,5} vD xG vG +4F {vB b} vD+4F xE 33,33, xH{.3a{+sH}{,3{b},+sH 3}}4t. +iE +1G" data-w = "400" data-h="200" data-cur="false"></div>
+<div class="inline">
+    <span class="h3ish">code</span><br>
+    8>>>9>>>2>3<5<<5<<2> <b>xA</b><br>4t+i[444]4433a <b>xB</b><br>{<b>vB</b>} <b>vA</b> <b>xF</b><br>{<b>vB</b> b<5} <b>vA</b> <b>xG</b><br><b>vG</b> +4<b>F</b> {<b>vB</b> b} <b>vA</b>+4<b>F</b> <b>xE</b><br>33<33< <b>xH</b><br>{>3a{+s<b>H</b>}{<3{b}<+s<b>H</b> 3}}4t> +i<b>E</b> +1<b>G</b>
+</div>
+<!--8...9...2.3,5,,5,,2. xD<br> 4t+i[444]4433a xB<br> {vB} vD xF<br> {vB b,5} vD xG<br> vG +4F {vB b} vD+4F xE<br> 33,33, xH<br>{.3a{+sH}{,3{b},+sH 3}}4t. +iE +1G-->
+<div class="start">    
+</div>
+<h2>Visualizing small angles</h2>
+
+<div class="inline title float" data-text ="3p< xA+5[4]4{k}+5[4] xB {4<2>+4[4a{<+4[4444{l}4]}]} >4a>2rvB>vA4<2>rvB2ivB4p" data-w = "200" data-h="280" data-cur="false"></div>
+    <p>One way to examine the angles is to extend lines enclosing the angle to see its affect at a bigger scale. The first example will examine the well known angle of an equilatoral triangle. In the diagram to the left, the triangle is a purple triangle in the bottom left.  The diagram relies on the fact that the hypotenuse is twice as long as the base.  The code that generates the diagram is complicated by the use of colours that aid in seeing the lengths of each of the lines. </p>
+<div class="inline">
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        3p< <b>xA</b><br>
+        +5[4]4{k}+5[4] <b>xB</b><br>
+        {4<2>+4[4a{<+4[4444{l}4]}]}<br>
+        >4a>2r <b>vB</b> > <b>vA</b> 4<2>r <b>vB</b> 2i <b>vB</b> 4p
+    </div>
+    <div class="inline">
+        <span class="h3ish" >purpose</span><br>
+        <em>set A  to a triangle or 60&deg; change</em><br>
+        <em>set B to 11 squares</em><br>
+        <em>make a 21x4 grid</em><br>
+        <em>make adjacent then hypotenuse</em>
+    </div>
+
+</div>
+<p>The bank B starts with 5 squares of inherited colour followed by a square that is black (the colour change only affects this square since it occurs in a branch) followed by 5 more squares of the inherited colour.  By using the inherited colour, bank B can be used for both the red and pink sections of the hypotenuse as well as the red base.</p>
+<div class="start"></div>
+
+<div class="inline title float" data-text ="3p< xA+5[4] xB {4<2>+4[4a{<+2[4444{l}4]}]} >4a>2rvB>vA4<2>rvB2ivB4p" data-w = "100" data-h="140" data-cur="false"></div>
+<p>The choice of 11 for the base length is so that when the hypotenuse intercepts the vertical line of squares and removes the overlapping squares, there is no discernible gap between the hypotenuse and the vertical line as there would be for a base length choice of 5. Good choices relates to finding rational approximations for tan(60&deg;). In this case, 19/11 (1.72727272727...) is pretty close to <span style="white-space: nowrap">
+    &radic;<span style="text-decoration:overline;font-size: 90%">3</span>
+    </span> (1.73205080757...). Conversely, 8/5 (1.6) is noticably shy of <span style="white-space: nowrap">
+        &radic;<span style="text-decoration:overline;font-size: 90%">3</span>
+        </span>. It is not necessary to think about tan(x), instead the hunt for good choices may be a good way to introduce foundational concepts without diving deep into trigonometry.</p>
+<div class="start"></div>
+
+<p>This same approach can be used to examining smaller angles like 6&deg; (discussed in the section Constructing small angles...). The goal is to see the first square that is not removed from the 4x4 grid. In this case, after 10 squares along the base, the hypotenuse clears the first row of squares. Another way to state this is that a 6&deg; incline has a slope is that is greater 1/10 &mdash; greater since there is a small but noticeable gap. As well, one could state tan(6&deg;)=0.10510 >1/10 (cot(6&deg;)=9.514364454...). From the code, there are 9 squares to the left of the 4x4 grid and 1 within the grid is removed which indicates that the hypotenuse initially has a height less than one in somewhere between 9 and 10 where as it is more than one after 10.</p>
+<div class="inline title float" data-text ="5t<<5<<4<3< xA +9[4] xB {+4[4a{>444}]}>4r>vB>vA4r>vB4p 44" data-w = "200" data-h="100" data-cur="false"></div>
+
+<div class="inline">
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        5t<<5<<4<3< <b>xA</b><br>
+        +9[4] <b>xB</b><br>
+        {+4[4a{>444}]}<br>
+        >4r> <b>vB</b> > <b>vA</b> 4r><b>vB</b> 4p44
+    </div>
+    <div class="inline">
+        <span class="h3ish">purpose</span><br>
+        <em>set A  to a 6&deg; change</em><br>
+        <em>set B to 9 squares</em><br>
+        <em>4x4 grid</em><br>
+        <em>adjacent then hypotenuse</em>
+    </div>
+
+</div>
+
+<div class="start"></div>
+<div class="inline title float" data-text ="5t<<4<2<38>>>2< xA +j[4] xB {+4[4a{>444}]} >4r>vB>vA4r>vB4p 44" data-w = "200" data-h="100" data-cur="false"></div>
+    <p>Similarly, a 3&deg; incline has a slope is that is greater 1/20 or cot(3&deg;)&#8773;19.08113669&lt;20. For those interested in the code, +j refers to "repeat 19 times" because the character following the plus sign is interpreted as a base 36 digit &mdash; since j is the 10th letter in the alphabet this means it's value is 10 beyond 9 which is 19 (like hexadecimal a is 10, b is 11,..., f is 15, with hexatridecimal it goes all the way to z which is 35)</p>
+<div class="inline">
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        5t<<4<2<38>>>2< <b>xA</b><br>
+        +j[4] <b>xB</b><br> 
+        {+4[4a{>444}]}<br>
+        >4r> <b>vB</b> > <b>vA</b> 4r><b>vB</b> 4p44
+    </div>
+    <div class="inline">
+        <span class="h3ish">purpose</span><br>
+        <em>set A  to a 3&deg; change</em><br>
+        <em>set B to 19 squares</em><br>
+        <em>4x4 grid</em><br>
+        <em>adjacent then hypotenuse</em>
+    </div>
+
+</div>
+
+<div class="start"></div>
+<div class="inline title float" data-text ="2>7t>>5>5>2<4<3<3<8<<< xA +b[+c[4]] xB {+4[4a{>444}]} >4t>vB>vA4>vBr4p 44" data-w = "100" data-h="100" data-cur="false"></div>
+    <p>A 3/7&deg; incline has a slope is that is greater 1/134 or cot(3/7&deg;)&#8773;133.6876589&lt;134  = <b>132</b> squares to the left of the grid (not shown) <b>plus 2</b> in the grid. The transparent squares tiles are not included in the diagram.  In code, the B bank uses b (=11) times c (=12) to get 132.</p>
+<div class="inline">
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        2>7t>>5>5>2<4<3<3<8<<< <b>xA</b><br>
+        +b[+c[4]] <b>xB</b><br>
+        {+4[4a{>444}]}<br>
+        >4t> <b>vB</b> > <b>vA</b> 4><b>vB</b>r 4p44
+    </div>
+    <div class="inline">
+        <span class="h3ish">purpose</span><br>
+        <em>set A  to a 3/7&deg; change</em><br>
+        <em>set B to 132 (11*12) squares</em><br>
+        <em>4x4 grid</em><br>
+        <em>adjacent then hypotenuse</em>
+    </div>
+
+</div>
+
+<div class="start"></div>
+
+
+<div class="inline title float" data-text ="2>7>>7>>7>>1>>>>2<4<3<5<<8<<<9<<<< xA +b[+k[+k[4]]4] xB {+4[4a{>444}]} >4t>vB>vA4>vBr4p 44" data-w = "100" data-h="100" data-cur="false"></div>
+    <p>Finally, the smallest angle that TileDrive can make is 1/77&deg; which is due 7-gon and 11-gon with their 1/7 an 1/11 fractional aspect with the other polygons makes for the possible 1/(77*360) of a rotation. The incline of this slight angle has a slope is that is greater 1/4412 or cot(1/77&deg;)&#8773;4411.774947&lt;4412 = <b>4411</b> squares to the left of the grid (not shown) <b>plus 1 </b>in the grid. The transparent squares tiles are not included in the diagram since they would make the critical part of the diagram too small to accurately see (and slow the rendering speed down in TileDrive). In code, the B bank uses b (=11) and k (=20) to calculate 4411.</p>
+<div class="inline">
+
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        2>7>>7>>7>>1>>>>2<4<3<5<<8<<<9<<<< <b>xA</b><br>
+        +b[+k[+k[4]]4] <b>xB</b><br>
+        {+4[4a{>444}]}<br>
+        >4t> <b>vB</b> > <b>vA</b> 4><b>vB</b>r 4p44
+    </div>
+    <div class="inline">
+        <span class="h3ish">purpose</span><br>
+        <em>set A  to a 1/77&deg; change</em><br>
+        <em>set B to 4411 (11*(20*20+1)) squares</em><br>
+        <em>4x4 grid</em><br>
+        <em>adjacent then hypotenuse</em>
+    </div>
+
+</div>
+<p>This last angle is probably only of theoretical interest since it can only be seen in this not so asthetic visual.  But it does show that these visual types of mathematical calculations can be performed using this simple environment. Perhaps these examples may lead to more geometric constructions that may help link coding, geometry and some algebra.  </p>
+<div class="start"></div>
+
+<h2>For completeness: nonagon, decagon, and hendecagon interior angles</h2>
+
+<p>The nonagon, decagon, and hendecagon as well as the degenerate polygon the line are also included in TileDrive using the keyboard digits: 9 nonagon, 0 for decagon (short for ten), 1 for hendecagon (short for 11), and 2 for a line. Their angle in degrees are 140, 144, 147.2727...(147 3/11), and 0 degrees or 7/18, 2/5, 9/22, and 0 rotations. </p>
+<p>The 7/18 rotation of nonagons can be illustrated with the 18 pentagons' 7 rotations being mostly unraveled by 6 counter-clockwise rotations comprised of 36 triangles (6 loops of 6 triangles with square spacers to avoid polygons colliding). The decagon's 2/5 of a rotation can be illustrated by 1 - 2&times;3/10 since it snugly fits in the gap between two pentagons. Lastly, the 9/22 rotation of hendecagons can be illustrated by 22 hendecagons' 9 rotations being most unraveled by 8 counter-clockwise rotations comprised of 6 rotations of 16 octagons and 2 rotations of 12 triangles.</p>
+<div class="inline title" data-text ="+6[+3[3r<9l>>>3r<4]k]" data-w = "300" data-h="300" data-cur="false"></div>
+
+<div class="inline title" data-text ="0p....5.55i+7[5]" data-w = "100" data-h="100" data-cur="false"></div>
+
+<div class="inline title" data-text ="4a:4:8y<<<:4a:4 xA 3r<:4:3< xB 4<3<1>>>>m[+2[+3AvB +2A vB +3AvB]][1g>>>>]" data-w = "300" data-h="300" data-cur="false"></div>
+
+    <!-- 8y<<< xA +2[4o] xC +1[4o]   0r>>>>vC xB +2[vA vB vA vB 4444 vB vA vB vA vB ] -->
+     <!-- 4o6y<<4o xC 4o4b<4o xA  0r>>>>  xB 6<40>>>>+2[vA vB vC vB  vC vB vA vB vC vB  ] -->
+</body>
+</html>

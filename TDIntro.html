@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>TileDrive Introduction</title>
+    <link rel="stylesheet" href="tdcode.css">
+
+    <style>
+       .piece {
+           display: inline-block;
+           overflow:hidden;
+           width:50px;
+           height:50px;  
+           background-image:url(goalMM.svg);
+           background-size: 50px;
+           transition: all 1s ease-in-out;
+       }
+       div.goal {
+           width:500px;
+           height:500px;  
+           background-size: 500px;
+           margin: 0 auto;
+       }
+       .show {
+           background-position: 0 300px;
+       }
+       .bridge {
+           background-position: 0 250px;
+       }
+       .endure {
+           background-position: 0 200px;
+       }
+       .explore {
+           background-position: 0 150px;
+       }
+       .focus {
+           background-position: 0 100px;
+       }
+       .speed {
+           background-position: 0 50px;
+       }
+       table {
+           margin-bottom:1em;
+           border:1px solid #eee;
+           border-radius:0.5em;
+           background:#f8f8f8;
+           transition: all 1s ease-in-out;
+       }
+       table:hover .piece,table:active .piece{
+           transform:scale(1.1);
+           opacity:0.5;
+       }
+       table:hover, table:active {
+           background:#f4f4f4;
+       }
+       tr:nth-child(2n) td,tr:nth-child(2n) th{
+           background:white;
+           border-radius:1em;
+           margin-right:0.5em;
+           margin-left:0.5em;
+       }
+       th {
+           width:150px;
+       }
+       h1 {
+           margin-top:0;
+       }
+       div.big {
+        display:inline;
+        height:50px;
+        vertical-align: bottom;
+        font-size:2.5em;
+       }
+       .myhead {
+       display:inline;height:50px;vertical-align: top;font-size:1.5em;
+       }
+       .box {
+              display:inline-block;
+              width:50px;
+              height:50px;
+              border:1px solid black;
+              background-color: rgb(224, 224, 224);
+              /*margin:0.5em;*/
+              text-align: center;
+       }
+       .x {
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='black' stroke-width='5'/><path d='M0 0 L100 100 ' stroke='black' stroke-width='5'/></svg>");
+            background-repeat:no-repeat;
+            background-position:center center;
+            background-size: 100% 100%, auto;
+            opacity: 50%;
+        }
+    </style>  
+    
+    <script src="rpoly.js"> </script>
+    <script src="rtree.js"> </script>
+    <script src="TD.js"> </script>
+    <script src="tlCodeEl.js"> </script>
+    <script src="TDcode.js"> </script>
+</head>
+<body>
+
+<h1>Introduction to TileDrive: a spectrum of engagement from simple drawing to complex coding
+</h1>
+
+<h2>a geometric coding environment</h2>
+
+<p><a href="TileDrive.html">TileDrive</a> is a simple environment for creating rich geometric patterns with few prerequisites. It offers a small, approachable set of instructions to master with the richness of the patterns coming from the subtleties of regular polygons (tiles). An understanding of distances, angles, and numbers is not required before creating with TileDrive.</p>
+
+<div class="inline title" data-text ="4444>34343" data-w = "60" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="8p{>>>>6b {<4344} >43<44} {<<6>45y} {>>6>45y} 8iy" data-w = "100" data-h="100"></div>
+<div class="inline title" data-text ="xA xB+8[vB 4r< vA xB vA 4o xA] vB" data-w = "100" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="4b{<3g33<34y4}4{3r3{3}{<3}}>4>4" data-w = "100" data-h="100"></div>
+
+<div class="inline title" data-text =">7<<<p{43443444}{>4344}{>>44}{>>>44}{<<<43<44}<<43<443<444" data-w = "160" data-h="80"></div>
+<br>
+<h2>TileDriving</h2>
+<p>The key idea is to use tiles to drive through a pattern. Driving means going forward and turning right or left.  Going forward occurs by placing tiles, and turning occurs discretely by switching the "forward" side to the right or the left of the current forward direction. Below are a few examples going forward with tiles with the ones to the right depicting a left and right turn.  Note that the right and left turns related to square tiles are 90 degrees where as the bottom two related to hexgonal tiles are only 60 degree. As well, each turn occurs before the last tile is added.</p>
+<div class="inline title" data-text ="4i>4r" data-w = "50" data-h="120" data-cur="true"></div>
+<div class="inline title" data-text ="4i>44r" data-w = "75" data-h="120" data-cur="true"></div>
+<div class="inline title" data-text ="4i>444r" data-w = "100" data-h="120" data-cur="true"></div>
+<div  class="inline" >
+<div class="inline title" data-text ="4i>444,4r" data-w = "100" data-h="60" data-cur="true"></div><br>
+<div class="inline title" data-text ="4i>444.4r" data-w = "100" data-h="60" data-cur="true"></div>
+</div><br>
+
+<div class="inline title" data-text ="4i>644r" data-w = "105" data-h="140" data-cur="true"></div>
+
+<div class="inline title" data-text ="4i>6446r" data-w = "140" data-h="140" data-cur="true"></div>
+<div  class="inline" >
+    <div class="inline title" data-text ="4i>6446,4r" data-w = "160" data-h="70" data-cur="true"></div><br>
+    <div class="inline title" data-text ="4i>6446.4r" data-w = "160" data-h="70" data-cur="true"></div>
+</div>
+
+<p>The simplest way to drive is to use the on-screen buttons shown below. In addition to placing tiles and turning, there are 8 colors and a transparent option (used for creating disconnected patterns). An alternative and potentially faster way to drive is by using a keyboard. Each instruction is associated with a single key press. Rather than clicking on the images of the square and the arrows, the following sequence of keystrokes "4i444&gt;4r" would produce a line of pink squares with a red one on the left of the last pink square. Notice that the last color is remembered (initially, red is the color before one is selected).</p>
+<image src="controls.png" width="120px"></image> vs. typing  3, 4, 5, 6, 7, 8, &lt;, &gt;, r, y, b, o, g, p, l , i, t 
+<h2>simple paths and interlacing sequences</h2>
+
+<p>Simple paths can be created by using one type of tile. The even-sided tiles by default get placed in a straight line, whereas the odd-sided tiles have a right-turning bias. To "drive" straight with odd-sided tiles, left turns must be performed every other tile to compensate for the right-turn bias. In a sense, "doing donuts" with odd-sided tiles is the default behavior, whereas even-sided tile donuts require more work. The red-colored tiles do not have turns, whereas the pink ones turn left.</p>
+
+<ul><li>straight driving:<ul>
+    <li>even-sided: 4444, 6666, 8888<br><div class="inline title" data-text ="4.+3[4]" data-w = "100" data-h="60" data-cur="true"></div>
+        <div class="inline title" data-text ="4t.6r+3[6]" data-w = "150" data-h="60" data-cur="true"></div>
+        <div class="inline title" data-text ="8..+3[8]" data-w = "200" data-h="60" data-cur="true"></div>
+    </li>    
+    <li>odd-sided: 33<33<33<33<, 55<55<55<, 77<77<77<<br><div class="inline title" data-text ="4t.+3[3r3i,]" data-w = "100" data-h="80" data-cur="true"></div>
+        <div class="inline title" data-text ="4t.+3[5r5i,]" data-w = "170" data-h="100" data-cur="true"></div>
+        <div class="inline title" data-text ="4t.+3[7r7i,]" data-w = "250" data-h="100" data-cur="true"></div>
+    </li>
+</ul></li>
+<li>doing donuts:<ul>
+    <li>even-sided: 4<4<4<4<, 6<6<6<6<6<6<, 8<8<8<8<8<8<8<8< <br>
+        <div class="inline title" data-text ="4t.+4[4i,]" data-w = "40" data-h="40" data-cur="true"></div>
+        <div class="inline title" data-text ="4t.+6[6i,]" data-w = "140" data-h="140" data-cur="true"></div>
+        <div class="inline title" data-text ="4t.+8[8i,]" data-w = "240" data-h="240" data-cur="true"></div>
+    </li>   
+     <li>odd-sided: 333333, 5555555555, 77777777777777<br>
+        <div class="inline title" data-text ="4t.3r+5[3]" data-w = "40" data-h="40" data-cur="true"></div>
+        <div class="inline title" data-text ="4t.5r+9[5]" data-w = "140" data-h="140" data-cur="true"></div>
+        <div class="inline title" data-text ="4t.7r+d[7]" data-w = "240" data-h="240" data-cur="true"></div>
+    </li>
+</ul>
+</li>
+</ul>
+
+<p>Interlacing two sequences is a way to create more interesting patterns. The following examples show how to interlace two sequences. The first two examples don't require turns, relying on the right-turning bias to make donuts. The last two examples color the tiles with left turns pink, as with the straight driving and donuts examples above.</p>
+<div class="inline title" data-text ="4t.+6[3r6]" data-w = "100" data-h="100" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+a[5r4]" data-w = "190" data-h="190" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+6[3r55i<]" data-w = "150" data-h="150" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+8[8i<3r3i<]" data-w = "200" data-h="200" data-cur="true"></div>
+<p>Rather than using colors to indicate turns, they can be used to indicate which sequence a tile came from or perhaps just asthetics.</p>
+<div class="inline title" data-text ="4t.+6[3b6y]" data-w = "100" data-h="100" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+a[5o4p]" data-w = "190" data-h="190" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+6[3b5i5<]" data-w = "150" data-h="150" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+8[8g<3l3<]" data-w = "200" data-h="200" data-cur="true"></div>
+<h2>branching and embellishing</h2>
+<p>Although driving tiles around can make a lot of interesting patterns, backing up or constructing elaborate paths to create what you want can be tedious and frustrating. Instead, by tapping on any existing tile in a pattern, a new path is created starting on that tile. For instance, to turn the yellow and blue pattern into a pendant, one could just click on one of the upper triangles and start a new path "driving" the blue chain of squares and triangles.  With multiple additions to the same yellow and blue pattern, a fish could also be created. The orange and purple donut can be transformed into a face by adding a few extra paths. It can further be enhanced by using transparent tiles instead of orange ones. The final pink blue interlaced path can be embellished to become a pinwheel.  </p>
+
+<div class="inline title" data-text ="4>{3<4b443<4443<33<3<33<4443<444}+6[3b6y]" data-w = "150" data-h="150" data-cur="true"></div>
+
+<div class="inline title" data-text ="3b6y xA 4>+3A{<3b} vA{3t<6b{<3b}{>3b}}+2A{<<3b}{3t333<6y+6[{3}<]}{3t6<3l3y3<3t3y}" data-w = "150" data-h="150" data-cur="true"></div>
+
+<div class="inline title" data-text ="4o{..5,45,45,,44r{,33,3}.3,33}54{+a[54]}>45p<4o{>3p}5p<4o" data-w = "150" data-h="150" data-cur="true"></div>
+
+<div class="inline title" data-text ="4o{..5t,45,45,,44r{,33,3}.3,33}54{+a[54]}>4t5p<4t{>3p}5p<4t" data-w = "150" data-h="150" data-cur="true"></div>
+
+
+<div class="inline title" data-text ="4t.+6[3b5i{<33}5{.3,3}<]" data-w = "150" data-h="150" data-cur="true"></div>
+
+<!--div class="inline title" data-text ="4t>+6[3b5{<<3<p5i<5<3p5}i5i{>3i<3}<]" data-w = "150" data-h="150" data-cur="true"></div -->
+
+<p>Branching and embellishing can be used to create fresh patterns that are not based on these donut patterns. The following patterns show some other examples that demonstrate branching paths. As a perk of using the keyboard shortcuts as opposed to using screen buttons is that there are a few additional instructions: the colours black and gray, and the tiles nonagons (9-gon), decagons (10-gon), and unadecagon (11-gon) with the keys k, a, 9, 0, and 1 respectively. The black tires &mdash;k, the gray elephant &mdash;a, the pink flower centre &mdash;9, the spider's cephalothorax (where the legs meet) &mdash;0 and the spider's abdomen &mdash;1.</p>
+
+
+<div class="inline title" data-text ="8p{>>>>6b{<4344}>43<44}{<<6>45y}{>>6>45y}8iy" data-w = "150" data-h="150" data-cur="true"></div>
+<div class="inline title" data-text ="3r434{<3<334433<33}{>5k}3>>3{<3y3}3<434{>5k}3" data-w = "150" data-h="150" data-cur="true"></div>
+
+<div class="inline title" data-text ="4g4{>3<3}{<33}449i<<<<+8[{5y}>]" data-w = "150" data-h="150" data-cur="true"></div>
+<div class="inline title" data-text ="5a{<<5<5<5}>5<{5{555}>5<5>5{>5b}<5{<33<3}>5<{>5b}5>" data-w = "150" data-h="150" data-cur="true"></div>
+<div class="inline title" data-text ="0l{>3<33<33<4}{>>3<33<33<3<33}{>>>3<33<333<344}{>>>>3<33<333<33<33<3}{<33<33<34}{<<33<33<333<3<}{<<<33<33<3<33<44}{<<<<33<33<3<33<33<33<}>>>>>1" data-w = "150" data-h="150" data-cur="true"></div>
+
+
+<h2>repetition and banks</h2>
+<p>Where TileDrive shines is repetitive patterns. Although it is possible to create patterns one tile at a time, it is faster and less error-prone to reuse sequences of instructions. These sequences can be stored in <em>a bank</em> and used as a single instruction. The way banks are used are similar to cutting and pasting. There are ten banks available labeled A-J. They are loaded by cutting all the current instructions into a bank. They can be used by pasting them at the current tile. </p>
+    <ul>A repetitive pattern can be created by:
+        <li>clicking on icons for square purple pentagon orange x<sub>A</sub>(cut A)
+            <ul>
+            <li>4p5o xA</li>
+            </ul>
+            <div class="inline title" data-text ="4p5o" data-w = "50" data-h="50" data-cur="true"></div>
+        </li>
+        <li>paste A ten times (by clicking on the picture above x<sub>A</sub> ) then turn right<ul>
+            <li>vA vA vA vA vA vA vA vA vA vA &gt;</li>
+        </ul>
+        <div class="inline title" data-text ="+a[4p5o]>" data-w = "150" data-h="150" data-cur="true"></div>
+
+        </li>
+        <li>cut to bank B and paste 5 fimes<ul>
+            <li>xB vB vB vB vB vB </li>
+        </ul>
+        <div class="inline title" data-text ="+5[+a[4p5o]>]" data-w = "250" data-h="250" data-cur="true"></div>
+        </li>
+    </ul>
+    <p>These interactions produce 205 instuctions or 80 resulting tiles. The benefit of using banks is not only that it speeds up creating patterns but it opens up a way of seeing and decribing regularity in patterns. It is probably critical to spend energy and time with TileDrive before using banks so that this benefit can be fully appreciated. </p>
+
+    <p>The construction above uses a single branch to create the pattern with some tiles being overwritten. Another way to construct this pattern would be to use branching. </p>
+    <ul>A branched version:
+        <li>clicking on icons for square purple pentagon orange x<sub>A</sub>(cut A)
+            <ul>
+            <li>4p5o xA</li>
+            </ul>
+            <div class="inline title" data-text ="4p5o" data-w = "50" data-h="50" data-cur="true"></div>
+        </li>
+        <li>paste A six times and then square, purple<ul>
+            <li>vA vA vA vA vA vA 4 p</li>
+        </ul>
+        <div class="inline title" data-text ="+6[4p5o]4p" data-w = "150" data-h="150" data-cur="true"></div>
+        </li>
+        <li>click on the third pentagonal tile, turn right, paste A, and then square purple <ul>
+            <li>&gt; vA 4p</li>
+        </ul>
+        <div class="inline title" data-text ="4p5o xa{+3A{>+1A4p}+3A4p}<" data-w = "150" data-h="150" data-cur="true"></div>
+        </li>
+        <li>cut to bank B and then pentagon, red paste bank A click on the the red pentagon turn right and paste, repeat this time turning twice etc. until all five sides of the central red pentagon are completed<br>
+        <div class="inline title" data-text ="4p5o xA 5r+1[{+3A{>+1A4p}+3A4p}.]" data-w = "150" data-h="150" data-cur="true"></div>
+        <div class="inline title" data-text ="4p5o xA 5r+2[{+3A{>+1A4p}+3A4p}.]" data-w = "200" data-h="200" data-cur="true"></div>
+        <div class="inline title" data-text ="4p5o xA 5r+5[{+3A{>+1A4p}+3A4p}.]" data-w = "250" data-h="250" data-cur="true"></div>
+        </li>
+    </ul>
+  <p>In a sense, the branching style of construction is nicer since there is no overwriting of tiles but it is more complicated to design. When examining the side bar that shows textual instructions of this pattern, there is more structure to this code than that the previous construction. These differences can also be explored and examined with animation using the on-screen @ button.</p>
+
+<h2>coding</h2>
+
+<p>Many interesting patterns can be produced using and reusing banks. One way to become more connected with the patterns is to become a poweruser and use the keyboard to speed up creating patterns. Another way to better understand these patterns is to use a built-in preprocessing language that incorporates the basic instructions with bank operations. This language can help focus attention on the describing and communicating the ways patterns relate to one another.  As well, the language has a means of interlacing sequences and performing multiple pastes. The interface for this language is revealed by clicking on the "adv" button.</p>
+
+<ul>Examples of simple programs
+    <li>repeating multiple pastes with <em><b>+</b>#&lt;bank&gt;</em>:<ul>
+        <li><div class="inline title" data-text ="5r5i, xa 4t. +4a" data-w = "120" data-h="50" data-cur="true"></div><div class="inline">5r5i, xA<br><em><b>+4A</b></em></div></li>
+        <li><div class="inline title" data-text ="3y3,8g, xa +8a" data-w = "120" data-h="100" data-cur="true"></div><div class="inline">3y3,8g, xA<br> <em><b>+8A</b></em></div></li>
+        <li><div class="inline title" data-text ="4a xA
+            4p{>+3A} xB
+            >{+3B} xC
+            4r+4C" data-w = "120" data-h="100" data-cur="true"></div><div class="inline">4a xA<br>4p{><em><b>+3A</b></em>} xB<br>{<em><b>+3B</b></em>}>xC<br>4r<em><b>+4C</b></em></div></li>
+    </ul>
+   </li>
+   <li>interlacing sequences <em><b>m</b>&lt;bank1&gt;&lt;bank2&gt;</em>:<ul>
+    <li><div class="inline title" data-text ="4t.m[+3[5r]][+3[5i,]]" data-w = "120" data-h="50" data-cur="true"></div><div class="inline">5r5r5r xA<br>5i,5i,5i, xB<br><em><b>mAB</b></em></div></li>
+    <li><div class="inline title" data-text ="8g, xA +8A xA 3y3y, xB mAB" data-w = "120" data-h="100" data-cur="true"></div><div class="inline">8g< xA<br> +8A xA<br> 3y3y< xB<br><em><b>mAB</b></em></div></li>
+    <li><div class="inline title" data-text ="4a{.2} xA
+        4p{>+3A} xB
+        >{+3B} xC
+        4r+4C xD 
+        6o xE mDE" data-w = "120" data-h="100" data-cur="true"></div><div class="inline">4a{>2} xA<br>
+        4p{>+3A} xB<br>
+        {+3B}> xC<br>
+        4r+4C xD <br>
+        6o xE <em><b>mDE</b></em></div></li>
+</ul>
+</li>
+</ul>
+<p>There are many details and subtleties in TileDrive coding that do not necessarily need to be explored by all students but can be left for enrichment or for the teachers to quickly create variations of patterns.</p>
+
+<ul>For more information about:
+    <li>activities see <a href="TDActivities.html">TDActivities.html</a></li>
+    <li>mathematical aspects  see <a href="TDLengths.html">TDLengths.html</a>, <a href="TDAngles.html">TDAngles.html</a></li>
+    <li>examples see <a href="TDExamples.html">TDExamples.html</a></li>
+    <li>coding language see <a href="TileDriveCoding.html">TileDriveCoding.html</a></li>
+</ul>
+<p>As with this document, these are all drafts unfortunately littered with errors.  I will fix them soon.</p>
+<!-- ****************************************************  --> 
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+div.help {
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items:center;
+}
+.piece {
+   display: inline-block;
+   overflow:hidden;
+   width:50px;
+   height:50px;  
+   background-image:url(goalMM.svg);
+   background-size: 50px;
+   transition: all 1s ease-in-out;
+}
+div.goal {
+   width:500px;
+   height:500px;  
+   background-size: 500px;
+   margin: 0 auto;
+}
+.show {
+   background-position: 0 300px;
+}
+.bridge {
+   background-position: 0 250px;
+}
+.endure {
+   background-position: 0 200px;
+}
+.explore {
+   background-position: 0 150px;
+}
+.focus {
+   background-position: 0 100px;
+}
+.speed {
+   background-position: 0 50px;
+}
+table {
+   margin-bottom:1em;
+   border:1px solid #eee;
+   border-radius:0.5em;
+   background:#f8f8f8;
+   transition: all 1s ease-in-out;
+}
+table:hover .piece,table:active .piece{
+   transform:scale(1.1);
+   opacity:0.5;
+}
+table:hover, table:active {
+   background:#f4f4f4;
+}
+tr:nth-child(2n)  {
+   background:white;
+   border-radius:1em;
+   margin-right:0.5em;
+   margin-left:0.5em;
+}
+th {
+   width:150px;
+}
+h1 {
+   margin-top:0;
+}
