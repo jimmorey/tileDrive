@@ -1,6 +1,8 @@
 # TileDrive (td) 
 This is the first version controlled tile environment.
 It comes from my work with TileLand and PolygonR&D
+Jump in with 
+* [TileDrive](./TileDrive.html)
 
 ## Description
 Its main difference is the focus on a tree structure that will hopefully allow for easier immediate editting of patterns.  This new direction may lead to better preprocessing languages as well as fascilitate more natural embellishment of existing patterns. 
