@@ -18,7 +18,7 @@ This version will promote simple code trees (non-looping non-conditional code) t
 
 * future directions:
     * adding condition behaviour to the preprocessor language
-        * ?{colour|#}{True:[blah]|A}{False:[blah]|A}
+        * ?{colour\|#}{True:[blah]\|A}{False:[blah]\|A}
     * adding TileManager interface that has an interface that focuses on preprocessor language with help with reversable/ partial execution tools
 
 * bugs:
