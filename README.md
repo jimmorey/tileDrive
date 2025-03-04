@@ -1,5 +1,5 @@
 # TileDrive (td) 
-![TD](tdimage.png  width="200" "TD")
+<img src="tdimage.png" width="200" />
 This is a developing project that hopes to create a introductory environment to play with shapes, patterns, and eventually coding. This is the first version-controlled tile environment. The previous environments 
 TileLand and PolygonR&D (early 2000's) were vi or emacs maintained :)
 
