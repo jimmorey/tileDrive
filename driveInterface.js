@@ -209,6 +209,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const observer2 = new ResizeObserver(resizeCanvas);
     observer.observe(document.getElementById('thecanvas'));
 
+    /* create a paint drag interface */
+    /* need a temp cursor for morphing polygon prerelease/commit
+        probably changing the code would be too laggy 
+        strategically best to first fiddle with the visual with zero effect on code so nothing breaks...*/
+    // huhCanvas.addEventListener('mousedown', (event) => {
+    //     //remove junk
+    //     setCode(properCode(getCode()))
+    //     runCode()
+
+    //     // Find the point
+    //     let hCanvas = document.getElementById("thecanvas") 
+    //     let fud = 1.0 / (tileLand.sx * tileLand.scale)
+    //     let rect2 = hCanvas.getBoundingClientRect()
+       
+    //     let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+    //     let tile = tileLand.testPoint(p[0], p[1])
+    //     // find edge
+
+    // }
+
     huhCanvas.addEventListener('click', (event) => {   // clicking on the polygons in the canvas
         //remove Junk
         setCode(properCode(getCode()))

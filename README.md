@@ -19,12 +19,15 @@ This version will promote simple code trees (non-looping non-conditional code) t
 
 * future directions:
     * adding condition behaviour to the preprocessor language
-        * ?{colour\|#}{True:[blah]\|A}{False:[blah]\|A}
+        * if: ?{colour\|#}{True:[blah]\|A}{False:[blah]\|A}
+        * while: +?{colour\|#}{True:[blah]\|A}
     * adding a TileManager interface that focuses on helping explore and connecting outcomes with preprocessor code. This will probably include a reversable / partial execution tools
         * a simple version called [TDSlim](./TDSlim.html) was build for use with my limited R36S (which actually turned out to be a cheaper knock-off but still worked) and a wired keyboard. [demo](https://www.youtube.com/watch?v=Y2YO72a_l3g)
+    * adding a TilePaint interface that turns canvas strokes into polygons and specifically tileDrive code. The stroke would make sense if it first crossed an edge of an existing tile and outwardly released after a distance relating to the diameter of the next polygon--thus selecting the next tile. The resulting TileDrive code will most likely have excessive branching and turning but the ease of construct may appeal to a younger audience.
 
 * bugs:
     * a current unsolved issue relates to chunking tiles in [Unwind](./Unwind.html) that I only have one problem case.  This is a low priority currently.
+    * for displaying arrows in documents there was some issue that I have not been able to resolve.
 
 ## Authors
 Jim Morey 
