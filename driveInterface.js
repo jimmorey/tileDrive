@@ -213,8 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
     /* need a temp cursor for morphing polygon prerelease/commit
         probably changing the code would be too laggy 
         strategically best to first fiddle with the visual with zero effect on code so nothing breaks...*/
-    huhCanvas.addEventListener('dragstart', (event) => {
-        console.log("dragstart")
+    console.log("this is a test")
+    huhCanvas.addEventListener("mousedown", (event) => {
+        //console.log("dragstart")
 
         //remove junk
         setCode(properCode(getCode()))
@@ -228,11 +229,11 @@ document.addEventListener("DOMContentLoaded", () => {
         let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
         let tile = tileLand.testPoint(p[0], p[1])
         // setup
-        proposedTile = {md:p,initialTile:tile,newTile:null}
+        if (tile!=null) proposedTile = {md:p,tile:tile,newTile:null}
     })
-    huhCanvas.addEventListener('drag', (event) => {
+    huhCanvas.addEventListener('mousemove', (event) => {
         if (proposedTile != null){
-            console.log("drag")
+            //console.log("drag")
 
             // Find the point
 
@@ -241,14 +242,33 @@ document.addEventListener("DOMContentLoaded", () => {
             let rect2 = hCanvas.getBoundingClientRect()
         
             let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+            //console.log (proposedTile.tile,proposedTile.md,p)
             proposedTile.newTile = proposedTile.tile.getNextPaintTile(p)
             // find edge
-            console.log(proposedTile)
+
+            //console.log("TILE",proposedTile.newTile.sides)
+            tileLand.drawCanvas(huhCanvas, arrowOn)
+            let list =[{leaf:proposedTile.newTile.tile}]
+            tileLand.drawCanvasAnimate(huhCanvas, list,true, true)
         }
     })
-    huhCanvas.addEventListener('dragend', (event) => {
+    huhCanvas.addEventListener('mouseup', (event) => {
         if (proposedTile != null){
-            console.log("dragend")
+            let tile = proposedTile.tile
+            //console.log("dragend",proposedTile.newTile.side,proposedTile.newTile.tile.sides)
+            let rot = (proposedTile.newTile.side + Math.trunc(proposedTile.tile.sides/2))%proposedTile.tile.sides
+
+            if (tile !== null && tile.sides !=2) {
+                if (tile.ref >= 0) {
+                    setCursor(findLastBranch(tile.ref) + 1)
+                    runCommand(`{${".".repeat(rot)+proposedTile.newTile.tile.sides}}`, true)
+                    //setCode(getCode())
+                    //console.log("click", tile.ref)
+                    runCode()
+                }
+            }
+    
+            sendFocus()
         }
         proposedTile = null;
     })
@@ -581,8 +601,8 @@ function setCursor(num) {
     program.setCursor(num)
 }
 function runCommand(text, updateH = false, orig = "noorig") {  // runCommand and DoManipulation trigger a cHistory....?
-    var counter = getCursor()
-    var newText = getCode()
+    let counter = getCursor()
+    let newText = getCode()
     if (updateH) {
         cHistory.push([counter, newText])
     }
@@ -595,6 +615,7 @@ function runCommand(text, updateH = false, orig = "noorig") {  // runCommand and
 
     fixRun()
 }
+
 function pasteLiCode(comp) {
     var text = comp.textContent
     document.getElementById("ppcode").innerHTML = prettyCode(text)

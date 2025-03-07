@@ -162,7 +162,7 @@ TL.prototype.drawCanvasAnimate = function(c,rtpolys,highlight=false,arrowOn=true
   for(var i=0;i<rtpolys.length;i++){
     var thing = rtpolys[i]
     // I'm a little sketchy on the working of rtree but "leaf" seems to be working 
-    if (rtpolys[i].leaf != undefined) {
+    if (rtpolys[i].leaf != undefined  && rtpolys[i].leaf.sides>2) {
       if (highlight)
         rtpolys[i].leaf.drawHL(ctx,arrowOn)
       else

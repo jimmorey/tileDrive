@@ -58,7 +58,7 @@ PolyDat.prototype.sidesFromMinRadii = function(rad,max=11) {
     let i=2
     while (i<max) {
 
-        if (rad <knownMinRadii[i-1]) return i // kMR[0] retates to the 
+        if (rad <this.knownMinRadii[i-2]) return i // kMR[0] retates to the 
         i++
     }
     return i;
@@ -569,17 +569,23 @@ Rpoly.prototype.doLine = function(p1, p2, c) {
     c.stroke();
 }
 
-RPoly.prototype.getNextPaintTile = function(point) {
+Rpoly.prototype.getNextPaintTile = function(point) {
     let proposal = {side:0,tile:null}
-    let centerPoint = createCenter()
+    let centerPoint = this.center
     let angle = this.findAngle(centerPoint,point)
     let angle0 = this.findAngle(centerPoint, this.vertices[0])
-    proposal.side = Math.trunc(this.sides * (angle-angle0)/(2*Math.PI))  // !!! have to think about the boundary...
-    let midSidePoint = [(this.vertices[proposal.side][0]+this.vertices[proposal.side+1][0])/2,
-        (this.vertices[proposal.side][1]+this.vertices[proposal.side+1][1])/2]
+    let diff = angle-angle0
+    while (diff<0) diff += 2*Math.PI
+    proposal.side = Math.trunc(this.sides * (diff)/(2*Math.PI))  // !!! have to think about the boundary...
+    //console.log("details ",proposal.side,angle,angle0, this.findAngle(centerPoint, this.vertices[1]),diff)
+    let midSidePoint = [(this.vertices[proposal.side][0]+this.vertices[(proposal.side+1)%this.sides][0])/2,
+        (this.vertices[proposal.side][1]+this.vertices[(proposal.side+1)%this.sides][1])/2]
     let dist = this.distance(midSidePoint,point)
     let newSide = polydat.sidesFromMinRadii(dist)
-    proposal.tile = new Rpoly(this.vertices[proposal.side],this.vertices[proposal.side+1],newSide,this.col)
+    //console.log("distance ",dist,newSide)
+
+    //if (newSide <2) newSide = 2
+    proposal.tile = new Rpoly(this.vertices[(proposal.side+1)%this.sides ],this.vertices[proposal.side],newSide,this.col)
 
     return proposal
 }
