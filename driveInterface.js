@@ -30,6 +30,8 @@ let bufferXV = null
 let arrowOn = false
 let printColour = true
 let scrollPos = 0
+let rainbowOn = false
+let proposedTile = null  //tilePainting...
 
 let animate = {
     on: false,
@@ -76,13 +78,10 @@ let animate = {
     }
 }
 
-let rainbowOn = false
-
 var verifyIndex = (string, index) => {
     //console.log(index, index<0?0:index>=string.length?string.length:index)
     return index < 0 ? 0 : index >= string.length ? string.length : index
 }
-
 
 //5r{i}5{g}5{b}55  these are all red....!!! fix
 let program = {
@@ -209,25 +208,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const observer2 = new ResizeObserver(resizeCanvas);
     observer.observe(document.getElementById('thecanvas'));
 
+
     /* create a paint drag interface */
     /* need a temp cursor for morphing polygon prerelease/commit
         probably changing the code would be too laggy 
         strategically best to first fiddle with the visual with zero effect on code so nothing breaks...*/
-    // huhCanvas.addEventListener('mousedown', (event) => {
-    //     //remove junk
-    //     setCode(properCode(getCode()))
-    //     runCode()
+    huhCanvas.addEventListener('dragstart', (event) => {
+        console.log("dragstart")
 
-    //     // Find the point
-    //     let hCanvas = document.getElementById("thecanvas") 
-    //     let fud = 1.0 / (tileLand.sx * tileLand.scale)
-    //     let rect2 = hCanvas.getBoundingClientRect()
+        //remove junk
+        setCode(properCode(getCode()))
+        runCode()
+
+        // Find the point
+        let hCanvas = document.getElementById("thecanvas") 
+        let fud = 1.0 / (tileLand.sx * tileLand.scale)
+        let rect2 = hCanvas.getBoundingClientRect()
        
-    //     let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
-    //     let tile = tileLand.testPoint(p[0], p[1])
-    //     // find edge
+        let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+        let tile = tileLand.testPoint(p[0], p[1])
+        // setup
+        proposedTile = {md:p,initialTile:tile,newTile:null}
+    })
+    huhCanvas.addEventListener('drag', (event) => {
+        if (proposedTile != null){
+            console.log("drag")
 
-    // }
+            // Find the point
+
+            let hCanvas = document.getElementById("thecanvas") 
+            let fud = 1.0 / (tileLand.sx * tileLand.scale)
+            let rect2 = hCanvas.getBoundingClientRect()
+        
+            let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+            proposedTile.newTile = proposedTile.tile.getNextPaintTile(p)
+            // find edge
+            console.log(proposedTile)
+        }
+    })
+    huhCanvas.addEventListener('dragend', (event) => {
+        if (proposedTile != null){
+            console.log("dragend")
+        }
+        proposedTile = null;
+    })
 
     huhCanvas.addEventListener('click', (event) => {   // clicking on the polygons in the canvas
         //remove Junk

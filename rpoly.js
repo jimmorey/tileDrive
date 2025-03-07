@@ -52,6 +52,17 @@ PolyDat.prototype.getAngle = function(sides) {
 PolyDat.prototype.angle = function(n) {
     return Math.PI * (n - 2) / (n) * 0.5;
 }
+
+PolyDat.prototype.sidesFromMinRadii = function(rad,max=11) {
+/*need to find index of array less than rad */
+    let i=2
+    while (i<max) {
+
+        if (rad <knownMinRadii[i-1]) return i // kMR[0] retates to the 
+        i++
+    }
+    return i;
+}
 polydat = new PolyDat();
 
 //******************************************************
@@ -556,4 +567,19 @@ Rpoly.prototype.doLine = function(p1, p2, c) {
     c.moveTo(p2[0], p2[1]);
     c.lineTo(p1[0], p1[1]);
     c.stroke();
-};
+}
+
+RPoly.prototype.getNextPaintTile = function(point) {
+    let proposal = {side:0,tile:null}
+    let centerPoint = createCenter()
+    let angle = this.findAngle(centerPoint,point)
+    let angle0 = this.findAngle(centerPoint, this.vertices[0])
+    proposal.side = Math.trunc(this.sides * (angle-angle0)/(2*Math.PI))  // !!! have to think about the boundary...
+    let midSidePoint = [(this.vertices[proposal.side][0]+this.vertices[proposal.side+1][0])/2,
+        (this.vertices[proposal.side][1]+this.vertices[proposal.side+1][1])/2]
+    let dist = this.distance(midSidePoint,point)
+    let newSide = polydat.sidesFromMinRadii(dist)
+    proposal.tile = new Rpoly(this.vertices[proposal.side],this.vertices[proposal.side+1],newSide,this.col)
+
+    return proposal
+}
