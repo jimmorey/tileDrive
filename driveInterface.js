@@ -32,6 +32,7 @@ let printColour = true
 let scrollPos = 0
 let rainbowOn = false
 let proposedTile = null  //tilePainting...
+let touchUpIssue = null
 
 let animate = {
     on: false,
@@ -187,7 +188,97 @@ function resizeCanvas() {
     scaleScreen(document.getElementById("range").value)
     tileLand.drawCanvas(huhC, arrowOn, rainbowOn)
 }
+function mousedown(eventx,eventy) {
+        //remove junk
+        document.getElementById("scratch").textContent +="td "+eventx+" "+eventy+" "
+        event.preventDefault();
+        setCode(properCode(getCode()))
+        runCode()
+
+        // Find the point
+        let hCanvas = document.getElementById("thecanvas") 
+        let fud = 1.0 / (tileLand.sx * tileLand.scale)
+        let rect2 = hCanvas.getBoundingClientRect()
+       
+        let p = [(eventx - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (eventy - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+        let tile = tileLand.testPoint(p[0], p[1])
+        // setup
+        if (tile!=null) proposedTile = {md:p,tile:tile,newTile:null}
+}
+function mousemove(eventx,eventy) {
+    document.getElementById("scratch").textContent +="tm "+eventx+" "+eventy+" "
+
+    event.preventDefault();
+
+    if (proposedTile != null){
+        // Find the point
+
+        let hCanvas = document.getElementById("thecanvas") 
+        let fud = 1.0 / (tileLand.sx * tileLand.scale)
+        let rect2 = hCanvas.getBoundingClientRect()
+    
+        let p = [(eventx - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (eventy - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+        proposedTile.newTile = proposedTile.tile.getNextPaintTile(p)
+
+        // find edge
+        tileLand.drawCanvas(huhCanvas, arrowOn)
+        let list =[{leaf:proposedTile.newTile.tile}]
+        tileLand.drawCanvasAnimate(huhCanvas, list,true, true)
+    }
+}
+function mouseup(eventx,eventy) {
+    document.getElementById("scratch").textContent +="tu "+eventx+" "+eventy+" "
+
+
+    event.preventDefault();
+
+    if (proposedTile != null && proposedTile.newTile != null && proposedTile.newTile.tile.sides != 2) {
+        let tile = proposedTile.tile
+        //console.log("dragend",proposedTile.newTile.side,proposedTile.newTile.tile.sides)
+        let rot = (proposedTile.newTile.side + Math.trunc(proposedTile.tile.sides/2))%proposedTile.tile.sides
+
+        let rot2 = proposedTile.tile.sides-rot
+
+        //proposedTile.newTile.tile.sides%2
+        let turn = rot2<rot?",".repeat(rot2):".".repeat(rot)
+        if (tile !== null && tile.sides !=2) {
+            if (tile.ref >= 0) {
+                setCursor(findLastBranch(tile.ref) + 1)
+                runCommand(`{${turn+proposedTile.newTile.tile.sides%10}}`, true)
+                //setCode(getCode())
+                //console.log("click", tile.ref)
+                runCode()
+            }
+        }
+
+        sendFocus()
+    } else {  //click
+
+        setCode(properCode(getCode()))
+        runCode()
+
+        // Find the point
+        let hCanvas = document.getElementById("thecanvas") //issues with updates hcanvas huhCanvas??
+        let fud = 1.0 / (tileLand.sx * tileLand.scale) //tileLand.scale * 
+        let rect2 = hCanvas.getBoundingClientRect()
+
+        let p = [(eventx - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (eventy - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+        let tile = tileLand.testPoint(p[0], p[1])
+        if (tile !== null) {
+            if (tile.ref >= 0) {
+                setCursor(findLastBranch(tile.ref) + 1)
+                doManipulation("{")
+                runCode()
+            }
+        }
+
+        sendFocus()
+    }
+    proposedTile = null;
+}
+
 /* start up ------------------------------------*/
+
 document.addEventListener("DOMContentLoaded", () => {
     //hide(document.getElementById('first'))
     setupButtons()
@@ -213,92 +304,51 @@ document.addEventListener("DOMContentLoaded", () => {
     /* need a temp cursor for morphing polygon prerelease/commit
         probably changing the code would be too laggy 
         strategically best to first fiddle with the visual with zero effect on code so nothing breaks...*/
-    console.log("this is a test")
-    huhCanvas.addEventListener("mousedown", (event) => {
-        //console.log("dragstart")
+    huhCanvas.addEventListener('mousedown', (event) => { mousedown(event.x,event.y) })
+    huhCanvas.addEventListener('mousemove', (event) => { mousemove(event.x,event.y)})
+    huhCanvas.addEventListener('mouseup', (event) => {  mouseup(event.x,event.y) })
 
-        //remove junk
-        setCode(properCode(getCode()))
-        runCode()
-
-        // Find the point
-        let hCanvas = document.getElementById("thecanvas") 
-        let fud = 1.0 / (tileLand.sx * tileLand.scale)
-        let rect2 = hCanvas.getBoundingClientRect()
-       
-        let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
-        let tile = tileLand.testPoint(p[0], p[1])
-        // setup
-        if (tile!=null) proposedTile = {md:p,tile:tile,newTile:null}
+    /* this is a cludge...not sure what's best. */
+    huhCanvas.addEventListener('touchstart', (event) => { 
+        touchUpIssue = {x:event.touches[0].clientX,y:event.touches[0].clientY}
+        mousedown(touchUpIssue.x,touchUpIssue.y)
     })
-    huhCanvas.addEventListener('mousemove', (event) => {
-        if (proposedTile != null){
-            //console.log("drag")
-
-            // Find the point
-
-            let hCanvas = document.getElementById("thecanvas") 
-            let fud = 1.0 / (tileLand.sx * tileLand.scale)
-            let rect2 = hCanvas.getBoundingClientRect()
-        
-            let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
-            //console.log (proposedTile.tile,proposedTile.md,p)
-            proposedTile.newTile = proposedTile.tile.getNextPaintTile(p)
-            // find edge
-
-            //console.log("TILE",proposedTile.newTile.sides)
-            tileLand.drawCanvas(huhCanvas, arrowOn)
-            let list =[{leaf:proposedTile.newTile.tile}]
-            tileLand.drawCanvasAnimate(huhCanvas, list,true, true)
-        }
+    huhCanvas.addEventListener('touchmove', (event) => { 
+        touchUpIssue = {x:event.touches[0].clientX,y:event.touches[0].clientY}
+        mousemove(touchUpIssue.x,touchUpIssue.y)
     })
-    huhCanvas.addEventListener('mouseup', (event) => {
-        if (proposedTile != null){
-            let tile = proposedTile.tile
-            //console.log("dragend",proposedTile.newTile.side,proposedTile.newTile.tile.sides)
-            let rot = (proposedTile.newTile.side + Math.trunc(proposedTile.tile.sides/2))%proposedTile.tile.sides
+    huhCanvas.addEventListener('touchend', (event) => {  mouseup(touchUpIssue.x,touchUpIssue.y) })
+    // huhCanvas.addEventListener("touchstart", (event) => { mousedown(event) })
+    // huhCanvas.addEventListener('touchmove', (event) => { mouseup(event)})
+    // huhCanvas.addEventListener('touchend', (event) => {  mousemove(event) })
 
-            if (tile !== null && tile.sides !=2) {
-                if (tile.ref >= 0) {
-                    setCursor(findLastBranch(tile.ref) + 1)
-                    runCommand(`{${".".repeat(rot)+proposedTile.newTile.tile.sides}}`, true)
-                    //setCode(getCode())
-                    //console.log("click", tile.ref)
-                    runCode()
-                }
-            }
-    
-            sendFocus()
-        }
-        proposedTile = null;
-    })
+    // huhCanvas.addEventListener('click', (event) => {   // clicking on the polygons in the canvas
+    //     //remove Junk
+    //     setCode(properCode(getCode()))
+    //     runCode()
 
-    huhCanvas.addEventListener('click', (event) => {   // clicking on the polygons in the canvas
-        //remove Junk
-        setCode(properCode(getCode()))
-        runCode()
+    //     // Find the point
+    //     let hCanvas = document.getElementById("thecanvas") //issues with updates hcanvas huhCanvas??
+    //     let fud = 1.0 / (tileLand.sx * tileLand.scale) //tileLand.scale * 
+    //     let rect2 = hCanvas.getBoundingClientRect()
+    //     // ?not sure why but the tileLand width & height seem out of whack with the canvas...?
+    //     //let p = [(event.x - rect2.x - rect2.width/ 2.0) * fud , (event.y - rect2.y - rect2.height / 2.0) * fud] // NEEDED FIX
+    //     let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+    //     let tile = tileLand.testPoint(p[0], p[1])
+    //     //console.log(...p,tileLand.width, tileLand.height)
+    //     if (tile !== null) {
+    //         if (tile.ref >= 0) {
+    //             setCursor(findLastBranch(tile.ref) + 1)
+    //             doManipulation("{")
+    //             //setCode(getCode())
+    //             //console.log("click", tile.ref)
+    //             runCode()
+    //         }
+    //     }
 
-        // Find the point
-        let hCanvas = document.getElementById("thecanvas") //issues with updates hcanvas huhCanvas??
-        let fud = 1.0 / (tileLand.sx * tileLand.scale) //tileLand.scale * 
-        let rect2 = hCanvas.getBoundingClientRect()
-        // ?not sure why but the tileLand width & height seem out of whack with the canvas...?
-        //let p = [(event.x - rect2.x - rect2.width/ 2.0) * fud , (event.y - rect2.y - rect2.height / 2.0) * fud] // NEEDED FIX
-        let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
-        let tile = tileLand.testPoint(p[0], p[1])
-        //console.log(...p,tileLand.width, tileLand.height)
-        if (tile !== null) {
-            if (tile.ref >= 0) {
-                setCursor(findLastBranch(tile.ref) + 1)
-                doManipulation("{")
-                //setCode(getCode())
-                //console.log("click", tile.ref)
-                runCode()
-            }
-        }
-
-        sendFocus()
-    })
+    //     sendFocus()
+    //     proposedTile = null;
+    // })
 
     document.getElementById("ppcode").addEventListener('focusout', () => {
         //console.log("adv focusout")
@@ -611,7 +661,8 @@ function runCommand(text, updateH = false, orig = "noorig") {  // runCommand and
 
     setCode(newText)
 
-    setCursor(parseInt(counter) + 1)
+    if (text[0] == '{')   setCursor(parseInt(counter) + text.length-1)   //ugly but works....  this is for tilePainting
+    else setCursor(parseInt(counter) + 1)
 
     fixRun()
 }

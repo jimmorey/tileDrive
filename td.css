@@ -4,7 +4,7 @@ header {
 .flexfill {
     flex: 2 auto;
 }
-button,canvas { touch-action: manipulation; }  /* stop double tap zoom ??*/
+button,canvas { touch-action: auto; }  /* stop double tap zoom ??*/
 #nav {
     display: flex;
     flex-direction: column;
