@@ -190,8 +190,7 @@ function resizeCanvas() {
 }
 function mousedown(eventx,eventy) {
         //remove junk
-        document.getElementById("scratch").textContent +="td "+eventx+" "+eventy+" "
-        event.preventDefault();
+       // document.getElementById("scratch").textContent +="td "+eventx+" "+eventy+" "
         setCode(properCode(getCode()))
         runCode()
 
@@ -206,9 +205,7 @@ function mousedown(eventx,eventy) {
         if (tile!=null) proposedTile = {md:p,tile:tile,newTile:null}
 }
 function mousemove(eventx,eventy) {
-    document.getElementById("scratch").textContent +="tm "+eventx+" "+eventy+" "
-
-    event.preventDefault();
+    //document.getElementById("scratch").textContent +="tm "+eventx+" "+eventy+" "
 
     if (proposedTile != null){
         // Find the point
@@ -227,10 +224,7 @@ function mousemove(eventx,eventy) {
     }
 }
 function mouseup(eventx,eventy) {
-    document.getElementById("scratch").textContent +="tu "+eventx+" "+eventy+" "
-
-
-    event.preventDefault();
+    //document.getElementById("scratch").textContent +="tu "+eventx+" "+eventy+" "
 
     if (proposedTile != null && proposedTile.newTile != null && proposedTile.newTile.tile.sides != 2) {
         let tile = proposedTile.tile
@@ -310,45 +304,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* this is a cludge...not sure what's best. */
     huhCanvas.addEventListener('touchstart', (event) => { 
+        event.preventDefault()
         touchUpIssue = {x:event.touches[0].clientX,y:event.touches[0].clientY}
         mousedown(touchUpIssue.x,touchUpIssue.y)
     })
     huhCanvas.addEventListener('touchmove', (event) => { 
+        event.preventDefault()
         touchUpIssue = {x:event.touches[0].clientX,y:event.touches[0].clientY}
         mousemove(touchUpIssue.x,touchUpIssue.y)
     })
-    huhCanvas.addEventListener('touchend', (event) => {  mouseup(touchUpIssue.x,touchUpIssue.y) })
-    // huhCanvas.addEventListener("touchstart", (event) => { mousedown(event) })
-    // huhCanvas.addEventListener('touchmove', (event) => { mouseup(event)})
-    // huhCanvas.addEventListener('touchend', (event) => {  mousemove(event) })
-
-    // huhCanvas.addEventListener('click', (event) => {   // clicking on the polygons in the canvas
-    //     //remove Junk
-    //     setCode(properCode(getCode()))
-    //     runCode()
-
-    //     // Find the point
-    //     let hCanvas = document.getElementById("thecanvas") //issues with updates hcanvas huhCanvas??
-    //     let fud = 1.0 / (tileLand.sx * tileLand.scale) //tileLand.scale * 
-    //     let rect2 = hCanvas.getBoundingClientRect()
-    //     // ?not sure why but the tileLand width & height seem out of whack with the canvas...?
-    //     //let p = [(event.x - rect2.x - rect2.width/ 2.0) * fud , (event.y - rect2.y - rect2.height / 2.0) * fud] // NEEDED FIX
-    //     let p = [(event.x - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (event.y - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
-    //     let tile = tileLand.testPoint(p[0], p[1])
-    //     //console.log(...p,tileLand.width, tileLand.height)
-    //     if (tile !== null) {
-    //         if (tile.ref >= 0) {
-    //             setCursor(findLastBranch(tile.ref) + 1)
-    //             doManipulation("{")
-    //             //setCode(getCode())
-    //             //console.log("click", tile.ref)
-    //             runCode()
-    //         }
-    //     }
-
-    //     sendFocus()
-    //     proposedTile = null;
-    // })
+    huhCanvas.addEventListener('touchend', (event) => {  
+        event.preventDefault()
+        mouseup(touchUpIssue.x,touchUpIssue.y) 
+    })
 
     document.getElementById("ppcode").addEventListener('focusout', () => {
         //console.log("adv focusout")
