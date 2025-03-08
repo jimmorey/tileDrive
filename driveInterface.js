@@ -238,7 +238,10 @@ function mouseup(eventx,eventy) {
         if (tile !== null && tile.sides !=2) {
             if (tile.ref >= 0) {
                 setCursor(findLastBranch(tile.ref) + 1)
-                runCommand(`{${turn+proposedTile.newTile.tile.sides%10}}`, true)
+                if (isMidpath(tile.ref))
+                    runCommand(`{${turn+proposedTile.newTile.tile.sides%10}}`, true)
+                else 
+                    runCommand(`${turn+proposedTile.newTile.tile.sides%10}`, true)
                 //setCode(getCode())
                 //console.log("click", tile.ref)
                 runCode()
@@ -630,7 +633,7 @@ function runCommand(text, updateH = false, orig = "noorig") {  // runCommand and
     setCode(newText)
 
     if (text[0] == '{')   setCursor(parseInt(counter) + text.length-1)   //ugly but works....  this is for tilePainting
-    else setCursor(parseInt(counter) + 1)
+    else setCursor(parseInt(counter) + text.length)
 
     fixRun()
 }
@@ -911,6 +914,13 @@ function findLastBranch(cursor) {
     }
 
     return curs - 1
+}
+
+function isMidpath(ref){  //Are these the only cases?
+    let code = getCode()
+    if (code.length == ref +1) return false
+
+    return code.substring(ref+1, ref + 2) != "}" 
 }
 function removeLast(input) {
     if (input === "")
