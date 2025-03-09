@@ -49,7 +49,7 @@ div.float {
   margin: 5px;
 }
 .inline, .title.inline, .inline svg{
-display: inline-block;
+  display: inline-block;
 }
 .fig canvas {
   flex-grow: 1;

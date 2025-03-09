@@ -377,3 +377,7 @@ header {
     float: right;
 color:gray;
 }
+.float{ /* this is for the instructions */
+    float: left;
+    margin: 5px;
+  }
