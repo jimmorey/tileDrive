@@ -9,21 +9,21 @@ Jump into tiling
 
 ## Description
 The Introduction is the best place to see what this project is about. 
-The main difference between the previous work is that there is focus on a tree structure that will hopefully allow for easier immediate editting of patterns.  This new direction should lead to a more natural embellishment of existing patterns and hopefully ease connecting patterns with processing.
+The main difference between the previous work is that there is focus on a tree structure that will hopefully allow for easier immediate editting of patterns.  This new direction should lead to a more natural embellishment of existing patterns and hopefully ease connecting patterns with processing. This latest addition is a painting-style of driving that should appear to younger grades and perhaps everyone (especially for embellishing tasks).
 
-This version will promote simple code trees (non-looping non-conditional code) that can be cut and pasted. Simple text promoted in this new version with single character tokens. 
+This version promotes simple code trees (non-looping non-conditional code) that can be cut and pasted. Simple text promoted in this new version with single character tokens. 
 * [tileland](https://jimmorey.com/tl/tileland.html)
 * [PolygonR&D](https://jimmorey.com/legacy/legacy.html)
 
 ## Details I'm thinking about
 
 * future directions:
+    * probably needs a cutting and pasting of text into the standard code panel rather than just "adv".  As well, the up and down arrows should probably be included. 
     * adding condition behaviour to the preprocessor language
         * if: ?{colour\|#}{True:[blah]\|A}{False:[blah]\|A}
         * while: +?{colour\|#}{True:[blah]\|A}
     * adding a TileManager interface that focuses on helping explore and connecting outcomes with preprocessor code. This will probably include a reversable / partial execution tools
         * a simple version called [TDSlim](./TDSlim.html) was build for use with my limited R36S (which actually turned out to be a cheaper knock-off but still worked) and a wired keyboard. [demo](https://www.youtube.com/watch?v=Y2YO72a_l3g)
-    * adding a TilePaint interface that turns canvas strokes into polygons and specifically tileDrive code. The stroke would make sense if it first crossed an edge of an existing tile and outwardly released after a distance relating to the diameter of the next polygon--thus selecting the next tile. The resulting TileDrive code will most likely have excessive branching and turning but the ease of construct may appeal to a younger audience.
 
 * bugs:
     * a current unsolved issue relates to chunking tiles in [Unwind](./Unwind.html) that I only have one problem case.  This is a low priority currently.
@@ -33,4 +33,5 @@ This version will promote simple code trees (non-looping non-conditional code) t
 Jim Morey 
 
 ## Version History
+* 1.1 - painting-style of driving added
 * 1.0 - works
