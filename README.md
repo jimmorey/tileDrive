@@ -5,7 +5,7 @@ TileLand and PolygonR&D (early 2000's) were vi or emacs maintained :)
 Jump into tiling
 * [TileDrive](./TileDrive.html) is the main link to the main application.
 * An [Introduction](./TDIntro.html) to the world of tiledriving is presented with many other linked documents that address some of the details and subtleties of this tiling world
-    *  [Activities](./TDActivities.html), Math [lengths](./TDLengths.html) & [angles](./TDAngles.html),[examples](./TDExamples.html),[patterns](./TDpatterns.html), and [coding aspects](./TileDriveCoding.html)
+    *  [Activities](./TDActivities.html), Math [lengths](./TDLengths.html) & [angles](./TDAngles.html), [examples](./TDExamples.html),[patterns](./TDpatterns.html), and [coding aspects](./TileDriveCoding.html)
 * A [summary](./TileDriveCoding.html#summary) of the instructions (both foundation and preprocessing) can be used to get a sense for computations and programming.
 
 ## Description
