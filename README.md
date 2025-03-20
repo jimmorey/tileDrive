@@ -20,14 +20,10 @@ This version promotes simple code trees (non-looping non-conditional code) that 
 * future directions:
     * hiding/eliminating "q" which is a reset since it's dangerous--a misclick is unforgiving
     * probably needs a cutting and pasting of text into the standard code panel rather than just "adv".  As well, the up and down arrows should probably be included. 
-    * adding condition behaviour to the preprocessor language
-        * if: ?{colour\|#}{True:[blah]\|A}{False:[blah]\|A}
-        * conditional loop
-            * while: +?{colour\|#}{True:[blah]\|A}
-            * perhaps +z[?A[]] is a better loop since it doesn't permit the possibility of a infinite loop
-                * z means that it would max out at 36 iterations
-                * once the test fails since nothing is done if it's false it will then fail for the remaining times 
-
+    * while: +?{colour\|#}{True:[blah]\|A} ??
+    * perhaps +z[?A[]] is a better stick with  since it doesn't permit the possibility of a infinite loop
+        * z means that it would max out at 36 iterations
+        * once the test fails since nothing is done if it's false it will then fail for the remaining times 
     * adding a TileManager interface that focuses on helping explore and connecting outcomes with preprocessor code. This will probably include a reversable / partial execution tools
         * a simple version called [TDSlim](./TDSlim.html) was build for use with my limited R36S (which actually turned out to be a cheaper knock-off but still worked) and a wired keyboard. [demo](https://www.youtube.com/watch?v=Y2YO72a_l3g)
 
@@ -38,6 +34,10 @@ This version promotes simple code trees (non-looping non-conditional code) that 
 ## Authors
 Jim Morey 
 
-## Version History
+## Version 
+* 1.2 - preprocessor has a stack implementation (tlCodeEl) that includes if and set --?AB and sA []
+    * each branch may need to keep it's version of the banks...
+    * mixing is overly complicated...
+    * may need to rethink preprocessor language
 * 1.1 - painting-style of driving added
 * 1.0 - works

@@ -480,9 +480,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("prepro").addEventListener('click', (e) => {
         //preprocessCode2(document.getElementById("ppcode").textContent)
-        let newCode = ppfilter(document.getElementById("ppcode").textContent.toLowerCase(),Array.from({length:10},()=>""), new TL(500, 500, 20, 20),true)
+        let arr = banks.map(x => x.text)
+        let newCode = ppfilter(document.getElementById("ppcode").textContent.toLowerCase(),arr)
 
-        setCode(newCode)
+        arr.forEach((x, i) => {
+            banks[i].text = x
+            banks[i].drawCanvas()
+            //console.log("bank", i, x)
+        })
+        setCode(properCode(newCode))
         fixRun(false)
         sendFocus()
     })
@@ -632,7 +638,7 @@ function runCommand(text, updateH = false, orig = "noorig") {  // runCommand and
     //insert text at counter.
     newText = newText.substring(0, counter) + text + newText.substring(counter)
 
-    setCode(newText)
+    setCode(ppfilter(newText, banks.map(x => x.text)))
 
     if (text[0] == '{')   setCursor(parseInt(counter) + text.length-1)   //ugly but works....  this is for tilePainting
     else setCursor(parseInt(counter) + text.length)
@@ -679,7 +685,8 @@ function doManipulation(command, updateH = false) {
         let bank = command.toUpperCase().charCodeAt(1) - 65
         let aug = banks[bank].text
         let updateCursor = getCursor() + aug.length
-        runCommand(aug, "vMan")
+        //console.log("v",aug)
+        runCommand(aug, true,"vMan")
         setCursor(updateCursor)
     } else if (command.substring(0, 1) == "u") {
         let next = command.substring(1, 2)
@@ -816,7 +823,7 @@ function fixRunOld(leaveCursor = true) {
             runCommand(codeOut, "vMan")
             setCursor(updateCursor)
             i+=2         
-        } else if ("mM".indexOf(ch) > -1){  //  the new MIX command
+        } else if ("mM".indexOf(ch) > -1){  //  the new MIX command does this work?? in immediate mode???
             let bank = code.substring(i+1, i + 2).toUpperCase().charCodeAt(0) -65
             let bank2 = code.substring(i+2, i + 3).toUpperCase().charCodeAt(0) -65
             //get string for each bank...
@@ -874,6 +881,7 @@ function fixRun(leaveCursor = true) {
     } 
     let newCode = "{4t.4{84r,44.33}4r,44.33}3{3}<434{>4}3433"
     let code = ""
+    let mess =0
     try {
         code = getCode()
         
@@ -883,10 +891,11 @@ function fixRun(leaveCursor = true) {
         //update banks
         textBanks.forEach((x,i)=>{
             banks[i].text = x;  //??
-            banks[i].drawCanvas()
+            mess=i
+            if (!x.indexOf("["[0])>-1)banks[i].drawCanvas()
         })
     } catch (e){
-        console.log("bad code!",code,e)
+        console.log("bad code!",mess,":",code,e)
     }
     //setCursor(newCode.length)
     if (/[uU][uUcC]/.test(code)) {

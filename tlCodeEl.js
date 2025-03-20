@@ -725,8 +725,8 @@ function runStackStep(stackRun) {
 
   return stackRun.codeOut
 }
-function stackRun(code) {
-  let stackRun = startStackRun("stackRun",code)
+function stackRun(code,banks) {
+  let stackRun = startStackRun("stackRun",code,banks)
   while (stackRun.codeStack.length > 0) {
     runStackStep(stackRun)
   }
