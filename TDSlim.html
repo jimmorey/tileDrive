@@ -129,7 +129,10 @@ li {
     let screen = document.getElementById('screen')
     console.log("size",screen.clientWidth,screen.clientHeight)
     screen.innerHTML = ""
-    screen.append(new tlCodeEl().createSVG(screen.clientWidth,screen.clientHeight,ppfilter(code+""),true,false,false))  
+    //screen.append(new tlCodeEl().createSVG(screen.clientWidth,screen.clientHeight,ppfilter(code+""),true,false,false))  
+    screen.append(new tlCodeEl().createSVG(screen.clientWidth,screen.clientHeight,stackRun(code),true,false,false))  
+    // let test = stackRun(code)
+    // console.log("test",test)
   }
   let updateCodes = () => {
     document.getElementById("code").value = codes[getIndex()] 
@@ -189,7 +192,7 @@ li {
     document.getElementById("send").addEventListener("click", function() {
       updateCodes()
       let send = codes[getIndex()] 
-      window.location.replace(`TDUpload.html?advcode=${encodeURIComponent(fix(send))}&currentcode=${encodeURIComponent(fix(send))}`)
+      window.location.replace(`TDUpload.html?advcode=${encodeURIComponent(fix(send))}&currentcode=${encodeURIComponent(stackRun(send))}`)
     })
 
     document.getElementById("code").addEventListener("keyup", (event) => {

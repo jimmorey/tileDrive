@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (multi){
         let list = el.getAttribute("data-text").split("|")
         list = list.map(x => ppfilter(x))  
-        console.log("LIST",list)
+        //console.log("LIST",list)
         polys =[]
         new tlCodeEl().addActivePoly(polys,list)
-        console.log("POLYS",polys)
+        //console.log("POLYS",polys)
         el.append(new tlCodeEl().createSVGPoly(parseInt(el.getAttribute("data-w")), parseInt(el.getAttribute("data-h")) ,polys,no_colour,curs,false,false,true,0.75)) 
       }else
       el.append(new tlCodeEl().createSVG(parseInt(el.getAttribute("data-w")), parseInt(el.getAttribute("data-h")) , ppfilter(el.getAttribute("data-text")),no_colour,curs,false,false,start)) 

@@ -370,8 +370,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("next").click()
             } else if (key == "-" || key == "_") {
                 document.getElementById("prev").click()
-            } else if (key == "s") {
-                document.getElementById("show").click()
+            } else if (key == "h") {
+                document.getElementById("help").click()
             } else if (key == "z") {
                 document.getElementById("undo").click()
             } else if (key == "c" && bufferXV == null) {
@@ -411,7 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sendFocus()
     })
 
-    document.getElementById("show").addEventListener('click', (event) => {
+    document.getElementById("help").addEventListener('click', (event) => {
         mixGallery()
         sendFocus()
     })
@@ -480,7 +480,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("prepro").addEventListener('click', (e) => {
         //preprocessCode2(document.getElementById("ppcode").textContent)
-        setCode(document.getElementById("ppcode").textContent.toLowerCase())
+        let newCode = ppfilter(document.getElementById("ppcode").textContent.toLowerCase(),Array.from({length:10},()=>""), new TL(500, 500, 20, 20),true)
+
+        setCode(newCode)
         fixRun(false)
         sendFocus()
     })
@@ -884,7 +886,7 @@ function fixRun(leaveCursor = true) {
             banks[i].drawCanvas()
         })
     } catch (e){
-        console.log("bad code!",code)
+        console.log("bad code!",code,e)
     }
     //setCursor(newCode.length)
     if (/[uU][uUcC]/.test(code)) {

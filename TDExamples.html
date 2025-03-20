@@ -185,19 +185,20 @@ va 4o{.+2e}{,+2e} vb 4o {.vd 4o+2e}{,vd 4o +2e} xf
   {name:"girl",code:"8pg{<<4<33<35y}{9y{3l{r{4>3{<343}}}}<3r<4<3{3<43}<}{>>>>6l{<344{4}}>3<44{4}}>>43<33<5y",h:100,w:75,alt:""},
   {name:"bug",code:".7,,,p{43443444} {.4344} {..44} {...44} {,,,43,44} ,,43,443,444",h:75,w:150,alt:""},
   {name:"flower",code:"4g4 {.3,3} {,33} 448i,,, +7[{5y}.]",h:75,w:75,alt:"",adv:true},
-  {code:"8a{<8<}{<<4844}{>4{8>>48<4}}>>8",h:100,w:300,name:"cloud"},
+  {name:"cloud",code:"8a{<8<}{<<4844}{>4{8>>48<4}}>>8",h:100,w:300},
   {name:"fish",code:"4t<5g{53}<{5<3}<<6{<3}{>}3{<66{<3}>36<3b6g>{>3}36{>3l<33g3}63}",h:75,w:75,alt:""},
   {name:"car",code:"3r434{<3<334433<33}{>5k}3>>3{<3y3}3<434{>5k}3",h:75,w:75,alt:""},
   {name:"elephant",code:"5a{<<5<5<5}>5<{5{555}>5<5>5{>5b}<5{<33<3}>5<{>5b}5>",h:75,w:75,alt:""},
-    {code:"7t+7[{2.3r}.]",h:75,w:75,alt:"{3.3r}. xA 7t +7A",name:"star",adv:true},
-    {code:"2>7{>>44{>3<3}{4{>3<3}{43}<33}<33}{>>>64{>3<3}{4{>3<3}{43}<33}<33}{<<43}{>43}{7<<<t7<<<7<<<3<3r}<<<44{>3<3}{4{>3<3}{43}<33}<33",h:175,w:175,alt:"",name:"maple leaf",adv:false},
+  {name:"clown",code:"6y{<4}>46r{>>6>4y{<4343443434}6>46r>6<3}3",h:125,w:125,alt:""}, 
+  {name:"star",code:"7t+7[{2.3r}.]",h:75,w:75,alt:"{3.3r}. xA 7t +7A",adv:true},
+  {name:"maple leaf",code:"2>7{>>44{>3<3}{4{>3<3}{43}<33}<33}{>>>64{>3<3}{4{>3<3}{43}<33}<33}{<<43}{>43}{7<<<t7<<<7<<<3<3r}<<<44{>3<3}{4{>3<3}{43}<33}<33",h:175,w:175,alt:"",adv:false},
   {name:"lion",code:"{4t43o{4}<{4}{3t33k {>2t>7<<<3g}{2t>7>>3g}}}23<m[+a[5o]][3k<3k]",h:75,w:75,alt:"",adv:true},
   {name:"raspberry",code:"6r,3k3r33k,3r33k,xA…{.4t42.883k{,7g,3} 7g3} 3k {vA6r..3k}{.vA6r..3k}{,vA3r3{,3}3k}",h:75,w:75,alt:"",adv:true},
   {name:"vortex",code:"+7[m[7o{<<:3}7o{:3}<<7o{>:3<:7>:3<:6>:3}<<][3l]]",h:75,w:75,alt:"",adv:true},
   {name:"sun",code:"5o{.3},3t332. xA 4t,+2A {5t,,3t332.5b,3t332.5b} +2A{5t,3,3r{43,3},3} +6A",h:75,w:75,alt:"",adv:true},
   {name:"bunny",code:"3t{m[+a[5i]][33<]>4t4{43r{>6t4>{3b}>{3i}>{3b}}}}{5<3i5<35{>3}<3}{<53i<53<5{<<3}3}",h:75,w:75,alt:"",adv:true},
   {name:"spider",code:"0k{>3<33<33<4}{>>3<33<33<3<33}{>>>3<33<333<344}{>>>>3<33<333<33<33<3}{<33<33<34}{<<33<33<333<3<}{<<<33<33<3<33<44}{<<<<33<33<3<33<33<33<} >>>>>1",h:155,w:140,alt:""},
-  {code:"0t+a[{2{4r5{,4} 40o.4y5 {.4}40..4} .3p}.]",h:200,w:200,name:"starburst",alt:"m[0t+a[{:2{5{,2}0p.5{.2}0..2}.:3r}.]][4i4a]",adv:true},
+  {name:"starburst",code:"0t+a[{2{4r5{,4} 40o.4y5 {.4}40..4} .3p}.]",h:200,w:200,alt:"m[0t+a[{:2{5{,2}0p.5{.2}0..2}.:3r}.]][4i4a]",adv:true},
   {name:"kaleidoscope",code:"m[5o5i<5g5o<5i5g<][3p]xA 5t<<5>2>3535<3 xB 5t35<5<<5<35<3 xC +5[{+5[vB vA]}vC] ",h:200,w:200,alt:"",adv:true},
   {name:"protractor",code:"<5t>34a< xB +5Bb xA 4b{+4[+3B{<4p3}] } { +3A < 4a4b4a4b8t<<<2>4b} < 4a4b4a4b",h:75,w:175,alt:"",adv:true},
   {name:"protractor2",code:"5t>34>4> xD 4t44433b xB {>3a{+3[33<]}{<3b+3[<3a3]<3}}4t> +g[{vB} vD]4>4>2",h:75,w:175,alt:"",adv:true},
@@ -303,7 +304,7 @@ m[yvA+bB][4:4:4]`,h:275,w:275,alt:"",adv:true},
       li.innerHTML = `<a href="TDUpload.html?${interactive}gallerycode=${encodeURIComponent(fix(el.code))}">${el.name}</a>`
 
       let galleryContent = el.code.split(/u./)
-      console.log(galleryContent)
+      //console.log(galleryContent)
       galleryContent.pop()
       galleryContent.forEach((pic) => {
         let div =document.createElement("div") 

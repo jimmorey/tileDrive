@@ -230,14 +230,16 @@ const colours = {
 TL.prototype.run = function(text,curs) {
   this.active = this.start.clone()
   this.cursor = this.start.clone()
-    // trying this
   this.stack = []
   this.stack.push(this.active.make())
-    //console.log(this.stack)
 
   this.rt = new RTree(this.maxPoly)
 
+  this.runOn(text,curs)
+}
+TL.prototype.runOn = function(text,curs,debug=false) {
   for(let i=0;i<text.length;i++){
+    if (debug) console.log("runOn", this.active.sides)
     let ch = text.substring(i,i+1)
 
     if (i==curs) this.cursor = this.active.clone()
@@ -273,15 +275,36 @@ TL.prototype.run = function(text,curs) {
         else this.active = this.stack[this.stack.length-1].clone()
         this.stack.pop()
         break
-      //case "|":
-        //this.active = this.stack[this.stack.length-1].clone()
-        //break
-        
+
       default:
     }
-        //console.log("done._.",ch,this.active)
   }
-  //this.addRPoly(this.active)
+}
+TL.prototype.check = function(ch) {
+  // check if 
+  //  * # -- there is space for a new polygon with sides ch 
+  //  * rbygplika or if in fron of this polygon with the same shape if there is a colour ch
+
+  //console.log("**",this.active,this.stack)
+  if ("3456789012".indexOf(ch)>-1){
+    let sides=parseInt(ch)
+    if (sides<2) sides +=10
+    //console.log("check",ch, this.active)
+    let list = this.getCollisionList(sides)
+    //console.log("checklist",list)
+
+    if (list.length==0) return true
+    return false
+  }
+  if ("oprblgaiyki".indexOf(ch)>-1){
+    //console.log("check",ch, this.active)
+    let list = this.getCollisionList(this.active.sides)
+    //console.log("checklist",list,colours[ch])
+
+    list = list.filter((x)=> x.colour.localeCompare(colours[ch])==0)
+    return list.length==0
+  }
+  return false
 }
 //--------------------------------------------------
 TL.prototype.addTest = function(dist) {
@@ -324,23 +347,34 @@ TL.prototype.distance2 = function(x,y,w,z){
   return (x-w)^2+(y-z)^2
 }
 
+TL.prototype.getCollisionList = function(pol) {
+  let newPoly = this.active.make(pol)
+  let bound = newPoly.getBounds()
+
+  let list = this.rt.search(bound)
+  if (newPoly.colour != "transparent" && newPoly.sides !=2){
+    list = list.filter((x)=> newPoly.collisionTry(x) )
+  }
+
+  return list
+}
 TL.prototype.addRPoly = function(pol) {
   this.active = pol
-  var bound = this.active.getBounds()
+  let bound = this.active.getBounds()
   
   //console.log(this.rt.search(bound))
-  var list = this.rt.search(bound)
+  let list = this.rt.search(bound)
 
   if (this.active.colour != "transparent" && this.active.sides !=2){
-  for (var i=0;i<list.length ;i++){
-    if (this.active.collisionTry(list[i])){
-      this.rt.remove(bound,list[i])
-      //console.log("remove "+list[i])
+    for (let i=0;i<list.length ;i++){
+      if (this.active.collisionTry(list[i])){
+        this.rt.remove(bound,list[i])
+        //console.log("remove "+list[i])
+      }
     }
+    //console.log("actve " + this.active)
+    this.rt.insert(bound,this.active)
   }
-  //console.log("actve " + this.active)
-  this.rt.insert(bound,this.active)
-}
 }
 TL.prototype.getTooltip = function(key){
   return this.names[this.keys.indexOf(key)]
