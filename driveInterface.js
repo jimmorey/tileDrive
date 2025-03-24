@@ -684,10 +684,10 @@ function doManipulation(command, updateH = false) {
     } else if (command.substring(0, 1) == "v") {
         let bank = command.toUpperCase().charCodeAt(1) - 65
         let aug = banks[bank].text
-        let updateCursor = getCursor() + aug.length
+        let updateCursor =         getCode().length-getCursor()
         //console.log("v",aug)
         runCommand(aug, true,"vMan")
-        setCursor(updateCursor)
+        setCursor(getCode().length-updateCursor)
     } else if (command.substring(0, 1) == "u") {
         let next = command.substring(1, 2)
         if(next == "c"){
