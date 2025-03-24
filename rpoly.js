@@ -7,7 +7,7 @@ function PolyDat() {
     this.knownRadii = new Array();
     this.knownMinRadii = new Array();
     this.knownAngle = new Array();
-    this.distThreshold = 0.00000001;
+    this.distThreshold = 0.0000001;
 
     for (let i = 0; i < this.data; i++) {
         this.knownRadii[i] = this.radius(i + 3);
@@ -426,7 +426,7 @@ Rpoly.prototype.getBounds = function() {
         //return {x:(this.extreme[0][0]*1000), y:(this.extreme[1][0]*1000), w:((this.extreme[0][1]-this.extreme[0][0])*1000), h:((this.extreme[1][1]-this.extreme[1][0])*1000)};
 };
     //--------------------------------------------------
-Rpoly.prototype.collisionTryOld = function(poly, htmlEl) {
+Rpoly.prototype.collisionTryOld = function(poly) {
     // two issues  Why is the rTree dying
     // is the collision algorithm working?
     if (poly === undefined)
@@ -485,7 +485,7 @@ Rpoly.prototype.collisionPoint = function(x, y) {
     return this.dot(w1, w2) < 1;
 };
 
-Rpoly.prototype.collisionTry = function(poly, htmlEl) {
+Rpoly.prototype.collisionTry = function(poly) {
     return poly.collisionTryOld(this) && this.collisionTryOld(poly);
 }
 
