@@ -1049,9 +1049,6 @@ xA xB+4[vB 6r{<<2} {>>vA} xBvA 6o{>2}{>>2} xA] 6+6[>{vB}] xC mC[4i]
     <p>One strategy may be to elaborate preexisting loops patterns but there is some subtle issues of balance and symmetry that can arise. For instance, the first example to the right, shows that even a simple pattern when you mix in squares can fail to produce a connected result. The next example uses the strategy of combining two types of loops: a counterclockwise star (formed with 10 pentagons), and two clockwise loops (formed with 3 triangles and 2 squares). The result is not a loop&mdash;there is a gap between the first and last polygon. The issues here have to do with underlying symmetry of construction. A better perspective is to not only consider the angles of the last and first sides but also the associated translations. An easy way to insure that associated translations sum to zero is to force rotational symmetry in the construction.
  </p>
 </div>
-
-
-
   <br style="clear:both" />
   <div class="start float">
     <div class="inline float">
@@ -1094,7 +1091,67 @@ xA xB+4[vB 6r{<<2} {>>vA} xBvA 6o{>2}{>>2} xA] 6+6[>{vB}] xC mC[4i]
 <p>Forced rotational symmetry along with mixing and formatting allow for a great variety of loops to be constructed. However, as demonstrated in the initial yellow and green pentagon & triangle patterns of this section, there are other types loops that cannot be constructed this way.</p>
   </div>
   <br style="clear:both" />
+<h2 id = "summary">Conditional behaviour</h2>
+<p>Another direction for coding involves having the output determined by local conditions in the environment in computer terms being able to read the environment as well as write to the environment. This is implemented with a check in front of the current tile either for space enough for a specified tile or if a tile in front of the current tile with the same shape would encounter a particular colour. Depending on the output of the check, there are two outcomes.  The syntax has 4 parts: first, a question mark(?) signifying that the instructions is an "if"; second the aspect to check -- a tile (0-9) or a colour (rybogpliak); third, a bank (A-J) if the check is true; and fourth, a bank (A-J) if the check is false. For instance, "?4AB"  would mean is there is space in front for a square tile then do bank A otherwise do bank B. As with the other instructions anonymous banks can be used. </p>
+<div><span class="summary big"
+    data-w="120"
+    data-h="90"
+    data-code="+9[?3[3p][y<3r]]"
+    data-text="<span class='gray'>+9[</span> ?3[3p][y<3r] <span class='gray'>] </span>"
+    data-cur="false"> </span>
+    <span class="summary big"
+    data-w="200"
+    data-h="140"
+    data-code="+9[?3[3p][y<3r]]  xB
+    mB[4i]"
+    data-text="<span class='gray'>+9[</span> ?3[3p][y<3r] <span class='gray'>] xB mB[4i]</span>"
+    data-cur="false"></span>
+    <span class="summary big"
+    data-w="200"
+    data-h="170"
+    data-code="+6[+9[?3[3p][y<3r]]] < xB
+    mB[4i]"
+    data-text="<span class='gray'>+6[+9[</span> ?3[3p][y<3r] <span class='gray'>]]  < xB mB[4i]</span>"
+    data-cur="false"></span>
+    <span class="summary big"
+    data-w="200"
+    data-h="170"
+    data-code="+6[+9[?3[3p][{2}y<3r]]] xB
+    mB[4i]"
+    data-text="<span class='gray'>+6[+9[ ?3[3p][</span>{2} <span class='gray'>y<3r]]] xB mB[4i]</span>"
+    data-cur="false"></span>
+</div>
+<p>The above progression starts with a condition repeated 9 times which simply sees if there is space for a triangle in front of the active edge. If so, place a purple triangle, otherwise change the current triangle yellow and turn left and place a red triangle.  The resulting pattern has the true condition (there is space for a triangle) 8 times and the false condition 1 time. The 1 time can be seen at the 1 yellow triangle which was changed from purple along with the 1 red triangle. Notice that there are 9 triangles in total&mdash;either condition results in the addition of triangle so processing the condition 9 times will produce 9 triangles (provided there is no overlapping from the false condition...). To better see the path of triangles, the triangles can be separated by squares using the mix command (the second picture). Further, instead of doing this step 9 times it can be done 54 times resulting in a longer path that winds around the original 9 triangles (the third picture). With a small tweak the path can be turned into a connected patch (the fourth picture).</p>
+<div>
+    <div class="inline">
+      <div class="inline">
 
+      <span class="summary big"
+    data-w="400"
+    data-h="100"
+    data-code="6txB sa [vB?a[][2>+a[4]2>]]   4p{>+a[4i] +3[4a]}xC     {+4C}4t{> +1A]4y}4t{> +aA]4r}4t{> +a[+aA]4g}4t{> +a[+a[+aA]]4b}"
+    data-text=''
+    data-cur="false">
+    </span></div><br>
+      <div class="inline">
+          <span class="h3ish">code</span><br>
+          4p{>+a[4i] +3[4a]}xA<br>6txB <br>sC [vB?a[][2>+a[4]2>]]<br>{+4A}<br>4t{> +1C]4y}<br>4t{> +aC]4r}<br>4t{> +a[+aC]4g}<br>4t{> +a[+a[+aC]]4b}
+      </div>
+      <div class="inline">
+          <span class="h3ish">purpose</span><br>
+          <em>set A to a row of 14 squares (purple, pink and gray)</em><br>
+          <em>set B to the distance equivalent to the distance of a hexagon</em><br>
+          <em>store in C code for doing B and if it goes past the pink squares, go back 10 squares</em><br>
+          <em>set up a 4 rows of A</em><br>
+          <em>place a square then to the right do 1 C then place a yellow square</em><br>
+          <em>place a square then to the right do 10 Cs then place a red square</em><br>
+          <em>place a square then to the right do 100 Cs then place a green square</em><br>
+          <em>place a square then to the right do 1000 Cs then place a blue square</em>
+      </div>
+  </div>
+</div>
+<br style="clear:both" />
+<p>The next example shows a way to compute an approximate value of the height of a hexagon. The first digit, yellow, is shown by counting the number of pink squares to its left: 1. Instead of estimating the second digit by looking at the gaps between the yellow and pink squares, the exact digit is shown by the red square &mdash; the number of pink squares to its left: 7. The placement is achieved by placing 10 hexagons down with after each placement a check to make sure that there is no gray just in front of the active tile: if there is, then 10 square steps to the left are taken before preceding. In this case, 17+ would be the length of 10 hexagons but since at some point it would encounter the gray squares it took 10 steps back. Similarly, the green square shows that the third digit is 3 by placing 100 hexagons down with wrapping. In this case, it had taken 17 times 10 steps back. As well, the blue square shows the fourth digit is 2. Finally, a fifth digit can be estimated as a 0 since the blue square of the fourth digit is so close to its two pink squares. Thus, the 1.7320 is a reasonable estimate for the height of a hexagon.  </p>
 <h2 id = "summary">Summary</h2>
 <p>Coding in TileDrive can take many forms: immediate(interactive), immediate with banks, asynchonous with preprocessing language, or combinations of the three. The TileDrive instructions can be either screen buttons or keyboard keys along with clicking on the tiles (polygons) in the pattern.   </p> 
 <ul><li>basic TD instructions: <em>one character instructions</em>
