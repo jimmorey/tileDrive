@@ -1125,17 +1125,23 @@ xA xB+4[vB 6r{<<2} {>>vA} xBvA 6o{>2}{>>2} xA] 6+6[>{vB}] xC mC[4i]
 <div>
     <div class="inline">
       <div class="inline">
-
-      <span class="summary big"
+        <span class="summary big"
+        data-w="350"
+        data-h="100"
+        data-code="6t2.4..xB sa [vB?a[2>+a[4]2>][]]   4p{>+a[4i] +3[4a]}xC     {+4C}4t{> +1A]4y}4t{> +aA]4r}4t{> +a[+aA]4g}4t{> +a[+a[+aA]]4b}"
+        data-text=''
+        data-cur="false">
+        </span></div><br>
+      <!-- <span class="summary big"
     data-w="400"
     data-h="100"
-    data-code="6txB sa [vB?a[][2>+a[4]2>]]   4p{>+a[4i] +3[4a]}xC     {+4C}4t{> +1A]4y}4t{> +aA]4r}4t{> +a[+aA]4g}4t{> +a[+a[+aA]]4b}"
+    data-code="6t2.4..xB sa [vB?a[][2>+a[4]2>]]   4p{>+a[4i] 4t+3[4a]}xC     {+4C}4t{> +1A]4y}4t{> +aA]4r}4t{> +a[+aA]4g}"
     data-text=''
     data-cur="false">
-    </span></div><br>
+    </span></div><br> -->
       <div class="inline">
           <span class="h3ish">code</span><br>
-          4p{>+a[4i] +3[4a]}xA<br>6txB <br>sC [vB?a[][2>+a[4]2>]]<br>{+4A}<br>4t{> +1C]4y}<br>4t{> +aC]4r}<br>4t{> +a[+aC]4g}<br>4t{> +a[+a[+aC]]4b}
+          4p{>+a[4i] +3[4a]}xA<br>6t2.4..xB <br>sC [vB?a[2>+a[4]2>][]]<br>{+4A}<br>4t{> +1C]4y}<br>4t{> +aC]4r}<br>4t{> +a[+aC]4g}<br>4t{> +a[+a[+aC]]4b}
       </div>
       <div class="inline">
           <span class="h3ish">purpose</span><br>
@@ -1152,8 +1158,60 @@ xA xB+4[vB 6r{<<2} {>>vA} xBvA 6o{>2}{>>2} xA] 6+6[>{vB}] xC mC[4i]
 </div>
 <br style="clear:both" />
 <p>The next example shows a way to compute an approximate value of the height of a hexagon. The first digit, yellow, is shown by counting the number of pink squares to its left: 1. Instead of estimating the second digit by looking at the gaps between the yellow and pink squares, the exact digit is shown by the red square &mdash; the number of pink squares to its left: 7. The placement is achieved by placing 10 hexagons down with after each placement a check to make sure that there is no gray just in front of the active tile: if there is, then 10 square steps to the left are taken before preceding. In this case, 17+ would be the length of 10 hexagons but since at some point it would encounter the gray squares it took 10 steps back. Similarly, the green square shows that the third digit is 3 by placing 100 hexagons down with wrapping. In this case, it had taken 17 times 10 steps back. As well, the blue square shows the fourth digit is 2. Finally, a fifth digit can be estimated as a 0 since the blue square of the fourth digit is so close to its two pink squares. Thus, the 1.7320 is a reasonable estimate for the height of a hexagon.  </p>
+<div>
+  <div class="inline">
+    <div class="inline">
+
+    <!-- <span class="summary big"
+  data-w="200"
+  data-h="100"
+  data-code="6t2.4..xB sa [vB?a[][2>+2[4]2>]]   4p{>+2[4i] 4t+3[4a]}xC     {+7C}4t{> +1A]4y}4t{> +2A]4r}4t{> +2[+2A]4g}4t{> +2[+2[+2A]]4b}4t{> +2[+2[+2[+2A]]]4p}4t{> +2[+2[+2[+2[+2A]]]]4l}4t{> +2[+2[+2[+2[+2[+2A]]]]]]4k}"
+  data-text=''
+  data-cur="false">
+  </span></div><br> -->
+  <span class="summary big"
+  data-w="200"
+  data-h="233"
+  data-code='6t2.4..xB
+   sa [vB?a[2>442>][]]
+    4p{>+2[4i]+3[4a]}xC     
+    {+7C}
+    4t{> +1A4y}
+    4t{> +2A4r}
+    4t{> +4A4g}
+    4t{> +8A4b}
+    4t{> +GA4p}
+    4t{> +WA4l}
+    4t{> +2[+WA]4k}'
+  data-text=''
+  data-cur="false">
+  </span></div><br>
+    <div class="inline">
+        <span class="h3ish">code</span><br>
+        4p{>+2[4i] +3[4a]}xA<br>6txB <br>sC [vB?a[2>+2[4]2>][]]<br>{+4A}<br>4t{> +1C4y}<br>4t{> +2C4r}<br>4t{> +4C4g}<br>4t{> +8C4b}
+        <br>4t{> +gC4p}<br>4t{> +wC4l}<br>4t{> +wC+wC4k}
+    </div>
+    <div class="inline">
+        <span class="h3ish">purpose</span><br>
+        <em>set A to a row of squares (a purple, 2 pink, a gap &mdash;a transparent square, and 3 gray)</em><br>
+        <em>set B to the distance equivalent to the distance of a hexagon</em><br>
+        <em>store in C code for doing B and if it goes past the pink squares, go back 2 squares</em><br>
+        <em>set up a 4 rows of A</em><br>
+        <em>place a square then to the right do 1 C then place a yellow square</em><br>
+        <em>place a square then to the right do 2 Cs then place a red square</em><br>
+        <em>place a square then to the right do 4 Cs then place a green square</em><br>
+        <em>place a square then to the right do 8 Cs then place a blue square</em><br>
+        <em>place a square then to the right do 16 (G) Cs then place a purple square</em><br>
+        <em>place a square then to the right do 32 (W) Cs then place a olive square</em><br>
+        <em>place a square then to the right do 64 (2W) Cs then place a black square</em>
+    </div>
+</div>
+</div>
+<br style="clear:both" />
+<p>This example shows a twist on how to represent the same length above (height of a hexagon). Here binary is used instead of base 10. Since the powers of 2 can mostly be represented by a single digit, its code can use less nesting of anonymous blocks. The powers of 2 used are 1, 2, 4, 8, G(=16), W(=32), and finally W doubled.  Reading this quantity is 1.1011101<sub style="font-size:0.5em;">2</sub> or 2<sup>0</sup>+ 2<sup>-1</sup>+ 2<sup>-3</sup>+ 2<sup>-4</sup>+ 2<sup>-5</sup>+ 2<sup>-7</sup> = 1.7265625 (decimal). Note that the last digit is a visually computed by the position of the black square tile(last) being more than half of a square away from the purple tile. Probably, it is also reasonable to add another 1 digit given the position of the black tile which would give the decimal value 1.73046875 bringing a little closer to the real value. </p>
+
 <h2 id = "summary">Summary</h2>
-<p>Coding in TileDrive can take many forms: immediate(interactive), immediate with banks, asynchonous with preprocessing language, or combinations of the three. The TileDrive instructions can be either screen buttons or keyboard keys along with clicking on the tiles (polygons) in the pattern.   </p> 
+<p>Coding in TileDrive can take many forms: immediate(interactive), immediate with banks, asynchonous with a preprocessing language, or combinations of the three. The TileDrive instructions can be either screen buttons or keyboard keys along with clicking on the tiles (polygons) in the pattern.   </p> 
 <ul><li>basic TD instructions: <em>one character instructions</em>
   <ul><li>polygons:<span class="code">345678</span> (with keyboard: <span class="code">9012</span>) </li>
     <li>turning: <span class="code">&lt;&gt;</span> (with keyboard: <span class="code">,</span>(=&lt;) <span class="code">.</span>(=&gt;)) </li>
@@ -1212,7 +1270,7 @@ xA xB+4[vB 6r{<<2} {>>vA} xBvA 6o{>2}{>>2} xA] 6+6[>{vB}] xC mC[4i]
         </li>
       </ul>
     </li>
-    <li>Banks as variables: 
+    <li>banks as variables: 
       <span class="code">,,,,xI xJ xA +7[vI . xI vJ 3o,3oxJ vA {vJ 8ivI3r}. xA ] 7a vA</span>
   <br><span class="summary large"
     data-w="150"
@@ -1220,6 +1278,21 @@ xA xB+4[vB 6r{<<2} {>>vA} xBvA 6o{>2}{>>2} xA] 6+6[>{vB}] xC mC[4i]
     data-code=",,,,xI xJ xA +7[vI . xI vJ 3o,3o xJ vA {vJ 8ivI3r}. xA ] 7a vA"
     data-text=''
     data-cur="false"></li>
+    <li>conditional: <span class="code">?#AB</span>, <span class="code">?cAB</span>
+      <ul>
+        <li>if there is space (no existing tiles are in the way) for a specified tile #? then do A otherwise b
+        <ul><li><span class="code">?4[4g][.3r]</span> checks for space for a square tile: if there is place a green square otherwise turn right and place a red triangle. </li></ul>
+         </li>
+         <li>if there is space (no existing tiles are in the way) for a specified tile #? then do A otherwise b
+          <ul><li><span class="code">?g[r][4g]</span> checks if the current tile has green under it: if there is paint the current tile red otherwise place a greeen square tile off the current edge.</li></ul>
+          </li>
+      </ul>
+    <li>store code chunk: <span class="code">sA[...]</span>
+      <ul><li>save an unprocessed chunk of code in bank B</li>
+      <li><span class="code">sA [?r[g][r]]</span> store <span class="code">?r[g][r]</span> in bank A</li> 
+      <li>this differs from <span class="code">?r[g][r] xA</span> in that bank A will only store one result either a <span class="code">g</span> or an <span class="code">r</span> whereas storing the code with sA means that when vA is used the conditional stored in A will be determined by the context when vA is used.</li>
+    </ul>
+    </li>
   </ul>
 <!--
   * condition behaviour in the preprocessor language

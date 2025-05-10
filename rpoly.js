@@ -188,6 +188,9 @@ Rpoly.prototype.setColour = function(text) {
 Rpoly.prototype.make = function(sides = this.sides) {
     return new Rpoly(this.vertices[(this.heading + 1) % this.sides], this.vertices[this.heading], sides, this.colour, this.ref, this.depth+1);
 };
+Rpoly.prototype.make2 = function(sides = this.sides) { //lazy me
+    return new Rpoly(this.vertices[this.heading], this.vertices[(this.heading + 1) % this.sides], sides, this.colour, this.ref, this.depth+1);
+};
 //--------------------------------------------------
 Rpoly.prototype.toString = function() {
     return "Rpoly " + this.sides + " {" + this.vertices[0][0] + "," + this.vertices[0][1] + "}{" + this.vertices[1][0] + "," + this.vertices[1][1] + "}";

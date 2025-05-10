@@ -297,12 +297,14 @@ TL.prototype.check = function(ch) {
     return false
   }
   if ("oprblgaiyki".indexOf(ch)>-1){
-    //console.log("check",ch, this.active)
-    let list = this.getCollisionList(this.active.sides)
+    //console.log("checkColor",ch, this.active)
+    let list = this.getCollisionList(this.active.sides,true)
     //console.log("checklist",list,colours[ch])
 
     list = list.filter((x)=> x.colour.localeCompare(colours[ch])==0)
-    return list.length==0
+    //console.log("result",list.length!=0)
+
+    return list.length!=0
   }
   return false
 }
@@ -347,15 +349,15 @@ TL.prototype.distance2 = function(x,y,w,z){
   return (x-w)^2+(y-z)^2
 }
 
-TL.prototype.getCollisionList = function(pol) {
-  let newPoly = this.active.make(pol)
+TL.prototype.getCollisionList = function(pol,flip=false) {
+  let newPoly = flip?this.active.make2(pol):this.active.make(pol)
+  //console.log(pol,flip,newPoly, this.active.make2(pol),this.active.make(pol))
   let bound = newPoly.getBounds()
 
   let list = this.rt.search(bound)
   if (newPoly.colour != "transparent" && newPoly.sides !=2){
     list = list.filter((x)=> newPoly.collisionTry(x) )
   }
-
   return list
 }
 TL.prototype.addRPoly = function(pol) {

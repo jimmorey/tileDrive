@@ -659,7 +659,6 @@ function runStackStep(stackRun) {
           }
         }
         //console.log("one m",codeStack)
-  
     } else if ("+=".indexOf(command[0]) > -1){   //repeat
       let number = codeStack.pop()
       if (!isToken(number)) {
@@ -716,6 +715,9 @@ function runStackStep(stackRun) {
 
       //console.log("T:",chunkTrue,"F:",chunkFalse)
       pushCode(stackRun.tileLand.check(check)?chunkTrue:chunkFalse,codeStack,stackRun.banks,stackRun.tileLand)
+    //} else if ("{}".indexOf(command[0]) > -1){  
+      // skip the branches and finish "this one" first
+      // have to keep a queue of processes...
     } else {
       stackRun.tileLand.runOn(command)
 
@@ -727,17 +729,25 @@ function runStackStep(stackRun) {
 }
 function stackRun(code,banks) {
   let stackRun = startStackRun("stackRun",code,banks)
-  while (stackRun.codeStack.length > 0) {
-    runStackStep(stackRun)
-  }
+  //stackRun.debug = true;
+  stackRunning(stackRun) 
   return stackRun.codeOut
 }
 
+function stackRunning(stackRun){
+  while (stackRun.codeStack.length > 0) {
+    runStackStep(stackRun) 
+    if (stackRun.newBranch != null) 
+      setTimeout(function() { stackRunning(stackRun.newBranch) },1000) // ??let me think about this... perhaps it's yeild time...
+      // I'll put it to 1000 so that I can see it.
+  }
+}
 function pushCode(code,codeStack,banks,tileLand){ //string to stack -- reverse order and leave [] alone & package tokens
+  // this is not fault tolerant code 
   let i = 0
   let thisCode = []
+
   while (code!=null && i < code.length) {
-  //while (code!=null && i < code.length) {
     let ch = code.substring(i, i + 1)
     if ("s".indexOf(ch) > -1) {
       thisCode.push(ch)
@@ -786,7 +796,7 @@ function pushNextChunk(i,code,stack,banks) {
   let bOrCode = getBankOrCode(code,i,banks) 
   if (bOrCode.label == "anon"){
     stack.push("["+bOrCode.code+"]")
-    i += bOrCode.code.length +2 //+2 for the brackets and +1 for luck?
+    i += bOrCode.code.length +2 //+2 for the brackets
   } else{
     stack.push("_"+bOrCode.label)
     i++

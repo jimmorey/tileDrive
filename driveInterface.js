@@ -714,9 +714,9 @@ function doManipulation(command, updateH = false) {
         setCode("")
         setCursor(1)
         //tileLand.cursor = tileLand.active.clone()  // think about this
-        if (command === "q") {
-            cHistory = []
-            resetBanks()
+        if (command === "q") {  // disabled... too dangerous!!
+            //cHistory = []
+            //resetBanks()
         }
         runCode()
     } else if (command === "w" || command === "e") {
