@@ -19,7 +19,7 @@ function TL(width,height,x,y,max){
   this.rt = new RTree()
   var p1 = new Array((-1)/2,0/2)
   var p2 = new Array(p1[0]+1,p1[1])
-  this.start = new Rpoly(p2,p1,2,colours.r)
+  this.start = new Rpoly(p2,p1,2,2) // second 2 is "red"
   this.active = this.start.clone() //run takes care of active... so this is just a dumby
   this.cursor = this.active.clone()
   this.stack = []
@@ -208,24 +208,33 @@ TL.prototype.toString = function() {
   return "TL  "+this.start.toStringFull()
 }
 //--------------------------------------------------
+
 const colours = {
   o:"rgb(255,170,0)", //orange
-  p:"rgb(153,0,153)",//purple
-  //r:"red",
-  r:"rgb(255,0,0)",
-  //b:"blue",
-  b:"rgb(0,0,255)",
+  p:"rgb(153,0,153)", //purple
+  r:"rgb(255,0,0)", //r:"red",
+  b:"rgb(0,0,255)",//b:"blue",
   l:"rgb(141,153,38)", //olive
   g:"rgb(67,204,0)", //green
-  //a:"lightGrey",
-  a:"rgb(211,211,211)",
-  //y:"yellow",
-  y:"rgb(255,255,0)",
-  //k:"black",
-  k:"rgb(0,0,0)",
+  a:"rgb(211,211,211)", //a:"lightGrey",
+  y:"rgb(255,255,0)", //y:"yellow",
+  k:"rgb(0,0,0)", //k:"black",
   i:"rgb(255,165,253)", //pink
   t:"transparent"
 }
+const cProgress = [ //royglbpi,ak,t
+                  //20754319,68,10
+  7,9,0,1,3,4,8,5,6,2,10  
+]
+const cRegress = [
+  2,3,9,4,5,7,8,0,6,1,10
+]
+nextColour = x=> { try{
+  colours[Object.keys(colours)[cProgress[Object.values(colours).indexOf(x)]]]
+}catch(error){colours.p}}
+previousColour = x=> { try{
+  colours[Object.keys(colours)[cRegress[Object.values(colours).indexOf(x)]]]
+}catch(error){colours.b}}
 
 TL.prototype.run = function(text,curs) {
   this.active = this.start.clone()
@@ -254,10 +263,10 @@ TL.prototype.runOn = function(text,curs,debug=false) {
            this.addRPoly(this.active)  // the transparent polygon shouldn't erase polygons...  ****
          this.active.ref =i
 
-    } else if ("oprblgaiykit".indexOf(ch)>-1){
-         this.active.setColour(colours[ch])
-         this.active.ref =i
-         this.addRPoly(this.active)// maybe??
+    } else if (polydat.colourNames.indexOf(ch)>-1){ //"oprblgaiykit"
+      this.active.setColIndex(polydat.colourNames.indexOf(ch))
+      this.active.ref =i
+      this.addRPoly(this.active)// maybe??    
     } else switch(ch){
       case ".":
       case ">":
@@ -266,6 +275,16 @@ TL.prototype.runOn = function(text,curs,debug=false) {
       case "<":
       case ",":
         this.active.left()
+        break
+      case `"`:
+        this.active.setColIndex(polydat.cProgress[this.active.colIndex])
+        this.active.ref =i
+        this.addRPoly(this.active)// maybe??
+        break
+      case `'`:
+        this.active.setColIndex(polydat.cRegress[this.active.colIndex])
+        this.active.ref =i
+        this.addRPoly(this.active)// maybe??
         break
       case "{":
         this.stack.push(this.active.clone())

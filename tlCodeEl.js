@@ -53,16 +53,6 @@ function tlCodeEl(text, w, h) {
 tlCodeEl.prototype.toString = function () {
   return text
 }
-// *******************************************
-function tlCodePoly(text, sides) {
-  tlCodeEl.call(this, text, tlDetails.width, tlDetails.height)
-  this.sides = sides
-  let p1 = new Array((-1) / 2, 0 / 2)
-  let p2 = new Array(p1[0] + 1, p1[1])
-  this.poly = new Rpoly(p2, p1, sides, "white")
-}
-tlCodePoly.prototype = Object.create(tlCodeEl.prototype)
-tlCodePoly.constructor = tlCodePoly
 
 // *******************************************
 function tlCodeColor(text) {
@@ -466,8 +456,13 @@ function joinCommon(poly1,poly2){
     poly1.push(...newPoly)
   }
 }
-tlCodeEl.prototype.drawCode = function (c, w, h, text) {
+
+tlCodeEl.prototype.drawCommand = function () {  //used for the tileland interface...
   //console.log(c)
+  c= document.getElementById(this.id)
+  w = tlDetails.width
+  h = tlDetails.height
+  text =this.text
   let ctx = c.getContext("2d")
   ctx.save()
   //ctx.clearRect(0, 0, w, h)
@@ -478,21 +473,9 @@ tlCodeEl.prototype.drawCode = function (c, w, h, text) {
   let sx = Math.min(cx, cy) * 0.75
   let sy = sx
 
-  if (text.length == 0) {
-
-  } else if (text.length > 1) {
-    //** not sure... what I was thinking */
-    //console.log("yup",text,this.width,this.height)
-    //ignore for now
-    let tileLand = new TL(50, 50, 2, 2, text.length)
-    //let tileLand = new TL(this.width, this.height, this.width, this.height, text.length)
-    tileLand.run(text)
-    tileLand.drawCanvasFit(c)
-    return
-  } else {
-    //single command
+  if (text.length == 0)  return //oops??
     let i = tlDetails.keys.indexOf(text[0])
-    if (i < 10) { // draw poly
+    if (i < 10 && i>=0) { // draw poly
       ctx.save()
       ctx.translate(cx * 0.25, 0)
       tlDetails.polys[i].drawOutline(ctx)
@@ -547,12 +530,13 @@ tlCodeEl.prototype.drawCode = function (c, w, h, text) {
     } else {
       //ignore mistakes for now
     }
-  }
+  
 
   // last polygon
   //this.active.drawLive(cx,cy,this.sx*this.scale,this.sy*this.scale,ctx)
   // starting line
   //this.start.drawLive(cx,cy,this.sx*this.scale,this.sy*this.scale,ctx,"brown")
+
   ctx.beginPath()
   ctx.textBaseline = "middle"
   ctx.textAlign = "center"
@@ -564,6 +548,24 @@ tlCodeEl.prototype.drawCode = function (c, w, h, text) {
   //ctx.text(this.text,cx,cy)
   ctx.stroke()
   ctx.restore()
+}
+
+tlCodeEl.prototype.drawCode = function (c, w, h, text) {
+  //console.log(c)
+  let ctx = c.getContext("2d")
+  ctx.save()
+  //ctx.clearRect(0, 0, w, h)
+  ctx.clearRect(0, 0, c.width, c.height)
+  ctx.strokeStyle = "black"
+  let cx = c.width / 2
+  let cy = c.height / 2
+  let sx = Math.min(cx, cy) * 0.75
+  let sy = sx
+
+  let tileLand = new TL(50, 50, 2, 2, text.length)
+
+  tileLand.run(text)
+  tileLand.drawCanvasFit(c)
 }
 
 function startStackRun(name,code, banks =Array.from({length:10},()=>""), tileLand = new TL(500, 500, 20, 20)) {  //will work with TileManager...later
@@ -821,7 +823,7 @@ function pushNextStack(role,i,code,stack,banks,tileLand) {
 function pushChunkFromStack(codeStack,mixStack){
   //have to construct a chunk from mixStack
   const TDPOLY="1234567890"
-  const TDSIMPLE=TDPOLY+"{},.><rbyopgliakt:" // simple
+  const TDSIMPLE=TDPOLY+`{},.><rbyopgliakt:'"` // simple
   let valid = false //chunk needs at least one polygon
   let found = false
   let skip = false

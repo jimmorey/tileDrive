@@ -8,6 +8,27 @@ function PolyDat() {
     this.knownMinRadii = new Array();
     this.knownAngle = new Array();
     this.distThreshold = 0.0000001;
+    this.colourNames = "oprblgaykit"
+    this.colours = [
+        {index:0, letter:"o", colour:"rgb(255,170,0)"}, //orange
+        {index:1, letter:"p", colour:"rgb(153,0,153)"}, //purple
+        {index:2, letter:"r", colour:"rgb(255,0,0)"}, //r:"red",
+        {index:3, letter:"b", colour:"rgb(0,0,255)"},//b:"blue",
+        {index:4, letter:"l", colour:"rgb(141,153,38)"}, //olive
+        {index:5, letter:"g", colour:"rgb(67,204,0)"}, //green
+        {index:6, letter:"a", colour:"rgb(211,211,211)"}, //a:"lightGrey",
+        {index:7, letter:"y", colour:"rgb(255,255,0)"}, //y:"yellow",
+        {index:8, letter:"k", colour:"rgb(0,0,0)"}, //k:"black",
+        {index:9, letter:"i", colour:"rgb(255,165,253)"}, //pink
+        {index:10, letter:"t", colour:"transparent"}
+    ]
+    this.cProgress = [ //royglbpi,ak,t
+        //20754319,68,10
+        7,9,0,1,3,4,8,5,6,2,10  
+    ]
+    this.cRegress = [
+        2,3,9,4,5,7,8,0,6,1,10
+    ]
 
     for (let i = 0; i < this.data; i++) {
         this.knownRadii[i] = this.radius(i + 3);
@@ -23,6 +44,7 @@ function PolyDat() {
     //	knownAreas[i]=((i+3)/Math.tan(Math.PI/(i+3))*0.25);
 }
 //---------------------------------------------------
+
 PolyDat.prototype.getRadius = function(sides) {
     if (sides - 3 > this.data)
         return this.radii(sides);
@@ -69,10 +91,11 @@ polydat = new PolyDat();
 /** 
  * Rpoly is the basic class for regular polygons
  **/
-function Rpoly(p1 = new Array(0, 1), p2 = new Array(0, 0), sides = 4, col = "red", ref = 0, depth=0) {
+function Rpoly(p1 = new Array(0, 1), p2 = new Array(0, 0), sides = 4, colIndex = 0, ref = 0, depth=0) {
     this.sides = sides;
-    this.colour = col;
-    this.arrowInvert =(col==="black" || col ==="blue")?true:false;
+    this.colour = polydat.colours[colIndex%polydat.colours.length].colour
+    this.colIndex = colIndex
+    this.arrowInvert =(colIndex==3 || colIndex ==8 )?true:false; //hmmmm
     this.scale = 1;
     this.heading = Math.ceil(sides / 2);
     this.vertices = new Array();
@@ -89,7 +112,7 @@ function Rpoly(p1 = new Array(0, 1), p2 = new Array(0, 0), sides = 4, col = "red
 }
 //---------------------------------------------------
 Rpoly.prototype.clone = function() {
-    let cl = new Rpoly(this.vertices[0], this.vertices[1], this.sides, this.colour, this.ref,this.depth);
+    let cl = new Rpoly(this.vertices[0], this.vertices[1], this.sides, this.colIndex, this.ref,this.depth);
     cl.heading = this.heading;
     return cl;
 };
@@ -180,16 +203,19 @@ Rpoly.prototype.left = function() {
     this.heading = (this.heading + this.sides - 1) % this.sides;
 };
 //--------------------------------------------------
-Rpoly.prototype.setColour = function(text) {
-    this.colour = text;    
-    this.arrowInvert =(text==="black" || text ==="blue")?true:false;
+Rpoly.prototype.setColIndex = function(colIndex) {
+    this.colour = polydat.colours[colIndex%polydat.colours.length].colour;
+    this.colIndex = colIndex
+    this.arrowInvert =(colIndex==3 || colIndex ==8 )?true:false; //hmmmm
+    // this.colour = text;    
+    // this.arrowInvert =(text==="black" || text ==="blue")?true:false;
 };
 //--------------------------------------------------
 Rpoly.prototype.make = function(sides = this.sides) {
-    return new Rpoly(this.vertices[(this.heading + 1) % this.sides], this.vertices[this.heading], sides, this.colour, this.ref, this.depth+1);
+    return new Rpoly(this.vertices[(this.heading + 1) % this.sides], this.vertices[this.heading], sides, this.colIndex, this.ref, this.depth+1);
 };
 Rpoly.prototype.make2 = function(sides = this.sides) { //lazy me
-    return new Rpoly(this.vertices[this.heading], this.vertices[(this.heading + 1) % this.sides], sides, this.colour, this.ref, this.depth+1);
+    return new Rpoly(this.vertices[this.heading], this.vertices[(this.heading + 1) % this.sides], sides, this.colIndex, this.ref, this.depth+1);
 };
 //--------------------------------------------------
 Rpoly.prototype.toString = function() {
@@ -211,7 +237,7 @@ Rpoly.prototype.toStringFull = function() {
  * not sure if I want to make an integer polygon for drawing...
  */
 Rpoly.prototype.drawHL = function(c, arrow = false) {
-    if (this.colour === "transparent")
+    if (this.colIndex === 10) //"transparent"
         return;
     let p = this.vertices[0];
 
@@ -284,7 +310,8 @@ function rainbowFix(colour,index) {  //HUGE assumption that the string colour is
  * not sure if I want to make an integer polygon for drawing...
  */
 Rpoly.prototype.drawSimple = function(c, arrow = false,rainbow=false,thick=1) {
-    if (this.colour === "transparent")
+    if (this.colIndex === 10) //"transparent"
+    //if (this.colour === "transparent")
         return;
     let p = this.vertices[0];
 
@@ -460,7 +487,7 @@ Rpoly.prototype.collisionTryOld = function(poly) {
     let otherEnd2 = this.dot(v2, perp);
 
     //* testing **********************  
-    if (false && poly.colour === "blue" && this.colour === "blue") {
+    if (false && poly.colIndex === 3 && this.colIndex === 8) {
         console.log(">> " + otherEnd + " " + otherEnd2 + " <" + v0 + " <" + v2 + " p" + perp);
         console.log("poly: " + poly.toStringFull())
         console.log("this: " + this.toStringFull())

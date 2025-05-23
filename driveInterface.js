@@ -387,12 +387,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     fixRun()
                 }
             }
-            else if ((tileLand.validCmds + ".,[").indexOf(key) >= 0) {
+            else if ((`${tileLand.validCmds}'".,[`).indexOf(key) >= 0) {
                 if ("cewd{[".indexOf(key) >= 0) {
                     doManipulation(key, true)
                     if ("cewd".indexOf(key) >= 0) fixRun()
                 } else {
+                    console.log("1",getCode())
+
                     runCommand(key, true, "keyup")
+                    console.log("2",getCode())
                     bufferXV = null
                     fixRun()
                 }
@@ -637,11 +640,13 @@ function runCommand(text, updateH = false, orig = "noorig") {  // runCommand and
     }
     //insert text at counter.
     newText = newText.substring(0, counter) + text + newText.substring(counter)
-
+    console.log("1.5",newText)
     setCode(ppfilter(newText, banks.map(x => x.text)))
+    console.log("1.6",getCode())
 
     if (text[0] == '{')   setCursor(parseInt(counter) + text.length-1)   //ugly but works....  this is for tilePainting
     else setCursor(parseInt(counter) + text.length)
+    console.log("1.7",getCode())
 
     fixRun()
 }
@@ -786,7 +791,7 @@ function properHtml(c) {
     return code
 }
 
-function fixRunOld(leaveCursor = true) {
+function fixRunOld(leaveCursor = true) { // need to dump this and use ppfilter??
     // massage and run preprocessor code
     var counter = getCursor()
     let code = getCode()
@@ -799,7 +804,6 @@ function fixRunOld(leaveCursor = true) {
             doManipulation(code.substring(i, i + 2))
             i++
         } else if ("fF".indexOf(ch) > -1){  //  Free from :???
-
             let bank = code.substring(i+1, i + 2).toUpperCase().charCodeAt(0) -65
             let bank2 = code.substring(i+2, i + 3).toUpperCase().charCodeAt(0) -65
             let bankCode =  getChunks(banks[bank].text.replace(/[:]/g, ""))
@@ -861,7 +865,7 @@ function fixRunOld(leaveCursor = true) {
             i += 2
         } else if ("czq".indexOf(ch) > -1)
             doManipulation(ch)
-        else if (("[]" + tileLand.validCmds).indexOf(ch) > -1) {
+        else if ((`[]'"` + tileLand.validCmds).indexOf(ch) > -1) {
             setCode(getCode() + ch, false)
             setCursor(getCode().length)
         }
@@ -1192,7 +1196,7 @@ function addCanvasPolyBut(cmd, type, div, hsize = 40, vsize = 30, text = "null")
     // necessary .text...?block
     chunk.canvas.tlCodeEl = chunk
     // is this really the way to do it?
-    chunk.drawCanvas()
+    chunk.drawCommand()
     return chunk
 }
 // ---------------------------------------------------

@@ -21,7 +21,7 @@ coDist = x=> x.reduce((a,c)=>a+c.co*c.co,0)
 pickOne = x => x[Math.trunc(Math.random()*x.length)]
 console.log(sarch)
 console.log(eval(sarch))
-let found=false
+let found=true
 let i =0
 let smallest = [10000,sarch.map(x=> ({...x}))]
 while(i<1000000&& !found){
@@ -38,4 +38,36 @@ while(i<1000000&& !found){
 }
 console.log(found,smallest)
 
- 
+
+
+
+
+
+
+
+
+const colours = {
+    o:"rgb(255,170,0)", //orange
+    p:"rgb(153,0,153)", //purple
+    r:"rgb(255,0,0)", //r:"red",
+    b:"rgb(0,0,255)",//b:"blue",
+    l:"rgb(141,153,38)", //olive
+    g:"rgb(67,204,0)", //green
+    a:"rgb(211,211,211)", //a:"lightGrey",
+    y:"rgb(255,255,0)", //y:"yellow",
+    k:"rgb(0,0,0)", //k:"black",
+    i:"rgb(255,165,253)", //pink
+    t:"transparent"
+}
+const cProgress = [ //royglbpi,ak,t
+                    //20754319,68,10
+    7,9,0,1,3,4,8,5,6,2,10  
+]
+const cRegress = [
+    2,3,9,4,5,7,8,0,6,1,10
+]
+nextColour = x=> colours[Object.keys(colours)[cProgress[Object.values(colours).indexOf(x)]]]
+previousColour = x=> colours[Object.keys(colours)[cRegress[Object.values(colours).indexOf(x)]]]
+
+console.log(previousColour(colours.i))
+console.log(previousColour(colours.k))

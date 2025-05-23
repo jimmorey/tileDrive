@@ -19,6 +19,7 @@ This version promotes simple code trees (non-looping non-conditional code) that 
 ## Details I'm thinking about
 
 * future directions:
+    * need to clean up driveInterface...get rid of fixRun() etc
     * hiding/eliminating "q" which is a reset since it's dangerous--a misclick is unforgiving
     * probably needs a cutting and pasting of text into the standard code panel rather than just "adv".  As well, the up and down arrows should probably be included. 
     * while: +?{colour\|#}{True:[blah]\|A} ??
