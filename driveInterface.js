@@ -392,10 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     doManipulation(key, true)
                     if ("cewd".indexOf(key) >= 0) fixRun()
                 } else {
-                    console.log("1",getCode())
-
                     runCommand(key, true, "keyup")
-                    console.log("2",getCode())
                     bufferXV = null
                     fixRun()
                 }
@@ -640,13 +637,10 @@ function runCommand(text, updateH = false, orig = "noorig") {  // runCommand and
     }
     //insert text at counter.
     newText = newText.substring(0, counter) + text + newText.substring(counter)
-    console.log("1.5",newText)
     setCode(ppfilter(newText, banks.map(x => x.text)))
-    console.log("1.6",getCode())
 
     if (text[0] == '{')   setCursor(parseInt(counter) + text.length-1)   //ugly but works....  this is for tilePainting
     else setCursor(parseInt(counter) + text.length)
-    console.log("1.7",getCode())
 
     fixRun()
 }
