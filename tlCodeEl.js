@@ -480,7 +480,7 @@ tlCodeEl.prototype.drawCommand = function () {  //used for the tileland interfac
       ctx.translate(cx * 0.25, 0)
       tlDetails.polys[i].drawOutline(ctx)
       ctx.restore()
-    } else if (i < tlDetails.keys.indexOf("t")) {  // draw color
+    } else if (i < tlDetails.keys.indexOf("t") && i!=-1) {  // draw color
       i = i - tlDetails.keys.indexOf("r")
       ctx.fillStyle = tlDetails.colors[i]
       ctx.save()
@@ -527,6 +527,41 @@ tlCodeEl.prototype.drawCommand = function () {  //used for the tileland interfac
       ctx.arc(0, 0, cx, 0.25 * Math.PI, -0.55 * Math.PI, true)
       ctx.stroke()
       ctx.restore()
+    } else if (text[0] =="'") { //colour up
+      ctx.linewidth = 15
+      ctx.translate(cx, cy)
+      ctx.scale(1, 0.5)
+      ctx.beginPath()
+      ctx.arc(0, 0, cx, 0, 2 * Math.PI, false)
+      ctx.clip()
+      let j= -cx
+      let colI = 9
+      for(let i=0;i<8;i++){
+        ctx.fillStyle = polydat.colours[colI].colour
+        ctx.fillRect(j+i*(cx/4), -cx, (cx/4),2*cx)
+        colI = polydat.cRegress[colI]
+      }
+      ctx.restore()
+      ctx.fillStyle = "white"
+      ctx.strokeStyle = "white"
+
+    } else if (text[0] ==  `"`) { //colour down
+      ctx.linewidth = 15
+      ctx.translate(cx, cy)
+      ctx.scale(1, 0.5)
+      ctx.beginPath()
+      ctx.arc(0, 0, cx, 0, 2 * Math.PI, false)
+      ctx.clip()
+      let j= -cx
+      let colI = 2
+      for(let i=0;i<8;i++){
+        ctx.fillStyle = polydat.colours[colI].colour
+        ctx.fillRect(j+i*(cx/4), -cx, (cx/4),2*cx)
+        colI = polydat.cProgress[colI]
+      }
+      ctx.restore()
+      ctx.fillStyle = "white"
+      ctx.strokeStyle = "white"
     } else {
       //ignore mistakes for now
     }

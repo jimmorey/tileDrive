@@ -1010,7 +1010,9 @@ function setupButtons() {
     addCanvasPolyBut("l", "T", newDiv)
     addCanvasPolyBut("i", "T", newDiv)
     addCanvasPolyBut("t", "T", newDiv)
-
+    newDiv.append(document.createElement("br"))
+    addCanvasPolyBut("'", "T", newDiv)
+    addCanvasPolyBut(`"`, "T", newDiv)
     // animation...
 
     but = document.createElement("button")

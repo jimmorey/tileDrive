@@ -37,9 +37,9 @@ function TL(width,height,x,y,max){
                           "octagon","nonagon","decagon","hendecagon","line",
                           "red","blue","yellow","orange","purple","green",
                           "olive","pink","gray","black","transparent",
-                          "left","right","cut all","remove last chunk","clear","branch","endbranch","arrowLeft","arrowRight","delete")
+                          "left","right","cut all","remove last chunk","clear","branch","endbranch","arrowLeft","arrowRight","delete","colourUp","colourDown")
   this.keys = new Array("3","4","5","6","7","8","9","0","1","2",
-                        "r","b","y","o","p","g","l","i","a","k","t","<",">","x","z","c","{","}","w","e","d")
+                        "r","b","y","o","p","g","l","i","a","k","t","<",">","x","z","c","{","}","w","e","d",`"`,"'")
   this.CURS_CHAR = "*"
   this.validCmds = "0123456789rbyopgliaktdcwez<>{}+=:;"+this.CURS_CHAR
   this.TESTDIST = 0.01
