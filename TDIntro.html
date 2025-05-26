@@ -250,6 +250,23 @@
     </ul>
   <p>In a sense, the branching style of construction is nicer since there is no overwriting of tiles but it is more complicated to design. When examining the side bar that shows textual instructions of this pattern, there is more structure to this code than that the previous construction. These differences can also be explored and examined with animation using the on-screen @ button.</p>
 
+<h2>rainbow shortcut</h2>
+
+<p>Colours can make polygonal art much more appealing. To make it easier to manipuluate and play with colouring, some rainbow buttons(", ') were added: these go up and down a colour in the <em>TileDrive</em> rainbow (red, orange, yellow, green, olive, blue, purple, pink, then back to red). For example, if a tile is currently red, and colourUp (") is pressed then the colour becomes orange. Similarly, orange goes to yellow, yellow goes to olive, etc. until pink which goes back to red and starts again.  </p>
+
+<div class="start float">
+<div class="inline title" data-text ='{555{>5}555}">xA 5+5A' data-w = "250" data-h="250" data-cur="true"></div><div> {555{>5}555}"> xA<br>5 vA vA vA vA vA</div></div>
+
+<p>In this case, every chunk of 7 tiles(stored in bank A) is assigned a different colour with a colourUp command. Technically, each chunk of 7 inherits the central tile's colour then only the central tile gets an updated colour. The central blue colour tile resulted from the last colourUp (") from the olive colour. An additional bank A (vA) would replace the red chunk with a blue version of the chunk.</p>
+<div class="start"></div>
+
+<div class="start float">
+    <div class="inline title" data-text ='{555{>5}555}">xA 5o+5A' data-w = "150" data-h="150" data-cur="true"></div><div> <span class="light">{555{>5}555}"> xA<br>5</span><b>o</b><span class="light"> vA vA vA vA vA</span></div></div>
+<div class="float">
+    <div class="inline title" data-text ="{555{>5}555}'>xA 5l+5A" data-w = "150" data-h="150" data-cur="true"></div><div> <span class="light">{555{>5}555}</span></span><b>'</b><span class="light">> xA<br>5</span><b>l</b><span class="light"> vA vA vA vA vA</span></div></div>
+<p>A different starting colour of orange of the first tile changes all of the colours of the pattern as can be seen in the pattern on the far right. As well, using colourDown (') changes the order of the colours in the pattern which can be this in the second pattern. </p>
+<div class="start"></div>
+
 <h2>coding</h2>
 
 <p>Many interesting patterns can be produced using and reusing banks. One way to become more connected with the patterns is to become a poweruser and use the keyboard to speed up creating patterns. Another way to better understand these patterns is to use a built-in preprocessing language that incorporates the basic instructions with bank operations. This language can help focus attention on the describing and communicating the ways patterns relate to one another.  As well, the language has a means of interlacing sequences and performing multiple pastes. The interface for this language is revealed by clicking on the "adv" button.</p>
