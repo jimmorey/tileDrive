@@ -203,6 +203,9 @@ function mousedown(eventx,eventy) {
         let tile = tileLand.testPoint(p[0], p[1])
         // setup
         if (tile!=null) proposedTile = {md:p,tile:tile,newTile:null}
+        else if (tileLand.rt.get_tree().nodes.length==0) {//dirty dirty dirty
+            proposedTile = {md:p,tile:tileLand.start.clone(),newTile:null}
+        }
 }
 function mousemove(eventx,eventy) {
     //document.getElementById("scratch").textContent +="tm "+eventx+" "+eventy+" "
@@ -215,6 +218,7 @@ function mousemove(eventx,eventy) {
         let rect2 = hCanvas.getBoundingClientRect()
     
         let p = [(eventx - rect2.x - rect2.width / 2.0) * fud * (tileLand.width / rect2.width), (eventy - rect2.y - rect2.height / 2.0) * fud * (tileLand.height / rect2.height)]
+
         proposedTile.newTile = proposedTile.tile.getNextPaintTile(p)
 
         // find edge
@@ -228,26 +232,34 @@ function mouseup(eventx,eventy) {
 
     if (proposedTile != null && proposedTile.newTile != null && proposedTile.newTile.tile.sides != 2) {
         let tile = proposedTile.tile
-        //console.log("dragend",proposedTile.newTile.side,proposedTile.newTile.tile.sides)
-        let rot = (proposedTile.newTile.side + Math.trunc(proposedTile.tile.sides/2))%proposedTile.tile.sides
+        if (tile.sides ==2) {
+            //setCursor(findLastBranch(tile.ref) + 1)
+            if (proposedTile.newTile.side==1)
+                runCommand(`${proposedTile.newTile.tile.sides%10}`, true)
+            else 
+                runCommand(`.${proposedTile.newTile.tile.sides%10}`, true)
 
-        let rot2 = proposedTile.tile.sides-rot
+        } else {
+            //console.log("dragend",proposedTile.newTile.side,proposedTile.newTile.tile.sides)
+            let rot = (proposedTile.newTile.side + Math.trunc(proposedTile.tile.sides/2))%proposedTile.tile.sides
 
-        //proposedTile.newTile.tile.sides%2
-        let turn = rot2<rot?",".repeat(rot2):".".repeat(rot)
-        if (tile !== null && tile.sides !=2) {
-            if (tile.ref >= 0) {
-                setCursor(findLastBranch(tile.ref) + 1)
-                if (isMidpath(tile.ref))
-                    runCommand(`{${turn+proposedTile.newTile.tile.sides%10}}`, true)
-                else 
-                    runCommand(`${turn+proposedTile.newTile.tile.sides%10}`, true)
-                //setCode(getCode())
-                //console.log("click", tile.ref)
-                runCode()
+            let rot2 = proposedTile.tile.sides-rot
+
+            //proposedTile.newTile.tile.sides%2
+            let turn = rot2<rot?",".repeat(rot2):".".repeat(rot)
+            if (tile !== null && tile.sides !=2) {
+                if (tile.ref >= 0) {
+                    setCursor(findLastBranch(tile.ref) + 1)
+                    if (isMidpath(tile.ref))
+                        runCommand(`{${turn+proposedTile.newTile.tile.sides%10}}`, true)
+                    else 
+                        runCommand(`${turn+proposedTile.newTile.tile.sides%10}`, true)
+                    //setCode(getCode())
+                    //console.log("click", tile.ref)
+                    runCode()
+                }
             }
         }
-
         sendFocus()
     } else {  //click
 
