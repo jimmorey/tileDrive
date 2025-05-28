@@ -663,7 +663,7 @@ function pasteLiCode(comp) {
     setCode(text)
     fixRun(false)
 }
-function doManipulation(command, updateH = false) {
+function doManipulation(command, updateH = false) {  //not reached...
     //manipulate text....
     var counter = getCursor()
     var newText = getCode()
@@ -714,13 +714,12 @@ function doManipulation(command, updateH = false) {
             runCode()
            updateGallery()
         } 
-
-
     } else if (command === "{" || command === "[") {
         //insert text at counter.
         newText = newText.substring(0, counter) + (command === "{" ? "{}" : "[]") + newText.substring(counter)
-        setCode(newText)
+        //setCode(newText)
         setCursor(parseInt(counter) + 1)
+        setCode(newText)
     } else if (command === "q" || command === "c") {
         setCode("")
         setCursor(1)
