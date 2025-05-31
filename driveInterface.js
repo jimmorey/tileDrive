@@ -172,6 +172,10 @@ let program = {
     }
 }
 
+function setBuffer(text){
+    bufferXV = text
+    document.getElementById('keybuffer').innerHTML = bufferXV
+}
 function resizeCanvas() {
     // const canvas = document.getElementById('myCanvas');
     // const first = document.getElementById('first');
@@ -360,12 +364,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
             key = key==="ArrowLeft"?"w":key==="ArrowRight"?"e":key==="Backspace"?"d":key==="Delete"?"d":key
 
-            if (key == "x" || key == "v" || key == "u") {
+            // if (key == "x" || key == "v" || key == "u") {
+            if ("xvum+".indexOf(key[0])>-1){
                 //x and v deal with these...
                 if (key=="u" && bufferXV =="u"){
                     doManipulation(bufferXV + key, true)
-                    bufferXV = null
-                } else  bufferXV = key
+                    setBuffer(null)
+                } else  setBuffer(key)
+
+                //console.log("start",bufferXV)
+            } else if ("123456789ABCDEFGHIJabcdefghij".indexOf(key) >= 0 && bufferXV != null ) {
+                if ("+m".indexOf(bufferXV[0]) >-1){
+                    if (bufferXV.length >1){
+                        //doManipulation(bufferXV + key, true)
+                        //fixRun()
+                        let fixCurs = getCode().length-parseInt( getCursor())
+                        //console.log(getCursor(),fixCurs)
+                        runCommand(bufferXV+key)
+
+                        setCursor(getCode().length-fixCurs)
+                        //console.log("and",getCode().length)
+                        //console.log("and2",getCursor())
+
+                        //fix cursor
+
+                        setBuffer(null)
+                        fixRun()
+                    } else {
+                        setBuffer(bufferXV+key)
+                    }
+                }  else if (bufferXV =="u" && key == "c"){
+                    doManipulation("uc", true)
+                    setBuffer(null)
+                } else {
+                    doManipulation(bufferXV + key, true)
+                    setBuffer(null)
+                    fixRun()
+                }
+                //console.log("end?",bufferXV)
             } else if (key == "^") {
                 document.getElementById("arrowbut").click()
             } else if (key == "~" || key == "`") {
@@ -388,24 +424,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("undo").click()
             } else if (key == "c" && bufferXV == null) {
                 document.getElementById("clear").click()
-            } else if ("ABCDEFGHIJabcdefghij".indexOf(key) >= 0 && bufferXV != null ) {
-                //console.log("!!!",key)
-                if (bufferXV =="u" && key == "c"){
-                    doManipulation("uc", true)
-                    bufferXV = null
-                } else {
-                    doManipulation(bufferXV + key, true)
-                    bufferXV = null
-                    fixRun()
-                }
-            }
-            else if ((`${tileLand.validCmds}'".,[`).indexOf(key) >= 0) {
+            } else if ((`${tileLand.validCmds}'".,[`).indexOf(key) >= 0) {
                 if ("cewd{[".indexOf(key) >= 0) {
                     doManipulation(key, true)
                     if ("cewd".indexOf(key) >= 0) fixRun()
                 } else {
                     runCommand(key, true, "keyup")
-                    bufferXV = null
+                    setBuffer(null)
                     fixRun()
                 }
             }

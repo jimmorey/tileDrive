@@ -182,6 +182,13 @@ canvas.tlButP:hover,canvas.tlButT:hover,canvas.tlButN:hover {
     bottom: 4px;
     left:4px;
 }
+#keybuffer{
+    position: absolute;
+    display:flex;
+    width: 20%;   
+    top: 4px;
+    left:4px;   
+}
 
 input[type=range] {
     -webkit-appearance: none;
