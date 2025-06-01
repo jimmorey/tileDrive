@@ -371,7 +371,9 @@ document.addEventListener("DOMContentLoaded", () => {
             key = key==="ArrowLeft"?"w":key==="ArrowRight"?"e":key==="Backspace"?"d":key==="Delete"?"d":key
 
             // if (key == "x" || key == "v" || key == "u") {
-            if ("xvum+".indexOf(key[0])>-1){
+            if (key == "Escape") {
+                setBuffer(null)
+            } else if ("xvum+".indexOf(key[0])>-1){
                 //x and v deal with these...
                 if (key=="u" && bufferXV =="u"){
                     doManipulation(bufferXV + key, true)
