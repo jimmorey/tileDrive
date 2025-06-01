@@ -81,7 +81,8 @@ let animate = {
 
 var verifyIndex = (string, index) => {
     //console.log(index, index<0?0:index>=string.length?string.length:index)
-    return index < 0 ? 0 : index >= string.length ? string.length : index
+    return index < 0 ? 0 : index > string.length ? string.length : index
+    //return index
 }
 
 //5r{i}5{g}5{b}55  these are all red....!!! fix
@@ -101,8 +102,8 @@ let program = {
     getCursor: function () {
         return this.cursor
     },
-    treeCode: function (text, cursor = -1, maxLen = 20) {
-        //console.log("curs",cursor)
+    treeCode: function (text, cursor = 0, maxLen = 20) {
+        //console.log("curs",cursor, "|",text.length,"|")
         //cursor = 3
         let res = ""
         //resulting html
@@ -113,7 +114,8 @@ let program = {
         let i = 0
         let len = 0
         let depth = 0;
-        for (i = 0; i < text.length; i++) {
+        cursor = verifyIndex(text,cursor)
+        for (i = 0; i <= text.length; i++) {
             len++;
             if (len > 20) {
                 res += "<br>"
@@ -121,47 +123,50 @@ let program = {
             }
             if (i == cursor)
                 res += '<span class="cursor">*</span>'
-            let c = text.charAt(i)
-            if (c === ">")
-                c = "&gt;"
-            if (c === "<")
-                c = "&lt;"
+            if(i!=text.length){
+                
+                let c = text.charAt(i)
+                if (c === ">")
+                    c = "&gt;"
+                if (c === "<")
+                    c = "&lt;"
 
-            if (c === "{") {
-                ///flip = !flip
-                ///if (st[st.length - 1] < 0) {
-                ///    st.push(0)
-                ///    res += `<div class="branch std ${flip ? 'odd' : 'even'}">`
-                //}
-                ///len=0
-                ///st.push(1)
-                len = 0
-                depth++
-                res += (res.trim().substring(res.length - 4) === "<br>" ? "" : `<br>`) + `${"&nbsp;".repeat(2 * depth)}{`
-            } else if (c === "}") {
-                if (depth>0) depth--  // in case of bad code
+                if (c === "{") {
+                    ///flip = !flip
+                    ///if (st[st.length - 1] < 0) {
+                    ///    st.push(0)
+                    ///    res += `<div class="branch std ${flip ? 'odd' : 'even'}">`
+                    //}
+                    ///len=0
+                    ///st.push(1)
+                    len = 0
+                    depth++
+                    res += (res.trim().substring(res.length - 4) === "<br>" ? "" : `<br>`) + `${"&nbsp;".repeat(2 * depth)}{`
+                } else if (c === "}") {
+                    if (depth>0) depth--  // in case of bad code
 
-                //let cur = st.pop()
-                //let ends = ""
-                //while (cur != 1&&st.length!=0) {
-                /// let ends = `</div>`
-                /// len=0
-                /// if (st.length>0) cur = st.pop()
-                //}
-                //res += (cur == 0) ? ends + "}" : "}" + ends
-                res += `}<br>${"&nbsp;".repeat(2 * depth)}` ///+ends
+                    //let cur = st.pop()
+                    //let ends = ""
+                    //while (cur != 1&&st.length!=0) {
+                    /// let ends = `</div>`
+                    /// len=0
+                    /// if (st.length>0) cur = st.pop()
+                    //}
+                    //res += (cur == 0) ? ends + "}" : "}" + ends
+                    res += `}<br>${"&nbsp;".repeat(2 * depth)}` ///+ends
 
-            } else {
-                ///if (st[st.length - 1] != -1)
-                ///    st.push(-1)
-                res += `<span data-index="${i}" class="norm">${c}</span>`
+                } else {
+                    ///if (st[st.length - 1] != -1)
+                    ///    st.push(-1)
+                    res += `<span data-index="${i}" class="norm">${c}</span>`
+                }
             }
         }
-        if (cursor >= text.length) res += '<span class="cursor">*</span>'
-        while (st.length > 0) {
-            res += `</div>`
-            st.pop()
-        }
+        //if (cursor >= text.length) res += '<span class="cursor">*</span>'
+        // while (st.length > 0) {
+        //     res += `</div>`
+        //     st.pop()
+        // }
         return res
     },
     dirty: function () {
@@ -602,8 +607,11 @@ document.addEventListener("DOMContentLoaded", () => {
     //     runCode()
     //     updateGallery()
     //else if (tileCode != null) {
+        setCursor((tileCode+text).length)
         setCode(tileCode+text)
-        fixRun(false)
+        setCursor((tileCode+text).length)
+
+        fixRun(true)
     // } else {
     //     setCode('4t>>4>444464>4r444>34343>4t3<43<4<444<64b<4>333t4>>4444o<4<6>>>4t>44<64<5g<5>>5<<5>5<<5')
     //     runCode()
@@ -745,8 +753,11 @@ function doManipulation(command, updateH = false) {  //not reached...
         //insert text at counter.
         newText = newText.substring(0, counter) + (command === "{" ? "{}" : "[]") + newText.substring(counter)
         //setCode(newText)
-        setCursor(parseInt(counter) + 1)
-        setCode(newText)
+        setCode(newText,true)
+        setCursor(counter + 1)
+        setCode(newText,true)
+
+
     } else if (command === "q" || command === "c") {
         setCode("")
         setCursor(1)
@@ -1323,7 +1334,8 @@ function createTree(text) {
     //progCount = 0
     dcode.innerHTML = program.treeCode(text, getCursor())
     let thing = dcode.querySelector("span.cursor")
-    dcode.scrollTo(0, (thing.offsetTop < dcode.clientHeight) ? 0 : thing.offsetTop - dcode.clientHeight)
+    if (thing != null)
+        dcode.scrollTo(0, (thing.offsetTop < dcode.clientHeight) ? 0 : thing.offsetTop - dcode.clientHeight)
     //$("#dcode").append(`<p>${$("#dcode").text()}</p>`);  //looks right
     decodeLen.innerHTML = text.length
 }
