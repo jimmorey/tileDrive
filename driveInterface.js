@@ -174,7 +174,9 @@ let program = {
 
 function setBuffer(text){
     bufferXV = text
-    document.getElementById('keybuffer').innerHTML = bufferXV
+    if (text != null && text.length>0) 
+        text = text + (("uUxvXV".indexOf(text[0])>-1||text.length>1)?"?":"??")
+    document.getElementById('keybuffer').innerHTML = text
 }
 function resizeCanvas() {
     // const canvas = document.getElementById('myCanvas');

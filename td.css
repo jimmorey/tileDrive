@@ -188,6 +188,7 @@ canvas.tlButP:hover,canvas.tlButT:hover,canvas.tlButN:hover {
     width: 20%;   
     top: 4px;
     left:4px;   
+    font-size:2.5em;
 }
 
 input[type=range] {
