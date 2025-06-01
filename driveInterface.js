@@ -103,7 +103,6 @@ let program = {
         return this.cursor
     },
     treeCode: function (text, cursor = 0, maxLen = 20) {
-        //console.log("curs",cursor, "|",text.length,"|")
         //cursor = 3
         let res = ""
         //resulting html
