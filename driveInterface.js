@@ -360,9 +360,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     document.querySelector("body").addEventListener("keyup", (event) => {
-    //huhCanvas.addEventListener("keyup", (event) => {
-        //console.log("keyup",event.key)
-        if (event.isComposing || event.key === 229) { // 229 is for keyCode so it's probably not needed
+
+        if (event.isComposing || event.key === 229 ||event.key=="Shift" || event.key=="Alt" || event.key == "Control") { // 229 is for keyCode so it's probably not needed
             return
         }
         if (listening) {
@@ -370,46 +369,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
             key = key==="ArrowLeft"?"w":key==="ArrowRight"?"e":key==="Backspace"?"d":key==="Delete"?"d":key
 
-            // if (key == "x" || key == "v" || key == "u") {
-            if (key == "Escape") {
-                setBuffer(null)
-            } else if ("xvum+".indexOf(key[0])>-1){
-                //x and v deal with these...
-                if (key=="u" && bufferXV =="u"){
-                    doManipulation(bufferXV + key, true)
-                    setBuffer(null)
-                } else  setBuffer(key)
-
-                //console.log("start",bufferXV)
-            } else if ("123456789ABCDEFGHIJabcdefghij".indexOf(key) >= 0 && bufferXV != null ) {
-                if ("+m".indexOf(bufferXV[0]) >-1){
-                    if (bufferXV.length >1){
-                        //doManipulation(bufferXV + key, true)
-                        //fixRun()
-                        let fixCurs = getCode().length-parseInt( getCursor())
-                        //console.log(getCursor(),fixCurs)
-                        runCommand(bufferXV+key)
-
-                        setCursor(getCode().length-fixCurs)
-                        //console.log("and",getCode().length)
-                        //console.log("and2",getCursor())
-
-                        //fix cursor
-
-                        setBuffer(null)
-                        fixRun()
-                    } else {
-                        setBuffer(bufferXV+key)
-                    }
-                }  else if (bufferXV =="u" && key == "c"){
-                    doManipulation("uc", true)
+            if (bufferXV != null){ //handle shortcuts first
+                if ((key == "Escape" || event.key == "Delete")) {
                     setBuffer(null)
                 } else {
-                    doManipulation(bufferXV + key, true)
-                    setBuffer(null)
-                    fixRun()
+                    if (key=="c" && bufferXV =="u"){
+                        doManipulation(bufferXV + key, true)
+                        setBuffer(null)
+                    } else if (bufferXV[0] == "+" && bufferXV.length ==1){
+                        setBuffer(bufferXV+key) // no check yet
+                    } else if (bufferXV[0] == "m" && bufferXV.length ==1) {
+                        setBuffer(bufferXV+key) // no check yet
+                    } else {
+                        console.log("otherwise",bufferXV,key)
+                        let fixCurs = getCode().length-parseInt( getCursor())
+                        if (bufferXV[0] == "x")     doManipulation(bufferXV+key)
+                        else runCommand(bufferXV+key) //"x" didn't work...fix later
+                        setCursor(getCode().length-fixCurs)
+                        setBuffer(null)
+                        fixRun()
+                    }
                 }
-                //console.log("end?",bufferXV)
+            } else if ("xvum+".indexOf(key[0])>-1){
+               setBuffer(key)
             } else if (key == "^") {
                 document.getElementById("arrowbut").click()
             } else if (key == "~" || key == "`") {
