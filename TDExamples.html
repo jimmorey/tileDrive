@@ -296,7 +296,7 @@ m[yvA+bB][4:4:4]`,h:275,w:275,alt:"",adv:true},
     codes.forEach((el) => {
       let li = document.createElement('li')
       let adv = el.adv ? ` <a href="TDUpload.html?advcode=${encodeURIComponent(fix(el.code))}"><div class="codeDiv">adv</div></a>` : ""
-      li.innerHTML = `<a href="TDUpload.html?currentcode=${encodeURIComponent(fix(el.code))}"><div class="codeDiv">${fix(el.code)}</div></a>${adv}`
+      li.innerHTML = `<a href="TDUpload.html?currentcode=${encodeURIComponent(ppfilter(fix(el.code)))}"><div class="codeDiv">${fix(el.code)}</div></a>${adv}`
       let div = document.createElement("div")
       div.classList.add("inline")
 

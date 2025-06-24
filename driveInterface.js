@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
             key = key==="ArrowLeft"?"w":key==="ArrowRight"?"e":key==="Backspace"?"d":key==="Delete"?"d":key
 
             if (bufferXV != null){ //handle shortcuts first
-                if ((key == "Escape" || event.key == "Delete")) {
+                if (key == "Escape" || event.key == "Delete"||event.key=="Backspace") {
                     setBuffer(null)
                 } else {
                     if (key=="c" && bufferXV =="u"){
@@ -380,17 +380,25 @@ document.addEventListener("DOMContentLoaded", () => {
                         setBuffer(bufferXV+key) // no check yet
                     } else if (bufferXV[0] == "m" && bufferXV.length ==1) {
                         setBuffer(bufferXV+key) // no check yet
+                    } else if (bufferXV[0] == "f" && bufferXV.length ==1) {  // fix this...!!!!!!!!!!! not when drunk!!!!
+                        setBuffer(bufferXV+key) // no check yet
                     } else {
-                        console.log("otherwise",bufferXV,key)
+                        //console.log("otherwise",bufferXV,key)
                         let fixCurs = getCode().length-parseInt( getCursor())
                         if (bufferXV[0] == "x")     doManipulation(bufferXV+key)
+                        else if (bufferXV[0] == "f")  {
+                            console.log("format f",bufferXV,key)
+                            setCode(getCode()+bufferXV+key)
+                            fixRun(false)
+                        }
                         else runCommand(bufferXV+key) //"x" didn't work...fix later
                         setCursor(getCode().length-fixCurs)
                         setBuffer(null)
+                        console.log("madeit")
                         fixRun()
                     }
                 }
-            } else if ("xvum+".indexOf(key[0])>-1){
+            } else if ("fxvum+".indexOf(key[0])>-1){
                setBuffer(key)
             } else if (key == "^") {
                 document.getElementById("arrowbut").click()
@@ -712,6 +720,8 @@ function doManipulation(command, updateH = false) {  //not reached...
         }
     } else if (command.substring(0, 1) == "v") {
         let bank = command.toUpperCase().charCodeAt(1) - 65
+        console.log("v",bank,command)
+
         let aug = banks[bank].text
         let updateCursor =         getCode().length-getCursor()
         //console.log("v",aug)
@@ -835,10 +845,12 @@ function fixRunOld(leaveCursor = true) { // need to dump this and use ppfilter??
             let bankCode =  getChunks(banks[bank].text.replace(/[:]/g, ""))
             let bank2Code =  getChunks(banks[bank2].text)
     
-            //console.log("Format",bank,bank2,bankCode,bank2Code)
+            console.log("Format",bank,bank2,bankCode,bank2Code)
             codeOut = ""
             let curChunk=[]
-            while (bankCode.length > 0) {
+            let oops =100
+
+            while (bankCode.length > 0&& oops-- > 0) {
               if ( curChunk.length == 0) { //reload
                 if ( bank2Code.length == 0) { //reload
                     bank2Code =  getChunks(banks[bank2].text)
@@ -848,7 +860,9 @@ function fixRunOld(leaveCursor = true) { // need to dump this and use ppfilter??
               curChunk.shift();
               codeOut += bankCode.shift() + (curChunk.length == 0?"":":")
             }
-
+            if (oops <= 0) {
+                console.log("oops",oops,bank,bank2,codeOut)
+            }
             let updateCursor = getCursor() + codeOut.length
             runCommand(codeOut, "vMan")
             setCursor(updateCursor)
@@ -917,12 +931,11 @@ function fixRun(leaveCursor = true) {
         
         let textBanks = banks.map(x=>x.text)
         newCode = ppfilter(code,textBanks)
-        //console.log("Huh",textBanks)
         //update banks
         textBanks.forEach((x,i)=>{
             banks[i].text = x;  //??
             mess=i
-            if (!x.indexOf("["[0])>-1)banks[i].drawCanvas()
+            if (!x.indexOf("["[0])>-1) banks[i].drawCanvas()
         })
     } catch (e){
         console.log("bad code!",mess,":",code,e)

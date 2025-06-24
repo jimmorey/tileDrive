@@ -186,7 +186,11 @@ tlCodeEl.prototype.createSVG =function (boxWidth=300,boxHeight=300,text,filled=t
         let points = pol.join(" ")
       
         let poly = document.createElementNS(xmlns, "polygon")
-        poly.setAttributeNS(null, 'stroke', "#000000")
+        if (i%2==0) {
+          poly.setAttributeNS(null, 'stroke', "#333333")
+          poly.setAttributeNS(null, 'stroke-dasharray', "0.1");      
+
+        } else poly.setAttributeNS(null, 'stroke', "#000000")
         poly.setAttributeNS(null, 'stroke-width', 0.15)
         poly.setAttributeNS(null, 'stroke-linejoin', "round")
         poly.setAttributeNS(null, 'points', points)
@@ -217,7 +221,7 @@ tlCodeEl.prototype.createSVG =function (boxWidth=300,boxHeight=300,text,filled=t
           d += `L ${p[0] + dx - cx} ${ p[1] + dy - cy}`
           d += `L ${p[0]} ${p[1]}`
           d += `L ${p[0] - dx - cx} ${p[1] - dy - cy}`
-          console.log("arrow",d)
+          //console.log("arrow",d)
           let poly = document.createElementNS(xmlns, "path")
           poly.setAttributeNS(null, 'd', d)
 
@@ -228,7 +232,7 @@ tlCodeEl.prototype.createSVG =function (boxWidth=300,boxHeight=300,text,filled=t
           poly.setAttributeNS(null, 'fill', 'none')
           poly.setAttributeNS(null, 'opacity', 1.0)
           g.appendChild(poly)
-          console.log("arrowp",poly)
+          //console.log("arrowp",poly)
 
         }
       }
@@ -630,25 +634,20 @@ function runStackStep(stackRun) {
       let first  = codeStack.pop()
       let second  = codeStack.pop()
       let third  = codeStack.pop()  // this is used in case the second is out this can third replenish it
-
-      //console.log("f",showStack(first),showStack(second),third)
-      let stack = []
+      let countStack = []
 
       // compute the first chunk of first
       if (second.codeStack.length == 0) {
-        //console.log("reup",third)
-        pushNextStack("reup",0,isToken(third)?third[1]+"":third,codeStack,stackRun.banks,stackRun.tileLand)
-        second  = codeStack.pop()
+        pushNextStack("reup",0,isToken(third)?third[1]+"":third,countStack,stackRun.banks,stackRun.tileLand)
+        second  = countStack.pop()  
       }
-      let flag2 = pushChunkFromStack(stack,second)
-      //console.log("second",stack)
+      let flag2 = pushChunkFromStack(countStack,second)
       let polyCount =0
-      while (stack.length>0) {
-        if ("1234567890".indexOf(stack.pop()[0]) >-1) polyCount++
+      while (countStack.length>0) {
+        if ("1234567890".indexOf(countStack.pop()[0]) >-1) polyCount++  //um 
       }
-      //console.log("polyCount",polyCount)
-      let flag = pushNPolyFromStack(polyCount,stack,first)
-      //console.log("first",stack)
+      let stackDump = []
+      let flag = pushNPolyFromStack(polyCount,stackDump,first)
 
       if (flag==1) { //keep mixing
         codeStack.push(third)    
@@ -656,23 +655,19 @@ function runStackStep(stackRun) {
         codeStack.push(first)
         codeStack.push("f")
       }
-      while(stack.length>0) {
-        //console.log("stack",stack[stack.length-1])
-        codeStack.push(stack.pop())
+      while(stackDump.length>0) {
+        codeStack.push(stackDump.pop())
       }
-      //console.log("one m",codeStack)
     } else  if ("m".indexOf(command[0]) > -1){   // not sure how this one is going to fly
         // these better be stack!!!
         let first  = codeStack.pop()
         let second  = codeStack.pop()
         let third  = codeStack.pop()  // this is used in case the second is out this can third replenish it
   
-        //console.log("m",showStack(first),showStack(second),third)
         let stack = []
   
         // compute the first chunk of first
         let flag = pushChunkFromStack(stack,first)
-        //console.log("flag",flag,codeStack)
         if (flag!=-1) { // it empty first so no need to continue
           // it worked thus prepare to continue with mix
           
@@ -682,7 +677,6 @@ function runStackStep(stackRun) {
             second  = codeStack.pop()
           }
           let flag2 = pushChunkFromStack(stack,second)
-          //console.log("flag2",flag2)
   
           if (flag==1) { //keep mixing
             codeStack.push(third)    
@@ -691,11 +685,9 @@ function runStackStep(stackRun) {
             codeStack.push("m")
           }
           while(stack.length>0) {
-            //console.log("stack",stack[stack.length-1])
             codeStack.push(stack.pop())
           }
         }
-        //console.log("one m",codeStack)
     } else if ("+=".indexOf(command[0]) > -1){   //repeat
       let number = codeStack.pop()
       if (!isToken(number)) {
@@ -772,11 +764,11 @@ function stackRun(code,banks) {
 }
 
 function stackRunning(stackRun){
+  //let max = 1000
   while (stackRun.codeStack.length > 0) {
     runStackStep(stackRun) 
     if (stackRun.newBranch != null) 
       setTimeout(function() { stackRunning(stackRun.newBranch) },1000) // ??let me think about this... perhaps it's yeild time...
-      // I'll put it to 1000 so that I can see it.
   }
 }
 function pushCode(code,codeStack,banks,tileLand){ //string to stack -- reverse order and leave [] alone & package tokens
@@ -802,16 +794,18 @@ function pushCode(code,codeStack,banks,tileLand){ //string to stack -- reverse o
       i=pushNextChunk(i+2,code,thisCode,banks)
     } else if ("m".indexOf(ch) > -1){  
       thisCode.push(ch)
-      i=pushNextStack("f",i+1,code,thisCode,banks,tileLand)
+      i=pushNextStack("fi",i+1,code,thisCode,banks,tileLand) //??
       let oldi = i
-      i=pushNextStack("s",i,code,thisCode,banks,tileLand)
+      i=pushNextStack("se",i,code,thisCode,banks,tileLand)
       pushNextChunk(oldi,code,thisCode,banks)  // make a copy of the secondary mix part
+      console.log("helping?  mix",...thisCode)
     } else if ("f".indexOf(ch) > -1){  
       thisCode.push(ch)
-      i=pushNextStack("f",i+1,code,thisCode,banks,tileLand)
+      i=pushNextStack("ff-fir",i+1,code,thisCode,banks,tileLand)
       let oldi = i
-      i=pushNextStack("s",i,code,thisCode,banks,tileLand)
+      i=pushNextStack("ff-sec",i,code,thisCode,banks,tileLand)
       pushNextChunk(oldi,code,thisCode,banks)  // make a copy of the secondary mix part
+      console.log("helping?  mix",...thisCode)
     } else if ("?".indexOf(ch) > -1){  
       let rep =code.substring(i+1, i + 2)
       thisCode.push(ch)
@@ -889,7 +883,7 @@ function pushChunkFromStack(codeStack,mixStack){
 function pushNPolyFromStack(n,codeStack,mixStack){
   //have to construct a chunk from mixStack
   const TDPOLY="1234567890"
-  const TDSIMPLE=TDPOLY+"{},.><rbyopgliakt:" // simple
+  const TDSIMPLE=TDPOLY+"{},.><rbyopgliakt:'"+'"' // simple
   let valid = false //chunk needs at least one polygon
   let found = false
   let skip = false
@@ -907,13 +901,16 @@ function pushNPolyFromStack(n,codeStack,mixStack){
         if(valid && n>-1)codeStack.push(":")
         valid = true //is it necessary?
       }
-      if (last[0] != ":" && n>-1) codeStack.push(mixStack.codeStack.pop())
-    } else {
+      if (n>-1) {
+        let thing = mixStack.codeStack.pop()
+        if (last[0] != ":") codeStack.push(thing)
+      }
+      } else {
       runStackStep(mixStack)
     }
   }
 
-  //console.log("intermediate",codeStack)
+  //console.log("intermediate",codeStack,mixStack)
   return mixStack.length==0?0:1
 }
 

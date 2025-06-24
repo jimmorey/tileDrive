@@ -149,6 +149,7 @@
     console.log("uhhh",partition(4, 4))
     for (let x=1;x<6;x++) {
         addExamples(list,2, "+2[5o5o,4o,]","+6[3l]",3,1,partition(6, x),partition(6, x)) // 24
+
         //addExamples(list,2, "+6[3p]","+6[4l<]",1,1,partition(6, x),partition(6, x))  //   24
         //addExamples(list,2, "7y7y>7y7y7y","+2[4l<6l4l<]",5,3,partition(5, x),partition(6, x+1)) // 22
         //addExamples(list,2, "7y7y>7y7y7y","+2[4l<4l4l<]",5,3,partition(5, x),partition(6, x+1)) // 22
@@ -160,6 +161,11 @@
         console.log("hmm",partition(3, x).map(x=>getFormP(x)),partition(6, x+3).map(x=>getFormP(x)))
     }
     list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 24)
+
+    // for (let x=1;x<5;x++) {
+    // addExamples(list,2, "3r<4b<3r<3r<4b<","+5[5o>]",5,1,partition(5, x),partition(5, x)) // 20
+    // }
+    // list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 20)
     console.log("no duplicates",list.length)
     appendList(list.map(x=>x.textChunk),"list")
 
