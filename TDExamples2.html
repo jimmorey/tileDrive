@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="tdcode.css">
+  <script src="rpoly.js"> </script>
+  <script src="rtree.js"> </script>
+  <script src="TD.js"> </script>
+  <script src="tlCodeEl.js"> </script>
+  <script src="TDcode.js"> </script>
+
+  <meta charset="UTF-8">
+  <title>TileDrive Examples 2</title>
+</head>
+
+<body>
+  <header>
+    <h1>TileDrive Examples 2</h1>
+  </header>
+  <main>
+    <p>These can be sent to TileDrive by clicking on the code. Click on the <em>adv</em> to add this code to the adv area (to have prepocessor code ready to use)</p>
+    <ol id="simpleEx">
+    </ol>
+    <hr>
+    <p>For further examples see <a href="TDpatterns.html">TDpatterns.html</a> </p>
+
+  </main>
+</body>
+<script>
+  //{name:"",code:"",h:75,w:75,alt:""},
+  //{name:"",code:"",h:75,w:75,alt:""},
+  //{name:"",code:"",h:75,w:75,alt:""},
+  //
+  codes =[
+  {name:"starburst",code:"0t+a[{2{4r5{,4} 40o.4y5 {.4}40..4} .3p}.]",h:200,w:200,alt:"m[0t+a[{:2{5{,2}0p.5{.2}0..2}.:3r}.]][4i4a]",adv:true},
+  {name:"kaleidoscope",code:"m[5o5i<5g5o<5i5g<][3p]xA 5t<<5>2>3535<3 xB 5t35<5<<5<35<3 xC +5[{+5[vB vA]}vC] ",h:200,w:200,alt:"",adv:true},
+  {name:"protractor",code:"<5t>34a< xB +5Bb xA 4b{+4[+3B{<4p3}] } { +3A < 4a4b4a4b8t<<<2>4b} < 4a4b4a4b",h:75,w:175,alt:"",adv:true},
+  {name:"protractor2",code:"5t>34>4> xD 4t44433b xB {>3a{+3[33<]}{<3b+3[<3a3]<3}}4t> +g[{vB} vD]4>4>2",h:75,w:175,alt:"",adv:true},
+  {name:"protractor3",code:"8t>>>32<4<5<<2> xd 4t+h[4]433a xB {vB} vD xF {vB b} vD xG vG +5F   xE {>3a{+i[33<]}{<3b+i[<3a3]<3}}4t> +aE +1G",h:75,w:175,alt:"",adv:true},
+  {name:"protractor4",code:"8>>>9>>>2>3<5<<5<<2> xD 4t+i[444]4433a xB {vB} vD xF {vB b<5} vD xG vG +4F {vB b} vD+4F xE 33<33< xH{>3a{+sH}{<3{b}<+sH 3}}4t> +iE +1G",h:75,w:175,alt:"",adv:true},
+  {name:"protractor5",code:"5t.5.4.34o xa +5ap xa +2[+4[4o]p] xb 4p{.vb} +2[+3a{.vb}]",h:75,w:175,alt:"",adv:true},
+  {name:"hexGrid",code:"6p xA 6g{<2}{2} xB vB xC +2[6y{>vB}{<2} vA xA vB vC xB] m[6p+6[{vA}>]][4]",h:275,w:275,alt:"",adv:true},
+    {name:"heptSpin",code:`7{l} xA
+{+2A{<<+1Apy2}+3A{>+1Apy2}+3Ay2}> xB
+m[7g+7B][4]`,h:275,w:275,alt:"",adv:true},
+{name:"heptSpin2",code:`7{o} xA
+{:2y+5A{>vAp2}<vA<vA{>>vA2}}xC
+{+2A{<<+1Ap2}+3A{>+1Ap2}vA{<vC}+2A{<<vAp2}2}> xB
+m[7p{o}+7B][4]`,h:275,w:275,alt:"",adv:true},
+{name:"octSpin",code:`8>{b} xA
+{+2Ay{>>2}{<<<2}+2A2}> xB
+m[8a{b}+8B][5<:5]`,h:275,w:275,alt:"",adv:true},
+{name:"nonSpin",code:`9{l} xA
+{+eA2}> xB
+m[9g{l}+9B][4:4]`,h:275,w:275,alt:"",adv:true},
+{name:"nonSpin2",code:`9{l} xA
+{+3A{>vAy vAy2}+3A{>>>vAy2}+1A{>vA2}}> xB
+m[gvA+9B][4g:4]`,h:275,w:275,alt:"",adv:true},
+{name:"hendSpin",code:`1{o} xA
+{+kA}> xB
+m[yvA+bB][4:4:4]`,h:275,w:275,alt:"",adv:true},
+  {name:"pentGrid",code:"5p xA 5g5{2}< xB vB xC 5i{.2}<5 xD vD xE +2[5y{,vB}5{vd}< vA xA vB vC xB vd ve xd] m[5p+5[{vA}.]][4]",h:275,w:275,alt:"",adv:true},
+  {name:"tree",code:"7g{2}<2 xA +5[7l{vA}<vA xA] 4l44mA[4:4]",h:275,w:275,alt:"",adv:true}
+  ]
+
+
+  gallery = [
+  {name:"pics1",code:`4444>34343uc
+  xA xB+7[vB 4r> vA xB vA 4o xA] vBuu
+  .7l,,,{43443444}{.4344}{..44}{...44}{,,,43,44},,43,443,444uu
+  8p{>>>>6b {<4344} >43<44} {<<6>45y} {>>6>45y} 8yuu
+  8p{i}.....{5y}.{5y}.{5y}.{5y}.{5y}.{5y}.{5y}.4g44{.33}{,3,3}4uu
+  5i{,,5,5,5}.5,{5i{555}.5t,5i.5{.5b},5i{,33,3}.5,i{.5b}5i.uu
+  4b{,3g33,34y4}4{3r3{3}{,3}}.4.4uu`,h:75,w:75,alt:""},
+  {name:"pics2",code:`3g3<33<33<33<4{<44}>4{4o{<5>55555}>44}uc
+    xA 3xB +5[vA +3B xA3'3< vBxB] vAuu
+    0l{.3,33,33,4}{..3,33,33,3,33}{...3,33,333,344}{....3,33,333,33,33,3}{,33,33,34}{,,33,33,333,3,}{,,,33,33,3,33,44}{,,,,33,33,3,33,33,33,} .....1uu
+    8pg{,,4,33,35y}{9y{3l{r{4.3{,343}}}},3r,4,3{3,43},}{....6l{,344{4}}.3,44{4}}..43,33,5yuu
+    3r<5>35{3}< xa 3,g3 xb 4t.3g,3, 3 3{5,3},3{,53} +3b5,, +5auu
+    6y{,4}.46r{..6.4y{,4343443434}6.46r.6,3}3uu
+    3r434{,3,334433,33}{.5k}3..3{,3y3}3,434{.5k}3uu`,h:75,w:75,alt:""},
+  {name:"pics3",code:`>5{<<3<5<3<535353}>53uc
+  > {3y43p443g3<34} xE 7l+7Euu
+  …{.4t42.883k{,7g,3}7g3}3k{6r,3k3r33k,3r33k,6r..3k}{.6r,3k3r33k,3r33k,6r..3k}{,6r,3k3r33k,3r33k,3r3{,3}3k}uu
+  3<5o3l<5o3l5o3l<5o3l5o3l<5o3l5o3l<5o3l5o3l<5o3l{>>4t>>443r{<4}{4}3t<3<3o4t{<3b}>3b}uu
+  3b<4y3b3t.4. xa 3+4auu
+  4t..4.444464.4r444.34343.4t3,43,4,444,64b,4.333t4..4444o,4,6...4t.44,64,5g,5..5,,5.5,,5]uu`
+  ,h:75,w:75,alt:""},
+  {name:"patterns",code:`+5[5b<5>]uc
+    m[+5[5g<5l>]][3o3o<]uu
+    7<<m[+6[3k]][7r<7r]uu
+    m[+5[5p{<:3}>]][5i<<:5:5<<]uu
+    +f[5y3p<]uu
+    +5[5r>4g{3}<5r>4g{35<3}<5r>4g{3}<5r>4g{3l5<33<33}<]uu`,h:75,w:75,alt:""},
+  {name:"puzzles",code:`3{6t<<3r}2>4t>3r{6t>>3r}uc
+    55<<5<<2>4>5>>5>5>2>4<2>5uu
+    5r2>3t3{5r}33{5r}uu
+    5+5[{5t<<5<<2>33r}<]uu
+    5+5[{5t<<5<<2>8>>>2<4r}<]uu
+    5+5[{5t<<5<<2>4>5>5>4>5r}<]uu
+    5+5[{5t<<5<<2>4>32<6r}<]uu
+    5+5[{5t<<5<<2>7>>7>>7>>7r}>]uu`,h:75,w:75,alt:""}
+  ]
+  fix = (str) => {
+    return str.replace(/</g, ",").replace(/>/g, ".")
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    let simpleEx = document.getElementById('simpleEx')
+    codes.forEach((el) => {
+      let li = document.createElement('li')
+      let adv = el.adv ? ` <a href="TDUpload.html?advcode=${encodeURIComponent(fix(el.code))}"><div class="codeDiv">adv</div></a>` : ""
+      li.innerHTML = `<a href="TDUpload.html?currentcode=${encodeURIComponent(ppfilter(fix(el.code)))}"><div class="codeDiv">${fix(el.code)}</div></a>${adv}`
+      let div = document.createElement("div")
+      div.classList.add("inline")
+
+      div.append(new tlCodeEl().createSVG(el.w,el.h ,ppfilter(el.code+""),true,false,false))  
+      li.prepend(div)
+      li.innerHTML = `<b>${el.name}</b>:${li.innerHTML}`
+
+      simpleEx.append(li)
+    })
+
+    // let galleryEx = document.getElementById('galleryEx')
+    // gallery.forEach((el) => {
+    //   let li = document.createElement('li')
+    //   let interactive = false ? "interactive=true&" : ""
+    //   li.innerHTML = `<a href="TDUpload.html?${interactive}gallerycode=${encodeURIComponent(fix(el.code))}">${el.name}</a>`
+
+    //   let galleryContent = el.code.split(/u./)
+    //   //console.log(galleryContent)
+    //   galleryContent.pop()
+    //   galleryContent.forEach((pic) => {
+    //     let div =document.createElement("div") 
+    //     div.append(new tlCodeEl().createSVG(el.w,el.h ,ppfilter(pic+""),true,false,false))
+    //     div.classList.add("inline")        
+    //     div.classList.add("border")
+
+    //     li.append(div)  
+    //   })
+
+    //   galleryEx.append(li)
+    // })
+  })
+
+</script>
+
+</html>
+<!--
+0: "5p xA 5g5{2}{2}< xB vB xC\n5p{.2}{.2}<5 xD vD xE +2[5y{,vB}5{vd}< vA xA vB vC xB vd ve xd] m[5p+5[{vA}.]][4]"
+1: "+6[3o]"
+2: "5t.5.4.34o xa +5ap xa\n+2[+4[4o]p] xb\n4p{.vb} +2[+3a{.vb}]"
+3: "xa xb +3[6i {.vb}{,vb}p va xa 6{..2}{,,2} vb xb]  6+3[{va}.{bvb}.] xc mc[4o]"
+4: "6a xA\n6i{>+3A} xB\n>{+3B} xC\n6r+6C"
+5: "+5[5b5p4{,6}]"
+6: "XA XB +9[+a[va vb 7r..5,, xa] +1[4o] vb xb] va"
+7: "XA XB 6+8[+1[va vb 6r.. xa] 3i3<33< vb xb] va"
+8: "XA XB +8[+1[va vb 6r.. xa] 6o6o vb xb] va"
+9: "m[+2[8b.8b..8b.]][4g:3,:3,:4]"
+10: "m[+2[7b7b.7b.]][4g:3,:3,:4]"
+11: "6"
+12: "xa xb +b[+5[va 5r vb xa] vb 3i3, xb] va"
+13: "5t.5.4.34k{.3} xa\n{,4o4445} xb\n+3[+3[4o]p] xc\n+5[vavb] xd\n4pvbb{.vc} +3[vdb]{.vc4t2.3p}+3[vdb].vc"
+14: "xa xb +b[+5[va 0r. vb xa] vb 3i3, xb] va"
+15: "XA XB +5[+3[va vb 3r xa] 3o3, vb xb] {va}.va "
+16: "xa +8[4p5{va}{,va} xa] va"
+-->
