@@ -6,6 +6,26 @@
     <link rel="stylesheet" href="tdcode.css">
 
     <style>
+        .tooltip-container {
+            position: relative; /* Essential for positioning the tooltip content */
+            display: inline-block; /* Or block, depending on your layout */
+        }
+
+        .tooltip-content {
+            visibility: hidden; /* Hide by default */
+            opacity: 0; /* For fade-in/out effect */
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000; /* Ensure it appears above other content */
+            transition: opacity 0.3s ease; /* Smooth transition for fade effect */
+            /* Adjust positioning as needed (e.g., top, left, right, bottom) */
+            top: 100%; /* Example: position below the trigger */
+            left: 50%;
+            transform: translateX(-50%);
+        }
        .piece {
            display: inline-block;
            overflow:hidden;
@@ -133,7 +153,22 @@ function check(){
 
     document.querySelector("#listAns .answer[data-index='true']").classList.add("correct")
     document.querySelector("#list .recipe[data-index='true']").classList.add("correct")
+
+    document.querySelectorAll('.tooltip-container').forEach(container => {
+        const tooltipContent = container.querySelector('.tooltip-content')
+
+        container.addEventListener('mouseenter', () => {
+            tooltipContent.style.visibility = 'visible'
+            tooltipContent.style.opacity = '1'
+        })
+
+        container.addEventListener('mouseleave', () => {
+            tooltipContent.style.visibility = 'hidden'
+            tooltipContent.style.opacity = '0'
+        })
+    })
 }
+
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -152,10 +187,10 @@ function getSelection(n, m) {
     }
     return selections.slice(0,n)
 }
- function appendRecipe(ex, id,w=100,h=100,index){
-    let html = document.getElementById(id)
+ function appendRecipe(ex, html,w=100,h=100,index,tooltip=false){
     let span = null
     let div = document.createElement("div")
+
     div.setAttribute("data-index",index+"")
 
     div.classList.add("inline")
@@ -184,12 +219,30 @@ function getSelection(n, m) {
         span.innerHTML = `)`  
         div.append(span)
     }
-    html.append(div) 
+    let wrapper = document.createElement("div")
+    wrapper.append(div)
+
+    if (!index && !tooltip){
+
+        wrapper.classList.add("tooltip-container")
+        let tooltipDiv = document.createElement("div")
+        tooltipDiv.classList.add("tooltip-content")
+        wrapper.append(tooltipDiv)
+        appendResult(ex, tooltipDiv,w,h,index,true)
+    } 
+    html.append(wrapper)
+
  }
- function appendResult(ex, id,w=100,h=100,index){
-    let html = document.getElementById(id)
+ function appendResult(ex, html,w=100,h=100,index,tooltip=false){
 
     let div = document.createElement("div")
+    if (!index && !tooltip){
+        div.classList.add("tooltip-container")
+        let tooltipDiv = document.createElement("div")
+        tooltipDiv.classList.add("tooltip-content")
+        div.append(tooltipDiv)
+        appendRecipe(ex, tooltipDiv,w,h,index,true)
+    }
     div.setAttribute("data-index",index+"")
     div.classList.add("inline")
     div.classList.add("answer")
@@ -198,37 +251,32 @@ function getSelection(n, m) {
     html.append(div)
   }
 
-function makeCase(){
-    let list = []
-    document.getElementById("list").innerHTML = ""
-    document.getElementById("listAns").innerHTML = ""
-
-    switch(document.getElementById("examples").value){
-        case "easy":
-            for (let x=8;x<10;x++) {
-                addExamples(list, 2,"+a[5o<]","+3[3l]",1,1,partition(10, x),partition(3, x-7))
-            }
-            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 26)
-            break
-        case "hard":
-            for (let x=2;x<6;x++) {
-                addExamples(list, 3,"+1[5i5i<4i3i<3i<]","+4[3l]",5,1,partition(5, x),partition(4, x-1),x==5)
-            }
-            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 27)
-            break
-        case "yikes":
-            for (let x=7;x<10;x++) {
-                addExamples(list, 3,"+5[5p5p,,]","+4[3l]",2,1,partition(10, x),partition(4, x-6))
-            }
-            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 42)
-            break
-        case "medium":
-            for (let x=1;x<6;x++) {
-                addExamples(list,2, "+2[5o5o,4o,]","+6[3l]",3,1,partition(6, x),partition(6, x))
-            }
-            list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 24)
-            break
+function makeLists(){
+    let  allLists = {}
+    allLists.easy = []
+    for (let x=8;x<10;x++) {
+        addExamples(allLists.easy, 2,"+a[5o<]","+3[3l]",1,1,partition(10, x),partition(3, x-7))
     }
+    allLists.easy = allLists.easy.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 26)
+
+    allLists.medium = []
+    for (let x=1;x<6;x++) {
+        addExamples(allLists.medium,2, "+2[5o5o,4o,]","+6[3l]",3,1,partition(6, x),partition(6, x))
+    }
+    allLists.medium = allLists.medium.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 24)
+
+    allLists.hard = []
+    for (let x=2;x<6;x++) {
+        addExamples(allLists.hard, 3,"+1[5i5i<4i3i<3i<]","+4[3l]",5,1,partition(5, x),partition(4, x-1),x==5)
+    }
+    allLists.hard = allLists.hard.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 27)
+
+    allLists.yikes = []
+    for (let x=7;x<10;x++) {
+        addExamples(allLists.yikes, 3,"+5[5p5p,,]","+4[3l]",2,1,partition(10, x),partition(4, x-6))
+    }
+    allLists.yikes = allLists.yikes.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 42)
+
     // for (let x=8;x<10;x++) {
     //     addExamples(list, 2,"+a[5o<]","+3[3l]",1,1,partition(10, x),partition(3, x-7))
     // }
@@ -245,23 +293,38 @@ function makeCase(){
     // }
     // list = list.filter((code) => (new tlCodeEl().countPoly(code.text,false,false)) == 27)
 
+    return allLists
+}
+let allLists = makeLists()
+
+function makeCase(){
+    document.getElementById("list").innerHTML = ""
+    document.getElementById("listAns").innerHTML = ""
+
+    let list = allLists[document.getElementById("examples").value]
+    if (!list) {
+        makeLists()
+        list = allLists[document.getElementById("examples").value]
+    }
+
     let sel = getSelection(6,list.length)
     let qn = sel.slice(0,3)
     shuffle(qn)
-    console.log (qn,"sel",sel)
+    //console.log (qn,"sel",sel)
 
-    for(let i=0;i<qn.length;i++) appendRecipe(list[qn[i]],"list",100,100,qn[i]==sel[0])
+    for(let i=0;i<qn.length;i++) appendRecipe(list[qn[i]],document.getElementById("list"),100,100,qn[i]==sel[0])
+
     let exSel = sel.slice(3)
-    console.log (exSel,"sel",sel)
+    //console.log (exSel,"sel",sel)
     exSel.push(sel[0])
     shuffle(exSel)
-    for(let i=0;i<exSel.length;i++) appendResult(list[exSel[i]],"listAns",100,100,exSel[i]==sel[0])
+    for(let i=0;i<exSel.length;i++) appendResult(list[exSel[i]],document.getElementById("listAns"),100,100,exSel[i]==sel[0])
 
     available = true
-    document.querySelectorAll("#list >.recipe").forEach(el => {
+    document.querySelectorAll("#list .recipe").forEach(el => {
       el.addEventListener('click', (e) => {
           let index = e.currentTarget.dataset.index
-          console.log("recipe index ",index)    
+          //console.log("recipe index ",index)    
           if (available){
             let clicked = e.currentTarget.classList.contains("slected") 
             document.querySelectorAll("#list .recipe").forEach(x => x.classList.remove("slected")) 
@@ -272,7 +335,7 @@ function makeCase(){
     document.querySelectorAll("#listAns >div.answer").forEach(el => {
       el.addEventListener('click', (e) => { 
           let index = e.currentTarget.dataset.index
-          console.log("answer index ",index)
+          //console.log("answer index ",index)
           if (available){
             let clicked = e.currentTarget.classList.contains("slected")
 
@@ -282,5 +345,6 @@ function makeCase(){
       })
     })
 }
+
  </script>
 </html>

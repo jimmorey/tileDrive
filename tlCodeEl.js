@@ -104,7 +104,7 @@ tlCodeEl.prototype.countPoly =function (text="55b55",filled=true, ends=true) {
 tlCodeEl.prototype.createSVG =function (boxWidth=300,boxHeight=300,text,filled=true, ends=true, chunked=false, arrow =false,start=false) { //from https://stackoverflow.com/questions/3492322/javascript-createelementns-and-svg
   let xmlns = "http://www.w3.org/2000/svg";
 
-  if (arrow) console.log("ARROW")
+  //if (arrow) console.log("ARROW")
   if (typeof text !== 'string') {
     text = String(text);
   }
@@ -798,14 +798,14 @@ function pushCode(code,codeStack,banks,tileLand){ //string to stack -- reverse o
       let oldi = i
       i=pushNextStack("se",i,code,thisCode,banks,tileLand)
       pushNextChunk(oldi,code,thisCode,banks)  // make a copy of the secondary mix part
-      console.log("helping?  mix",...thisCode)
+      //console.log("helping?  mix",...thisCode)
     } else if ("f".indexOf(ch) > -1){  
       thisCode.push(ch)
       i=pushNextStack("ff-fir",i+1,code,thisCode,banks,tileLand)
       let oldi = i
       i=pushNextStack("ff-sec",i,code,thisCode,banks,tileLand)
       pushNextChunk(oldi,code,thisCode,banks)  // make a copy of the secondary mix part
-      console.log("helping?  mix",...thisCode)
+      //console.log("helping?  mix",...thisCode)
     } else if ("?".indexOf(ch) > -1){  
       let rep =code.substring(i+1, i + 2)
       thisCode.push(ch)
