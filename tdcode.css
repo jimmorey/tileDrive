@@ -81,6 +81,7 @@ ul {
 .recipe {
   display: flex;
   flex-direction: row;
+
   border: 1px solid lightgray;
   margin: 3px;
   padding: 3px;
@@ -104,7 +105,7 @@ ul {
 .pair > div {
   align-self: center;
 }
-  .recipe.slected,  .answers .slected {
+.recipe.slected,  .answers .slected {
   color: gray;
   background-color: lightgray;
   border: 2px double brown;

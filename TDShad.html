@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>TileDrive Introduction</title>
+    <link rel="stylesheet" href="slides.css">
+    <link rel="stylesheet" href="tdcode.css">
+
+    <style>
+       .piece {
+           display: inline-block;
+           overflow:hidden;
+           width:50px;
+           height:50px;  
+           background-image:url(goalMM.svg);
+           background-size: 50px;
+           transition: all 1s ease-in-out;
+       }
+       div.goal {
+           width:500px;
+           height:500px;  
+           background-size: 500px;
+           margin: 0 auto;
+       }
+       .show {
+           background-position: 0 300px;
+       }
+       .bridge {
+           background-position: 0 250px;
+       }
+       .endure {
+           background-position: 0 200px;
+       }
+       .explore {
+           background-position: 0 150px;
+       }
+       .focus {
+           background-position: 0 100px;
+       }
+       .speed {
+           background-position: 0 50px;
+       }
+       table {
+           margin-bottom:1em;
+           border:1px solid #eee;
+           border-radius:0.5em;
+           background:#f8f8f8;
+           transition: all 1s ease-in-out;
+       }
+       table:hover .piece,table:active .piece{
+           transform:scale(1.1);
+           opacity:0.5;
+       }
+       table:hover, table:active {
+           background:#f4f4f4;
+       }
+       tr:nth-child(2n) td,tr:nth-child(2n) th{
+           background:white;
+           border-radius:1em;
+           margin-right:0.5em;
+           margin-left:0.5em;
+       }
+       th {
+           width:150px;
+       }
+       h1 {
+           margin-top:0;
+       }
+       div.big {
+        display:inline;
+        height:50px;
+        vertical-align: bottom;
+        font-size:2.5em;
+       }
+       .myhead {
+       display:inline;height:50px;vertical-align: top;font-size:1.5em;
+       }
+       .box {
+              display:inline-block;
+              width:50px;
+              height:50px;
+              border:1px solid black;
+              background-color: rgb(224, 224, 224);
+              /*margin:0.5em;*/
+              text-align: center;
+       }
+       .x {
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='black' stroke-width='5'/><path d='M0 0 L100 100 ' stroke='black' stroke-width='5'/></svg>");
+            background-repeat:no-repeat;
+            background-position:center center;
+            background-size: 100% 100%, auto;
+            opacity: 50%;
+        }
+/* 
+              h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        letter-spacing: -0.75rem;
+        transition: letter-spacing 0.5s ease-in-out;
+      }
+      h1.action:hover {
+        letter-spacing: -0.25rem;
+        transition: letter-spacing 1s ease-in-out;
+      } 
+ 
+      */
+      span {
+        mix-blend-mode: multiply;
+      }
+      .rainbow span:nth-child(7n+1) {
+        color:  rgb(255,0,0)
+      }  
+      .rainbow span:nth-child(7n+2) {
+        color: rgb(255,170,0)
+      }
+      .rainbow span:nth-child(7n) {
+        color: rgb(255,165,253)
+  
+      }
+      .rainbow span:nth-child(7n+4) {
+        color: rgb(67,204,0)
+      }
+      .rainbow span:nth-child(7n+3) {
+        color: rgb(255,255,0)
+      }
+      .rainbow span:nth-child(7n+5) {
+        color: rgb(153,0,153)
+      }
+      .rainbow span:nth-child(7n+6) {
+        color: rgb(0,0,255)
+      }
+        /* * from https://chenhuijing.com/blog/html-slides-without-frameworks/
+        section {
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            z-index: 0;
+            transform: rotate(90deg);
+            transform-origin: 0 0;
+            transition: transform 1s, opacity 0.8s;
+        }
+
+        section:target {
+            transform: rotate(0deg);
+            z-index: 1;
+        }
+
+        section:target ~ section {
+            opacity: 0;
+            transform: rotate(-90deg);
+        } */
+    </style>  
+    <script src="rpoly.js"> </script>
+    <script src="rtree.js"> </script>
+    <script src="TD.js"> </script>
+    <script src="tlCodeEl.js"> </script>
+    <script src="TDcode.js"> </script>
+    <script src ="slides.js"></script>
+</head>
+<body>
+
+<section >
+<h1 class="rainbow" style="text-shadow: 0 0 10px rgba(124, 123, 123, 0.8), 0 0 15px rgba(224, 223, 223, 0.8), 0 0 25px rgba(125, 124, 124, 0.8); font-size: 3em;margin:0;">TileDrive:</h1>
+    <h2>designing a tool for<br>creating art<br>and algorithms</h2>
+<h2>Jim Morey 88C</h2>
+<a href="https://jimmorey.github.io/tileDrive"><img src="githubQR.svg" alt="TileDrive QR" width="200" ><br>jimmorey.github.io/tileDrive
+</a>
+
+    </section>
+<!-- ..................... -->
+
+
+    <section >
+    <div style="display:flex;align-items: center;flex-direction: column;">
+        <div  style="display:flex;align-items: center;flex-direction: row;">
+<div class="inline">painting</div>
+<div class="inline">    
+                    <image src="paint0.png" alt="initial" style="height:100px;" />
+                    <image src="paint1.png" alt="drag1" style="height:100px;" />
+                    <image src="paint2.png" alt="drag2" style="height:100px;" /><br>
+                    <image src="paint3.png" alt="drag3" style="height:100px;" />
+                    <image src="paint4.png" alt="release" style="height:100px;" />
+                    <image src="paint5.png" alt="colour change" style="height:100px;" />
+                    </div>
+    <div class="inline title" data-text ="8{5g}{<<5g}{>>>>5g}{>>>4}{>4}{<4}{<<<4}>>5g" data-w = "100" data-h="100" data-cur="false"></div>
+    </div>
+
+<div  style="display:flex;align-items: center;flex-direction: row;">
+
+    <div class="inline" style="align-self: center;vertical-align: middle;"><b>driving</b><br> with <b>tiles</b></div>
+
+    <div class="inline" >
+        <div  class="inline" >
+            <div class="inline">
+                <div class="inline title" data-text ="4i>4r" data-w = "50" data-h="120" data-cur="true"></div>
+                <div class="inline title" data-text ="4i>44r" data-w = "75" data-h="120" data-cur="true"></div>
+                <div class="inline title" data-text ="4i>444r" data-w = "100" data-h="120" data-cur="true"></div>
+            </div>
+            <div  class="inline" >
+                <div class="inline title" data-text ="4i>444,4r" data-w = "100" data-h="60" data-cur="true"></div><br>
+                <div class="inline title" data-text ="4i>444.4r" data-w = "100" data-h="60" data-cur="true"></div>
+            </div><br>
+        </div><br>
+
+        <div  class="inline" >
+
+            <div  class="inline" >
+                <div class="inline title" data-text ="4i>644r" data-w = "105" data-h="140" data-cur="true"></div>
+
+                <div class="inline title" data-text ="4i>6446r" data-w = "140" data-h="140" data-cur="true"></div>
+            </div>
+
+            <div  class="inline" >
+                <div class="inline title" data-text ="4i>6446,4r" data-w = "160" data-h="70" data-cur="true"></div><br>
+                <div class="inline title" data-text ="4i>6446.4r" data-w = "160" data-h="70" data-cur="true"></div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+    </section>
+<!-- ..................... -->
+
+
+    <section >
+        <div  class="inline" >
+
+            <div class="inline title" data-text ="3p3<33<33<33<33<33<333444{>4}{<3i3{<5}{<6t4l{<4{>33<33}{<33<33}4<}>43<3}3<33}44" data-w = "400" data-h="300" data-cur="false"></div>
+            </div>
+<h1>constraints breed creativity</h1>
+<div  class="inline" >
+
+<div class="inline title" data-text ="4444>34343" data-w = "60" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="8p{>>>>6b {<4344} >43<44} {<<6>45y} {>>6>45y} 8iy" data-w = "100" data-h="100"></div>
+<div class="inline title" data-text ="xA xB+8[vB 4r< vA xB vA 4o xA] vB" data-w = "100" data-h="100" data-cur="false"></div>
+<div class="inline title" data-text ="4b{<3g33<34y4}4{3r3{3}{<3}}>4>4" data-w = "100" data-h="100"></div>
+
+<div class="inline title" data-text =">7<<<p{43443444}{>4344}{>>44}{>>>44}{<<<43<44}<<43<443<444" data-w = "160" data-h="80"></div>
+</div>
+    </section>
+<!-- ..................... -->
+
+
+
+    <section >
+    <div  class="inline" >
+<h1>Make a turtle...</h1>
+    </div>
+    </section>
+<!-- ..................... -->
+    <section >
+    <div  class="inline" >
+<h1>turtles?</h1>
+<div  class="inline" >
+
+<div class="inline title" data-text ="4l<5{<<3g3<3}555{>55}5{<<3g<33<53}4{<7g}5{<3g3<35<3}{>5<5}5555{<<}{<3g<33}4{<3}>" data-w = "275" data-h="275" data-cur="false"></div>
+<div class="inline title" data-text ="4g>5{>433}{>>37}{l}<5{l}5{l}5{43}{<3}{l}>5y5" data-w = "190" data-h="190" data-cur="false"></div>
+<div class="inline title" data-text ="4g{>3}6l{>>3y<434{>3}{>33}3}{<<3}>46>46{<8g}>4g<3>}" data-w = "190" data-h="190" data-cur="false"></div>
+<div class="inline title" data-text ="3l<3<{>4g7}<3<5{>5<5}{<3g3<35<3}5555{<<3g3<33}33{>33}<5{>5<5}{<3g<3<33}5555<<3<g33<5<3" data-w = "250" data-h="250" data-cur="false"></div>
+
+</div>
+    </div>
+    </section>
+
+    <section >
+<h1>reflective conversation with materials</h1>
+
+
+<div  class="inline" >
+
+<div class="inline title" data-text ="4t.+6[3b6y]" data-w = "100" data-h="100" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+a[5o4p]" data-w = "190" data-h="190" data-cur="true"></div>
+<div class="inline title" data-text ="4t.+6[3p5i5<]" data-w = "150" data-h="150" data-cur="true"></div>
+
+</div>
+<div  class="inline" >
+<div class="inline title" data-text ="4>{3<4b443<4443<33<3<33<4443<444}+6[3b6y]" data-w = "75" data-h="150" data-cur="true"></div>
+
+<div class="inline title" data-text ="3b6y xA 4>+3A{<3b} vA{3t<6b{<3b}{>3b}}+2A{<<3b}{3t333<6y+6[{3}<]}{3t6<3l3y3<3t3y}" data-w = "150" data-h="150" data-cur="true"></div>
+
+<div class="inline title" data-text ="4o{..5,45,45,,44r{,33,3}.3,33}54{+a[54]}>45p<4o{>3p}5p<4o" data-w = "150" data-h="150" data-cur="true"></div>
+
+<div class="inline title" data-text ="4o{..5t,45,45,,44r{,33,3}.3,33}54{+a[54]}>4t5p<4t{>3p}5p<4t" data-w = "150" data-h="150" data-cur="true"></div>
+
+
+<div class="inline title" data-text ="4t.+6[3p5i{<33}5{.3,3}<]" data-w = "150" data-h="150" data-cur="true"></div>
+<div class="inline title" data-text ="4t>+6[3p{<5{>3}<3}5i{<5}5{>4}<]" data-w = "170" data-h="185" data-cur="true"></div>
+    </div>
+
+     </section>
+<!-- ..................... -->
+
+<!-- ..................... -->
+
+    <section >
+    <div  class="inline" >
+
+        <div class="inline title" data-text ="4r4{>8b4{<4t>4o4{<4}{>43<3}44g{>44}{<44}5344}>4}43<3<3<33<33<333443<3<3<33<33<33<33<" data-w = "600" data-h="150" data-cur="false"></div>
+    </div>
+ <div style = "display:flex;">
+<div  class="inline" >
+
+<ul style = "text-align: left;"><li>angles    
+        <div  class="inline" >
+
+        <div class="inline title" data-text ="+6[3]" data-w = "70" data-h="100" data-cur="true" data-arrow="false"></div>
+<div class="inline title" data-text ="+4[4b.]" data-w = "80" data-h="80" data-cur="true"></div>
+<div class="inline title" data-text ="+3[6p..]" data-w = "120" data-h="120" data-cur="true"></div>
+<div class="inline title" data-text ="+8[8y>>>4b<]" data-w = "200" data-h="200" data-cur="false"></div>
+<div class="inline title" data-text ="3r<4b<3r<3r<4b<3r<4b<3r<3r<4b< xA 3<mA[5o>]" data-w = "200" data-h="150" data-cur="false"></div>
+    </div>
+        </li>
+        <li>lengths<div  class="inline" >
+            <div class="inline title" data-text ="4p{>44}4a{>44}4a{>44}xa 6r xb 4y.{+3a}.44,+4b" data-w = "300" data-h="100" data-cur="false"></div>
+        </div>
+        </li>
+    </ul>
+    </div>
+    </div>
+
+    </section>
+<!-- ..................... -->
+
+
+    <section >
+<h1>algorithms</h1>
+<div  class="inline" >
+    <div class="inline title" data-text ='xA xB
++a[vB 4r> vA xB vA 4o xA] vB' data-w = "300" data-h="300" data-cur="false"></div>
+    <div class="inline title" data-text ='xA xB+5[vB 2o+3[vA 3{r}] xB vA 33< xA] ivB' data-w = "300" data-h="400" data-cur="false"></div>
+</div>
+</div>
+
+    </section>
+<!-- ..................... -->
+    <section >
+<div  class="inline" >
+<div class="inline title" data-text ="4t{>82<44>>4{444{4444<4ba<335}<8ya>>4{>4}<444}<9la}5ga<<5555555" data-w = "300" data-h="150" data-cur="false"></div>
+</div>
+<div style = "layout:flex;">
+<div  class="inline" >
+
+<ul style = "text-align: left;">
+    <li>cutting and pasting</li>
+    <li>repetition</li>
+    <li><b><em>mixing</em></b> (interleaving)</li>
+    <li style="color:gray">anonymous banks, conditional execution</li>
+</ul>
+</div>
+</div>
+
+    </section>
+<!-- ..................... -->
+
+
+    <section >
+
+<div style = "layout:flex;">
+<div  class="inline" >
+
+<ul style = "text-align: left;">
+
+    <li>repetition <em><b>+</b>#&lt;bank&gt;</em><ul style="list-style-type: none;">
+
+        <li><div class="inline title" data-text ="3y3,8g, xa +8a" data-w = "250" data-h="250" data-cur="true"></div><div class="inline">3y3,8g, xA<br> <em><b>+8A</b></em></div></li>
+
+    </ul>
+   </li>
+   <li>mixing sequences <em><b>m</b>&lt;bank1&gt;&lt;bank2&gt;</em><ul style="list-style-type: none;">
+
+    <li><div class="inline title" data-text ="8g, xA +8A xA 3y3y, xB mAB" data-w = "250" data-h="250" data-cur="true"></div><div class="inline">8g< xA<br> +8A xA<br> 3y3y< xB<br><em><b>mAB</b></em></div></li>
+
+    </ul>
+    </li>
+</ul>
+</div>
+</div>
+
+</section>
+
+<!-- ..................... -->
+    <section >
+<div  class="inline" >
+<div class="inline title" data-text ="4g446>>33<33<6{>4t<64>>4}{>4t<4<4t>3r{<3{<333}3}3<3}{>4t<4444444<4t>3y{<3<33<3{<4}3<3}3<4>8t4<<444444y}{>4t44<444<8t>4p4{>4}{<4}4}<<444" data-w = "300" data-h="150" data-cur="false"></div>
+</div>
+<div style = "layout:flex;">
+<div  class="inline" >
+
+<ul style = "text-align: left;">
+    <li>user testing</li>
+    <li>bug fixing</li>
+    <li>animated repetition and mixing</li>
+</ul>
+</div>
+</div>
+
+    </section>
+
+    <!-- ****************************************************  --> 
+
+<!-- <p>In art, a "reflective conversation with materials" refers to the dynamic, iterative process where artists engage in a dialogue with their chosen materials, allowing the materials to inform and shape their artistic decisions. This approach emphasizes the back-and-forth interaction between the artist and the medium, where the artist's initial ideas are tested, modified, and refined based on the material's unique properties and responses. It's a process of discovery and mutual influence, where the artist learns from the material's "back-talk" and the material is transformed by the artist's actions.  (Donald Schön & AI). </p>
+
+<p>The idea that "constraints breed creativity" is a common one, suggesting that limitations can actually inspire innovation and problem-solving. Several sources say that when faced with restrictions, individuals and teams are forced to think outside the box and find novel solutions. This can lead to more resourceful and creative outcomes than if they had unlimited resources or freedom. (Igor Stravinsky:music, Mark Rosewater: game design, Orson Welles: film making & AI)</p>
+</p> -->
+</body>
+
+</html>
