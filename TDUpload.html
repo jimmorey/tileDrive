@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="td.css">
     <link rel="stylesheet" href="tdcode.css">
 <style> 
-    details {
+details {
   border: 1px solid #aaa;
   border-radius: 4px;
   padding: 0.5em 0.5em 0;
@@ -43,7 +43,8 @@ details div {
     <header class="border">
         <h1>TileDrive Upload</h1>
     </header>
-    <main id="vars"><button onclick="update()">Update</button>
+    <main id="vars">
+        <div class="inline"><button onclick="update()">Update</button></div>
         <p>These are the variables that are stored in local storage. They are used to save your work.</p>
      </main>
 </body>
@@ -53,22 +54,24 @@ details div {
     let interactive = (new URLSearchParams(document.location.search).get("interactive") !== null)
     let setLocals = {}
     Object.keys(locals).forEach(key => {
-        setLocals[key] = new URLSearchParams(document.location.search).get(key) 
+        let value = new URLSearchParams(document.location.search).get(key)
+        setLocals[key] = (value!==null)? value:""
     })
     document.addEventListener("DOMContentLoaded", () => {
         Object.keys(locals).forEach(key => {
             let code = window.localStorage.getItem(key)
-            if (!code) code = ""
+            
+            if (code==null) code = ""
             locals[key] = code.replace(/</g, ",").replace(/>/g, ".")
             const li = document.createElement('p')
-            //console.log("before",key, setLocals[key])
+            console.log("before",key, setLocals[key], code,"*",code.length)
 
             let update = setLocals[key]?setLocals[key].replace(/</g, ",").replace(/>/g, "."):""
 
             setLocals[key] = update
             li.innerHTML = `<details ><summary>${key}</summary><div class="code inline">${locals[key]}</div>&rightarrow;<div class="code inline" id="${key}" contenteditable>${setLocals[key]}</div></details>`
             document.getElementById('vars').appendChild(li)
-            //console.log(key, setLocals[key])
+            console.log(key, setLocals[key],"*")
         })
 
         //Object.entries(locals).forEach(([key, value]) => window.localStorage.setItem(key, value))

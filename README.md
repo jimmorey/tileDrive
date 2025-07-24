@@ -2,7 +2,6 @@
 This is a developing project that hopes to create a introductory environment to play with shapes, patterns, and eventually coding. This is the first version-controlled tile environment. The previous environments 
 TileLand and PolygonR&D (early 2000's) were vi or emacs maintained :)
 
-Jump into tiling
 * [TileDrive](./TileDrive.html) is the main link to the main application.
 * An [Introduction](./TDIntro.html) to the world of tiledriving is presented with many other linked documents that address some of the details and subtleties of this tiling world
     *  [Activities](./TDActivities.html), Math [lengths](./TDLengths.html) & [angles](./TDAngles.html), [examples](./TDExamples.html),[patterns](./TDpatterns.html), and [coding aspects](./TileDriveCoding.html)
@@ -10,7 +9,7 @@ Jump into tiling
 
 ## Description
 The Introduction is the best place to see what this project is about. 
-The main difference between the previous work is that there is focus on a tree structure that will hopefully allow for easier immediate editting of patterns.  This new direction should lead to a more natural embellishment of existing patterns and hopefully ease connecting patterns with processing. This latest addition is a painting-style of driving that should appear to younger grades and perhaps everyone (especially for embellishing tasks).
+The main difference between the previous work is that there is focus on a tree structure that will hopefully allow for easier immediate editting of patterns.  This new direction should lead to a more natural embellishment of existing patterns and hopefully ease connecting patterns with processing. This latest addition is a painting-style of driving that should appear to younger grades and perhaps everyone (especially for embellishing tasks). Local storage is used to keep track of all user data which you can see [here](./TDUpload.html?interactive=true) --this is also a way to load examples etc.
 
 This version promotes simple code trees (non-looping non-conditional code) that can be cut and pasted. Simple text promoted in this new version with single character tokens. 
 * [tileland](https://jimmorey.com/tl/tileland.html)
