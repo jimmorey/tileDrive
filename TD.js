@@ -246,8 +246,10 @@ TL.prototype.run = function(text,curs) {
 
   this.runOn(text,curs)
 }
-TL.prototype.runOn = function(text,curs,debug=false) {
+TL.prototype.runOn = function(text,curs,debug=false) {  // keep consistent with... ****
+
   for(let i=0;i<text.length;i++){
+
     if (debug) console.log("runOn", this.active.sides)
     let ch = text.substring(i,i+1)
 
@@ -287,7 +289,9 @@ TL.prototype.runOn = function(text,curs,debug=false) {
         this.addRPoly(this.active)// maybe??
         break
       case "{":
-        this.stack.push(this.active.clone())
+        let newa = this.active.clone()
+        this.stack.push(newa)
+        this.active.branch++
         break
       case "}":
         if (this.stack.length==0) this.active = this.start.clone()
@@ -339,7 +343,9 @@ TL.prototype.addTest = function(dist) {
 TL.prototype.addPoly = function(sides) {
   //this.addRPoly(this.active) //earlier version???
   //if (this.active.sides != 2) this.addRPoly(this.active) //earlier version???
+  let branch = this.active.branch
   this.active = this.active.make(sides)
+  this.active.branch = branch
 }
 //--------------------------------------------------
 TL.prototype.testPoint = function(x,y){

@@ -12,8 +12,10 @@ The Introduction is the best place to see what this project is about.
 The main difference between the previous work is that there is focus on a tree structure that will hopefully allow for easier immediate editting of patterns.  This new direction should lead to a more natural embellishment of existing patterns and hopefully ease connecting patterns with processing. This latest addition is a painting-style of driving that should appear to younger grades and perhaps everyone (especially for embellishing tasks). Local storage is used to keep track of all user data which you can see [here](./TDUpload.html?interactive=true) --this is also a way to load examples etc.
 
 This version promotes simple code trees (non-looping non-conditional code) that can be cut and pasted. Simple text promoted in this new version with single character tokens. 
-* [tileland](https://jimmorey.com/tl/tileland.html)
-* [PolygonR&D](https://jimmorey.com/legacy/legacy.html)
+
+Here are some earlier related prototypes (2005+)
+* circa 2013? [tileland](https://jimmorey.com/tl/tileland.html) Javascript
+* circa 2005? [PolygonR&D](https://jimmorey.com/legacy/legacy.html) Java
 
 ## Details I'm thinking about
 

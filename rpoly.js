@@ -91,7 +91,7 @@ polydat = new PolyDat();
 /** 
  * Rpoly is the basic class for regular polygons
  **/
-function Rpoly(p1 = new Array(0, 1), p2 = new Array(0, 0), sides = 4, colIndex = 0, ref = 0, depth=0) {
+function Rpoly(p1 = new Array(0, 1), p2 = new Array(0, 0), sides = 4, colIndex = 0, ref = 0, depth=0,branch = 0 ) {
     this.sides = sides;
     this.colour = polydat.colours[colIndex%polydat.colours.length].colour
     this.colIndex = colIndex
@@ -106,13 +106,14 @@ function Rpoly(p1 = new Array(0, 1), p2 = new Array(0, 0), sides = 4, colIndex =
     this.ref = ref;
     this.depth = depth
     // this is a new chunk to use the rtree for efficiency  *********
+    this.branch = branch // this is lazy... I should redo this cleanly
     this.extreme = new Array(new Array(0, 0), new Array(0, 0));
 
     this.setPoints();
 }
 //---------------------------------------------------
 Rpoly.prototype.clone = function() {
-    let cl = new Rpoly(this.vertices[0], this.vertices[1], this.sides, this.colIndex, this.ref,this.depth);
+    let cl = new Rpoly(this.vertices[0], this.vertices[1], this.sides, this.colIndex, this.ref,this.depth, this.branch);
     cl.heading = this.heading;
     return cl;
 };
@@ -212,10 +213,10 @@ Rpoly.prototype.setColIndex = function(colIndex) {
 };
 //--------------------------------------------------
 Rpoly.prototype.make = function(sides = this.sides) {
-    return new Rpoly(this.vertices[(this.heading + 1) % this.sides], this.vertices[this.heading], sides, this.colIndex, this.ref, this.depth+1);
+    return new Rpoly(this.vertices[(this.heading + 1) % this.sides], this.vertices[this.heading], sides, this.colIndex, this.ref, this.depth+1, this.branch);
 };
 Rpoly.prototype.make2 = function(sides = this.sides) { //lazy me
-    return new Rpoly(this.vertices[this.heading], this.vertices[(this.heading + 1) % this.sides], sides, this.colIndex, this.ref, this.depth+1);
+    return new Rpoly(this.vertices[this.heading], this.vertices[(this.heading + 1) % this.sides], sides, this.colIndex, this.ref, this.depth+1, this.branch);
 };
 //--------------------------------------------------
 Rpoly.prototype.toString = function() {
@@ -304,7 +305,7 @@ Rpoly.prototype.drawHL = function(c, arrow = false) {
 };
 //--------------------------------------------------
 function rainbowFix(colour,index) {  //HUGE assumption that the string colour is correctly in the format "rgb(255,255,0)"
-    return `rgba(${colour.substring(4,colour.length-1)},${(index%100)/200.0+0.5})`
+    return `rgba(${colour.substring(4,colour.length-1)},${1-(index%2)/1.333})`
 }
 /**
  * not sure if I want to make an integer polygon for drawing...
@@ -315,7 +316,9 @@ Rpoly.prototype.drawSimple = function(c, arrow = false,rainbow=false,thick=1) {
         return;
     let p = this.vertices[0];
 
-    c.fillStyle = rainbow? rainbowFix(this.colour,this.ref):this.colour;
+    c.fillStyle = rainbow? rainbowFix(this.colour,this.branch):this.colour;
+    //console.log("RAINBOW",rainbow,c.fillStyle,this.colour,this.branch)
+    //c.fillStyle = rainbow? rainbowFix(this.colour,this.ref):this.colour;
     //console.log(rainbow,c.fillStyle,this.colour)
 
     c.beginPath();
