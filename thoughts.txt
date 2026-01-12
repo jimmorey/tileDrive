@@ -1,0 +1,8 @@
+obstacles thoughts
+* available polygon counts....
+* points (with flags) vs discs
+    * flags: black  vs checkered (goal)
+* external points imported vs tileDrive generated points
+    * tileDrive points are more tricky (maybe add a drop command)
+* minimal interface
+    * no colours insert rainbow " after every polygon...

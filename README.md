@@ -20,6 +20,11 @@ Here are some earlier related prototypes (2005+)
 ## Details I'm thinking about
 
 * future directions:
+    * add "flip" and "reverse" commands---Not sure the notation yet
+        * m or |  (mirror?) so mA or |A (leaning towards |)
+            * creates a new path related to A but reverse right turns become left (and visa versa) and the odd polygons will need a single left added for each one created
+        * \ for reverse
+            * cre
     * need to clean up driveInterface...get rid of fixRun() etc
     * hiding/eliminating "q" which is a reset since it's dangerous--a misclick is unforgiving
     * probably needs a cutting and pasting of text into the standard code panel rather than just "adv".  As well, the up and down arrows should probably be included. 
