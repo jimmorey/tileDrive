@@ -20,11 +20,15 @@ Here are some earlier related prototypes (2005+)
 ## Details I'm thinking about
 
 * future directions:
+    * obstacle and goals: update rpoly with with points so that they can be used in an activity to avoid some points when acheive when a certain point is encountered.
+    * animate "m" and "+"
+    * make "?" more robust
+    * add k-z banks
     * add "flip" and "reverse" commands---Not sure the notation yet
         * m or |  (mirror?) so mA or |A (leaning towards |)
             * creates a new path related to A but reverse right turns become left (and visa versa) and the odd polygons will need a single left added for each one created
         * \ for reverse
-            * cre
+            * creates a means of reversing a path. In particular, a path in bank A can be undone with 2.\A 2.  
     * need to clean up driveInterface...get rid of fixRun() etc
     * hiding/eliminating "q" which is a reset since it's dangerous--a misclick is unforgiving
     * probably needs a cutting and pasting of text into the standard code panel rather than just "adv".  As well, the up and down arrows should probably be included. 
